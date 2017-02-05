@@ -13,6 +13,6 @@
     "go.formatTool": "goreturns",
     "go.formatFlags": [],
     "go.goroot": "/usr/local/go",
-    "go.gopath": "/Users/kkiruru/work/go",
+    "go.gopath": "${workspaceRoot}",
     "go.gocodeAutoBuild": true
 }
