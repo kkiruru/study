@@ -11,3 +11,21 @@ func Factorial( num int ) int {
 		return num
 	}
 }
+
+
+func Factorial1(n int) int {
+	if n <= 0 {
+		return 1
+	}
+	return n * Factorial1(n-1)
+}
+
+// facItr returns n!.
+func FacItr(n int) int {
+	result := 1
+	for n > 0 {
+		result *= n
+		n--
+	}
+	return result
+}
