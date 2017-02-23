@@ -2,12 +2,12 @@ package factorial
 
 import "fmt"
 
-func ExampleFactorial(){
-	f := Factorial
+func ExampleFactorial() {
+	testFunc := Factorial
 
-	value := f(10)
-	fmt.Fprintln(value)
+	value := testFunc(10)
+	fmt.Println(value)
 
 	// Output:
-	// 5
+	// 3628800
 }
