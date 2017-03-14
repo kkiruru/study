@@ -9,4 +9,8 @@ func main() {
 	}
 
 	fmt.Println(len("가나다"))
+
+	for _, r := range "가갛핳" {
+		fmt.Println(string(r), r)
+	}
 }
