@@ -9,6 +9,6 @@ func main() {
 	}
 }
 
-func flipping(pacakes string) string {
+func flipping(pancake string) string {
 	return "IMPOSIBBLE"
 }
