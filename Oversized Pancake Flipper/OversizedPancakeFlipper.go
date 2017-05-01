@@ -46,7 +46,7 @@ func flipping(pancakes []rune, sizeOfFlipper int) string {
 	}
 
 	if isSunnySideUp(pancakes) {
-		return strconv.FormatInt(int64(flippingCount), 10)
+		return strconv.Itoa(flippingCount)
 	} else {
 		return "IMPOSSIBLE"
 	}
