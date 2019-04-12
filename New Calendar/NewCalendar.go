@@ -2,7 +2,9 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
+	"strings"
 )
 
 /*
@@ -14,10 +16,14 @@ func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	scanner.Scan()
+	lineCount := scanner.Text()
+	fmt.Print("lineCount ", lineCount, "\n")
 
 	i := 1
 	for scanner.Scan() {
-
+		line := scanner.Text()
+		parts := strings.Split(line, " ")
+		fmt.Print("[", i, "] ", parts, "\n")
 		i++
 	}
 }
