@@ -3,7 +3,9 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -21,9 +23,10 @@ func main() {
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		parts := strings.Split(line, " ")
+		var parts []string
+		parts = strings.Split(line, " ")
 		if parts[1] == "+" {
-			formula = addition(parts[0], parts[2], parts[4])
+			formula = addition([]byte(parts[0]), []byte(parts[2]), []byte(parts[4]))
 		} else {
 			formula = subtraction(parts[0], parts[2], parts[4])
 		}
@@ -34,8 +37,32 @@ func main() {
 	}
 }
 
-func addition(augend string, addend string, sum string) string {
-	return (augend + " + " + addend + " = " + sum)
+func addition(augend []byte, addend []byte, sum []byte) string {
+
+	count := int(math.Max(math.Max(float64(len(augend)), float64(len(addend))), float64(len(sum))))
+
+	pop := func(before []byte) ([]byte, byte) {
+		var last byte
+		if before == nil || len(before) == 0 {
+			return nil, '0'
+		}
+		last = before[len(before)-1]
+		before = before[:len(before)-1]
+		return before, last
+	}
+
+	var au byte
+
+	for i := count; 0 < i; i-- {
+		augend, au = pop(augend)
+		aa, _ := strconv.Atoi(string(au))
+		fmt.Print("augend[", i, "] ", au, " > ", aa, "\n")
+
+		// fmt.Print(ad)
+		// fmt.Print(su)
+	}
+
+	return (string(augend) + " + " + string(addend) + " = " + string(sum))
 }
 
 func subtraction(minuend string, subtrahend string, difference string) string {
