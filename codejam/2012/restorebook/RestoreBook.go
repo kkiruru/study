@@ -16,6 +16,8 @@ import (
 
 func main() {
 
+	addition([]byte("?494"), []byte("69??"), []byte("1?422"))
+
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 
@@ -28,14 +30,41 @@ func main() {
 		parts = strings.Split(line, " ")
 		if parts[1] == "+" {
 			formula = addition([]byte(parts[0]), []byte(parts[2]), []byte(parts[4]))
+			fmt.Print("Case #", i, ": ", formula, "\n")
 		} else {
 			formula = subtraction(parts[0], parts[2], parts[4])
 		}
 
-		fmt.Print("Case #", i, ": ", formula, "\n")
-
 		i++
 	}
+}
+
+func convert2int(a byte, b byte, c byte) (int, int, int) {
+
+	first, err := strconv.Atoi(string(a))
+	if err != nil {
+		first = -1
+	}
+
+	second, err := strconv.Atoi(string(b))
+	if err != nil {
+		second = -1
+	}
+
+	third, err := strconv.Atoi(string(c))
+	if err != nil {
+		third = -1
+	}
+
+	return first, second, third
+
+}
+
+func loadByte(numbers []byte, count int) byte {
+	if 0 <= len(numbers)-count-1 {
+		return numbers[len(numbers)-count-1]
+	}
+	return '0'
 }
 
 func addition(augend []byte, addend []byte, sum []byte) string {
@@ -49,95 +78,103 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 	var carry int
 
 	for j := 0; j < count; j++ {
+
 		var au byte
 		var ad byte
 		var su byte
 
-		if 0 <= len(augend)-j-1 {
-			au = augend[len(augend)-j-1]
-		} else {
-			au = '?'
-		}
+		au = loadByte(augend, j)
+		ad = loadByte(addend, j)
+		su = loadByte(sum, j)
 
-		if 0 <= len(addend)-j-1 {
-			ad = addend[len(addend)-j-1]
-		} else {
-			ad = '?'
-		}
+		a, b, s = convert2int(au, ad, su)
 
-		if 0 <= len(sum)-j-1 {
-			su = sum[len(sum)-j-1]
-		} else {
-			su = '?'
-		}
-
-		if au != '?' {
-			if ad != '?' {
-				a, _ = strconv.Atoi(string(au))
-				b, _ = strconv.Atoi(string(ad))
-				s = (a + b + carry) % 10
-				carry = (a + b + carry) / 10
-
-				// fmt.Print("addition[", j, "] 1 : ", a, "+", b, "=", s, ", ", carry, "\n")
-
-			} else if su != '?' {
-				a, _ = strconv.Atoi(string(au))
-				s, _ = strconv.Atoi(string(su))
-				if s < a+carry {
-					s = s + 10
-				}
-				b = (s - (a + carry)) % 10
-				carry = s / 10
-				s = s % 10
-
-				// fmt.Print("addition[", j, "] 2 : ", a, "+", b, "=", s, ", ", carry, "\n")
-
-			} else {
-				a, _ = strconv.Atoi(string(au))
+		if a == -1 && b == -1 {
+			a = 0
+			if s == -1 {
 				b = 0
-				s = (a + b + carry) % 10
-				carry = (a + b + carry) / 10
-
-				// fmt.Print("addition[", j, "] 3 : ", a, "+", b, "=", s, ", ", carry, "\n")
 			}
-		} else {
-			if ad != '?' {
-				b, _ = strconv.Atoi(string(ad))
-
-				if su != '?' {
-					s, _ = strconv.Atoi(string(su))
-
-					if s < b+carry {
-						s = s + 10
-					}
-					a = (s - (b + carry)) % 10
-					carry = s / 10
-					s = s % 10
-
-					// fmt.Print("addition[", j, "] 4 : ", a, "+", b, "=", s, ", ", carry, "\n")
-
-				} else {
-					a = 0
-
-					s = (a + carry + b) % 10
-					carry = s / 10
-					// fmt.Print("addition[", j, "] 5 : ", a, "+", b, "=", s, ", ", carry, "\n")
-				}
-			} else {
-				if su != '?' {
-					s, _ = strconv.Atoi(string(su))
-					a = 0
-					b = s - carry
-					carry = 0
-				} else {
-					a = 0
-					b = carry
-					carry = 0
-					s = a + b
-				}
-				// fmt.Print("addition[", j, "] 6 : ", a, "+", b, "=", s, ", ", carry, "\n")
-			}
+		} else if a == -1 && s == -1 {
+			a = 0
+		} else if b == -1 && s == -1 {
+			b = 0
 		}
+
+		// fmt.Print("[", j, "] a= ", a, ", b=", b, ", s=", s, "\n")
+
+		if a == -1 {
+			if s < b+carry {
+				s = s + 10
+			}
+			a = (s - (b + carry)) % 10
+			carry = s / 10
+			s = s % 10
+		} else if b == -1 {
+			if s < a+carry {
+				s = s + 10
+			}
+			b = (s - (a + carry)) % 10
+			carry = s / 10
+			s = s % 10
+		} else {
+			s = (a + b + carry) % 10
+			carry = (a + b + carry) / 10
+		}
+
+		// if au != '?' {
+		// 	if ad != '?' {
+		// 		a, _ = strconv.Atoi(string(au))
+		// 		b, _ = strconv.Atoi(string(ad))
+		// 		s = (a + b + carry) % 10
+		// 		carry = (a + b + carry) / 10
+		// 	} else if su != '?' {
+		// 		a, _ = strconv.Atoi(string(au))
+		// 		s, _ = strconv.Atoi(string(su))
+		// 		if s < a+carry {
+		// 			s = s + 10
+		// 		}
+		// 		b = (s - (a + carry)) % 10
+		// 		carry = s / 10
+		// 		s = s % 10
+		// 	} else {
+		// 		a, _ = strconv.Atoi(string(au))
+		// 		b = 0
+		// 		s = (a + b + carry) % 10
+		// 		carry = (a + b + carry) / 10
+		// 	}
+		// } else {
+		// 	if ad != '?' {
+		// 		b, _ = strconv.Atoi(string(ad))
+
+		// 		if su != '?' {
+		// 			s, _ = strconv.Atoi(string(su))
+
+		// 			if s < b+carry {
+		// 				s = s + 10
+		// 			}
+		// 			a = (s - (b + carry)) % 10
+		// 			carry = s / 10
+		// 			s = s % 10
+		// 		} else {
+		// 			a = 0
+
+		// 			s = (a + carry + b) % 10
+		// 			carry = s / 10
+		// 		}
+		// 	} else {
+		// 		if su != '?' {
+		// 			s, _ = strconv.Atoi(string(su))
+		// 			a = 0
+		// 			b = s - carry
+		// 			carry = 0
+		// 		} else {
+		// 			a = 0
+		// 			b = carry
+		// 			carry = 0
+		// 			s = a + b
+		// 		}
+		// 	}
+		// }
 
 		if 0 <= len(augend)-j-1 {
 			a = a + int('0')
