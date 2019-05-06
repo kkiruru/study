@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"math"
+
 	"os"
 	"strconv"
 	"strings"
@@ -100,8 +101,6 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 				// fmt.Print("addition[", j, "] 3 : ", a, "+", b, "=", s, ", ", carry, "\n")
 			}
 		} else {
-			carry = 0
-
 			if ad != '?' {
 				b, _ = strconv.Atoi(string(ad))
 
@@ -141,63 +140,20 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 		}
 
 		if 0 <= len(augend)-j-1 {
-			fmt.Print("add0[", j, "], augend[len(augend)-j-1]= ", augend[len(augend)-j-1], ", ", string(augend), "\n")
-			fmt.Print("add0[", j, "], len= ", len(augend), ", Position ", len(augend)-j-1, ", byte(a)=", byte(a), "\n")
-
+			a = a + int('0')
 			augend[len(augend)-j-1] = byte(a)
-			fmt.Print("add1[", j, "], augend[len(augend)-j-1]= ", augend[len(augend)-j-1], ", ", string(augend), "\n")
 		}
 
-		// if 0 <= len(addend)-j-1 {
-		// 	addend[len(addend)-j-1] = byte(b)
-		// }
+		if 0 <= len(addend)-j-1 {
+			b = b + int('0')
+			addend[len(addend)-j-1] = byte(b)
+		}
 
-		// if 0 <= len(sum)-j-1 {
-		// 	sum[len(sum)-j-1] = byte(s)
-		// }
+		if 0 <= len(sum)-j-1 {
+			s = s + int('0')
+			sum[len(sum)-j-1] = byte(s)
+		}
 	}
-
-	// summValue := make([]byte, count, count)
-
-	// var au byte
-	// var ad byte
-	// var su byte
-
-	// var carry int = 0
-
-	// for i := count; 0 < i; i-- {
-	// 	augend, au = pop(augend)
-	// 	addend, ad = pop(addend)
-	// 	sum, su = pop(sum)
-
-	// 	var a int
-	// 	var b int
-	// 	var s int
-
-	// 	if au != '?' {
-	// 		if ad != '?' {
-	// 			a, _ = strconv.Atoi(string(au))
-	// 			b, _ = strconv.Atoi(string(ad))
-	// 			s = a + b + carry
-
-	// 			summValue[i] = byte(strconv.Itoa(string(s)))
-	// 		} else {
-
-	// 		}
-
-	// 	} else {
-
-	// 	}
-
-	// 	aa, err := strconv.Atoi(string(au))
-
-	// 	if err == nil {
-	// 		fmt.Print("augend[", i, "] ", au, " > ", aa, "\n")
-	// 	} else {
-	// 		fmt.Print("error augend[", i, "] ", au, " > ", aa, "\n")
-	// 	}
-
-	// }
 
 	return (string(augend) + " + " + string(addend) + " = " + string(sum))
 }
