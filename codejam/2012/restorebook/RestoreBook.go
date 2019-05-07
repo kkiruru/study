@@ -16,7 +16,7 @@ import (
 
 func main() {
 
-	addition([]byte("?494"), []byte("69??"), []byte("1?422"))
+	addition([]byte("8?02"), []byte("?211"), []byte("?101?"))
 
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
@@ -62,7 +62,7 @@ func convert2int(a byte, b byte, c byte) (int, int, int) {
 
 func load(a []byte, index int) byte {
 	if index < len(a) {
-		if (len(a) - index - 1) == 0 {
+		if (len(a)-index-1) == 0 && a[len(a)-index-1] == '?' {
 			return '1'
 		}
 		return a[len(a)-index-1]
@@ -71,7 +71,7 @@ func load(a []byte, index int) byte {
 	return '0'
 }
 
-func covert2int(first []byte, second []byte, third []byte, index int) (int, int, int) {
+func convert2number(first []byte, second []byte, third []byte, index int) (int, int, int) {
 
 	var a, b, c int
 
@@ -80,7 +80,30 @@ func covert2int(first []byte, second []byte, third []byte, index int) (int, int,
 	c, errC := strconv.Atoi(string(load(third, index)))
 
 	if errA != nil {
+		a = -1
+	}
 
+	if errB != nil {
+		b = -1
+	}
+
+	if errC != nil {
+		c = -1
+	}
+
+	if errA != nil && errB != nil {
+		a = 0
+		b = -1
+		if errC != nil {
+			c = -1
+			b = 0
+		}
+	} else if errB != nil && errC != nil {
+		b = 0
+		c = -1
+	} else if errA != nil && errC != nil {
+		a = 0
+		c = -1
 	}
 
 	return a, b, c
@@ -88,8 +111,12 @@ func covert2int(first []byte, second []byte, third []byte, index int) (int, int,
 
 func loadByte(numbers []byte, count int) byte {
 	if 0 <= len(numbers)-count-1 {
+		if len(numbers)-count-1 == 0 {
+			return '1'
+		}
 		return numbers[len(numbers)-count-1]
 	}
+
 	return '0'
 }
 
@@ -105,15 +132,15 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 
 	for j := 0; j < count; j++ {
 
-		var au byte
-		var ad byte
-		var su byte
+		// var au byte
+		// var ad byte
+		// var su byte
 
-		au = loadByte(augend, j)
-		ad = loadByte(addend, j)
-		su = loadByte(sum, j)
+		// au = loadByte(augend, j)
+		// ad = loadByte(addend, j)
+		// su = loadByte(sum, j)
 
-		a, b, s = convert2int(au, ad, su)
+		a, b, s = convert2number(augend, addend, sum, j)
 
 		if a == -1 && b == -1 {
 			a = 0
@@ -140,7 +167,7 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 			b = (s - (a + carry)) % 10
 			carry = s / 10
 			s = s % 10
-		} else {
+		} else if s == -1 {
 			s = (a + b + carry) % 10
 			carry = (a + b + carry) / 10
 		}
