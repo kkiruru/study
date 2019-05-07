@@ -60,6 +60,32 @@ func convert2int(a byte, b byte, c byte) (int, int, int) {
 
 }
 
+func load(a []byte, index int) byte {
+	if index < len(a) {
+		if (len(a) - index - 1) == 0 {
+			return '1'
+		}
+		return a[len(a)-index-1]
+	}
+
+	return '0'
+}
+
+func covert2int(first []byte, second []byte, third []byte, index int) (int, int, int) {
+
+	var a, b, c int
+
+	a, errA := strconv.Atoi(string(load(first, index)))
+	b, errB := strconv.Atoi(string(load(second, index)))
+	c, errC := strconv.Atoi(string(load(third, index)))
+
+	if errA != nil {
+
+	}
+
+	return a, b, c
+}
+
 func loadByte(numbers []byte, count int) byte {
 	if 0 <= len(numbers)-count-1 {
 		return numbers[len(numbers)-count-1]
@@ -99,8 +125,6 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 		} else if b == -1 && s == -1 {
 			b = 0
 		}
-
-		// fmt.Print("[", j, "] a= ", a, ", b=", b, ", s=", s, "\n")
 
 		if a == -1 {
 			if s < b+carry {
