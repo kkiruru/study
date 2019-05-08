@@ -71,135 +71,66 @@ func load(a []byte, index int) byte {
 	return '0'
 }
 
-func covert2int(first []byte, second []byte, third []byte, index int) (int, int, int) {
+type State int
 
-	var a, b, c int
+const (
+	Digit State = iota
+	Empty
+	Unknown
+)
 
-	a, errA := strconv.Atoi(string(load(first, index)))
-	b, errB := strconv.Atoi(string(load(second, index)))
-	c, errC := strconv.Atoi(string(load(third, index)))
-
-	if errA != nil {
-
+func parse(a []byte, index int) (int, State) {
+	if index <= len(a) || index < 0 {
+		return -1, Empty
 	}
 
-	return a, b, c
+	d, err := strconv.Atoi(string(a[len(a)-index-1]))
+	if err != nil {
+
+		return -1, Unknown
+	}
+
+	return d, 0
 }
 
-func loadByte(numbers []byte, count int) byte {
-	if 0 <= len(numbers)-count-1 {
-		return numbers[len(numbers)-count-1]
-	}
-	return '0'
+func isFirst(a []byte, index int) bool {
+	return index-1 == len(a)
 }
 
 func addition(augend []byte, addend []byte, sum []byte) string {
 
 	count := int(math.Max(math.Max(float64(len(augend)), float64(len(addend))), float64(len(sum))))
 
-	var a int
-	var b int
-	var s int
-
 	var carry int
 
 	for j := 0; j < count; j++ {
 
-		var au byte
-		var ad byte
-		var su byte
+		a, stateOfA := parse(augend, j)
+		b, stateOfB := parse(addend, j)
+		s, stateOfS := parse(sum, j)
 
-		au = loadByte(augend, j)
-		ad = loadByte(addend, j)
-		su = loadByte(sum, j)
-
-		a, b, s = convert2int(au, ad, su)
-
-		if a == -1 && b == -1 {
-			a = 0
-			if s == -1 {
-				b = 0
-			}
-		} else if a == -1 && s == -1 {
-			a = 0
-		} else if b == -1 && s == -1 {
-			b = 0
+		if stateOfA == Digit && stateOfB == Digit && stateOfS == Digit {
+			continue
 		}
 
-		if a == -1 {
-			if s < b+carry {
-				s = s + 10
-			}
-			a = (s - (b + carry)) % 10
-			carry = s / 10
-			s = s % 10
-		} else if b == -1 {
-			if s < a+carry {
-				s = s + 10
-			}
-			b = (s - (a + carry)) % 10
-			carry = s / 10
-			s = s % 10
-		} else {
+		if stateOfA == Digit && stateOfB == Digit {
 			s = (a + b + carry) % 10
 			carry = (a + b + carry) / 10
 		}
 
-		// if au != '?' {
-		// 	if ad != '?' {
-		// 		a, _ = strconv.Atoi(string(au))
-		// 		b, _ = strconv.Atoi(string(ad))
-		// 		s = (a + b + carry) % 10
-		// 		carry = (a + b + carry) / 10
-		// 	} else if su != '?' {
-		// 		a, _ = strconv.Atoi(string(au))
-		// 		s, _ = strconv.Atoi(string(su))
-		// 		if s < a+carry {
-		// 			s = s + 10
-		// 		}
-		// 		b = (s - (a + carry)) % 10
-		// 		carry = s / 10
-		// 		s = s % 10
-		// 	} else {
-		// 		a, _ = strconv.Atoi(string(au))
-		// 		b = 0
-		// 		s = (a + b + carry) % 10
-		// 		carry = (a + b + carry) / 10
-		// 	}
-		// } else {
-		// 	if ad != '?' {
-		// 		b, _ = strconv.Atoi(string(ad))
+		if stateOfA == Digit && stateOfS == Digit {
+			if s < a+carry {
+				s = s + 10
+			}
+			b = s - (a + s)
+			carry = s / 10
+		}
 
-		// 		if su != '?' {
-		// 			s, _ = strconv.Atoi(string(su))
 
-		// 			if s < b+carry {
-		// 				s = s + 10
-		// 			}
-		// 			a = (s - (b + carry)) % 10
-		// 			carry = s / 10
-		// 			s = s % 10
-		// 		} else {
-		// 			a = 0
 
-		// 			s = (a + carry + b) % 10
-		// 			carry = s / 10
-		// 		}
-		// 	} else {
-		// 		if su != '?' {
-		// 			s, _ = strconv.Atoi(string(su))
-		// 			a = 0
-		// 			b = s - carry
-		// 			carry = 0
-		// 		} else {
-		// 			a = 0
-		// 			b = carry
-		// 			carry = 0
-		// 			s = a + b
-		// 		}
-		// 	}
-		// }
 
+
+		
 		if 0 <= len(augend)-j-1 {
 			a = a + int('0')
 			augend[len(augend)-j-1] = byte(a)
