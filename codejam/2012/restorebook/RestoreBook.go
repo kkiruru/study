@@ -16,7 +16,7 @@ import (
 
 func main() {
 
-	addition([]byte("????"), []byte("????"), []byte("?????"))
+	addition([]byte("??"), []byte("??"), []byte("???"))
 
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
@@ -138,14 +138,18 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 				}
 
 				if stateOfS == Unknown {
-						if isFirst(addend, j) {
-							b = 1
+					if isFirst(addend, j) {
+						if !isFirst(sum, j) {
+							b = 10 - (a + carry)
 						} else {
-							b = 0
+							b = 1
 						}
-						s = (a + b + carry) % 10
-						carry = (a + b + carry) / 10
-					
+					} else {
+						b = 0
+					}
+					s = (a + b + carry) % 10
+					carry = (a + b + carry) / 10
+
 				} else {
 					if s < a+carry {
 						s = s + 10
@@ -163,6 +167,7 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 				} else {
 					b = 0
 				}
+			}
 			s = (a + b + carry) % 10
 			carry = s / 10
 		}
@@ -183,7 +188,7 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 		}
 	}
 
-	fmt.Print("> " + (string(augend) + " + " + string(addend) + " = " + string(sum)) + "\n")
+	// fmt.Print("> " + (string(augend) + " + " + string(addend) + " = " + string(sum)) + "\n")
 
 	return (string(augend) + " + " + string(addend) + " = " + string(sum))
 }
@@ -192,15 +197,15 @@ func subtraction(minuend string, subtrahend string, difference string) string {
 	return (minuend + " - " + subtrahend + " = " + difference)
 }
 
-func pop(before []byte) ([]byte, byte) {
-	var last byte
-	if before == nil || len(before) == 0 {
-		fmt.Print("in pop return nil, '?'", "\n")
-		return nil, '?'
-	}
-	last = before[len(before)-1]
-	before = before[:len(before)-1]
-	fmt.Print("in pop return ", last, "\n")
+// func pop(before []byte) ([]byte, byte) {
+// 	var last byte
+// 	if before == nil || len(before) == 0 {
+// 		fmt.Print("in pop return nil, '?'", "\n")
+// 		return nil, '?'
+// 	}
+// 	last = before[len(before)-1]
+// 	before = before[:len(before)-1]
+// 	fmt.Print("in pop return ", last, "\n")
 
-	return before, last
-}
+// 	return before, last
+// }
