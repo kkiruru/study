@@ -16,7 +16,7 @@ import (
 
 func main() {
 
-	addition([]byte("1?788"), []byte("?830"), []byte("?295?"))
+	addition([]byte("????"), []byte("????"), []byte("?????"))
 
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
@@ -37,38 +37,6 @@ func main() {
 
 		i++
 	}
-}
-
-func convert2int(a byte, b byte, c byte) (int, int, int) {
-
-	first, err := strconv.Atoi(string(a))
-	if err != nil {
-		first = -1
-	}
-
-	second, err := strconv.Atoi(string(b))
-	if err != nil {
-		second = -1
-	}
-
-	third, err := strconv.Atoi(string(c))
-	if err != nil {
-		third = -1
-	}
-
-	return first, second, third
-
-}
-
-func load(a []byte, index int) byte {
-	if index < len(a) {
-		if (len(a) - index - 1) == 0 {
-			return '1'
-		}
-		return a[len(a)-index-1]
-	}
-
-	return '0'
 }
 
 type State int
@@ -130,6 +98,17 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 			carry = s / 10
 		}
 
+		//d, ? , ?
+		if stateOfA == Digit && stateOfB == Unknown && stateOfS == Unknown {
+			if isFirst(addend, j) {
+				b = 1
+			} else {
+				b = 0
+			}
+			s = (a + b + carry) % 10
+			carry = (a + b + carry) / 10
+		}
+
 		if stateOfA == Unknown {
 			//?, (d, e), _
 			if stateOfB == Digit || stateOfB == Empty {
@@ -145,7 +124,7 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 					carry = (a + b + carry) / 10
 				} else {
 					// ?, (d,e), (d, e )
-					if s < a+carry {
+					if s < b+carry {
 						s = s + 10
 					}
 					a = s - (b + carry)
@@ -159,13 +138,14 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 				}
 
 				if stateOfS == Unknown {
-					if isFirst(addend, j) {
-						b = 1
-					} else {
-						b = 0
-					}
-					s = (a + b + carry) % 10
-					carry = (a + b + carry) / 10
+						if isFirst(addend, j) {
+							b = 1
+						} else {
+							b = 0
+						}
+						s = (a + b + carry) % 10
+						carry = (a + b + carry) / 10
+					
 				} else {
 					if s < a+carry {
 						s = s + 10
@@ -176,6 +156,15 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 
 			}
 
+		} else if stateOfA == Empty {
+			if stateOfB == Unknown {
+				if isFirst(addend, j) {
+					b = 1
+				} else {
+					b = 0
+				}
+			s = (a + b + carry) % 10
+			carry = s / 10
 		}
 
 		if stateOfA == Unknown {
