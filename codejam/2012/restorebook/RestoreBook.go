@@ -16,7 +16,7 @@ import (
 
 func main() {
 
-	addition([]byte("?494"), []byte("69??"), []byte("1?422"))
+	addition([]byte("1?788"), []byte("?830"), []byte("?295?"))
 
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
@@ -80,7 +80,7 @@ const (
 )
 
 func parse(a []byte, index int) (int, State) {
-	if index <= len(a) || index < 0 {
+	if len(a) <= index || index < 0 {
 		return 0, Empty
 	}
 
@@ -94,7 +94,7 @@ func parse(a []byte, index int) (int, State) {
 }
 
 func isFirst(a []byte, index int) bool {
-	return index-1 == len(a)
+	return index+1 >= len(a)
 }
 
 func addition(augend []byte, addend []byte, sum []byte) string {
@@ -111,6 +111,7 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 
 		// d, d, d
 		if stateOfA == Digit && stateOfB == Digit && stateOfS == Digit {
+			carry = (a + b) / 10
 			continue
 		}
 
@@ -125,17 +126,31 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 			if s < a+carry {
 				s = s + 10
 			}
-			b = s - (a + s)
+			b = s - (a + carry)
 			carry = s / 10
 		}
 
 		if stateOfA == Unknown {
 			//?, (d, e), _
 			if stateOfB == Digit || stateOfB == Empty {
-				if s < b+carry {
-					s = s + 10
+
+				if stateOfS == Unknown {
+					if isFirst(augend, j) {
+						a = 1
+					} else {
+						a = 0
+					}
+					//d , ( d, e ), ?
+					s = (a + b + carry) % 10
+					carry = (a + b + carry) / 10
+				} else {
+					// ?, (d,e), (d, e )
+					if s < a+carry {
+						s = s + 10
+					}
+					a = s - (b + carry)
+					carry = s / 10
 				}
-				a = s - (b + carry)
 			} else if stateOfB == Unknown { //?, ?, _
 				if isFirst(augend, j) {
 					a = 1
@@ -155,7 +170,7 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 					if s < a+carry {
 						s = s + 10
 					}
-					b = s - (a + s)
+					b = s - (a + carry)
 					carry = s / 10
 				}
 
@@ -163,21 +178,23 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 
 		}
 
-		if 0 <= len(augend)-j-1 {
+		if stateOfA == Unknown {
 			a = a + int('0')
 			augend[len(augend)-j-1] = byte(a)
 		}
 
-		if 0 <= len(addend)-j-1 {
+		if stateOfB == Unknown {
 			b = b + int('0')
 			addend[len(addend)-j-1] = byte(b)
 		}
 
-		if 0 <= len(sum)-j-1 {
+		if stateOfS == Unknown {
 			s = s + int('0')
 			sum[len(sum)-j-1] = byte(s)
 		}
 	}
+
+	fmt.Print("> " + (string(augend) + " + " + string(addend) + " = " + string(sum)) + "\n")
 
 	return (string(augend) + " + " + string(addend) + " = " + string(sum))
 }
