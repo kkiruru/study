@@ -81,7 +81,7 @@ const (
 
 func parse(a []byte, index int) (int, State) {
 	if index <= len(a) || index < 0 {
-		return -1, Empty
+		return 0, Empty
 	}
 
 	d, err := strconv.Atoi(string(a[len(a)-index-1]))
@@ -90,7 +90,7 @@ func parse(a []byte, index int) (int, State) {
 		return -1, Unknown
 	}
 
-	return d, 0
+	return d, Digit
 }
 
 func isFirst(a []byte, index int) bool {
@@ -109,15 +109,18 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 		b, stateOfB := parse(addend, j)
 		s, stateOfS := parse(sum, j)
 
+		// d, d, d
 		if stateOfA == Digit && stateOfB == Digit && stateOfS == Digit {
 			continue
 		}
 
-		if stateOfA == Digit && stateOfB == Digit {
+		// d , ( d, e ), ?
+		if stateOfA == Digit && (stateOfB == Digit || stateOfB == Empty) {
 			s = (a + b + carry) % 10
 			carry = (a + b + carry) / 10
 		}
 
+		// d, ?, d
 		if stateOfA == Digit && stateOfS == Digit {
 			if s < a+carry {
 				s = s + 10
@@ -126,11 +129,40 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 			carry = s / 10
 		}
 
+		if stateOfA == Unknown {
+			//?, (d, e), _
+			if stateOfB == Digit || stateOfB == Empty {
+				if s < b+carry {
+					s = s + 10
+				}
+				a = s - (b + carry)
+			} else if stateOfB == Unknown { //?, ?, _
+				if isFirst(augend, j) {
+					a = 1
+				} else {
+					a = 0
+				}
 
+				if stateOfS == Unknown {
+					if isFirst(addend, j) {
+						b = 1
+					} else {
+						b = 0
+					}
+					s = (a + b + carry) % 10
+					carry = (a + b + carry) / 10
+				} else {
+					if s < a+carry {
+						s = s + 10
+					}
+					b = s - (a + s)
+					carry = s / 10
+				}
 
+			}
 
+		}
 
-		
 		if 0 <= len(augend)-j-1 {
 			a = a + int('0')
 			augend[len(augend)-j-1] = byte(a)
