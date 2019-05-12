@@ -16,7 +16,7 @@ import (
 
 func main() {
 
-	addition([]byte("??"), []byte("??"), []byte("???"))
+	addition([]byte("?2"), []byte("?5"), []byte("?17"))
 
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
@@ -65,17 +65,32 @@ func isFirst(a []byte, index int) bool {
 	return index+1 >= len(a)
 }
 
+func isLast(a []byte, index int) bool {
+
+	_, state := parse(a, index+1)
+
+	return state == Empty
+
+}
+
 func addition(augend []byte, addend []byte, sum []byte) string {
 
 	count := int(math.Max(math.Max(float64(len(augend)), float64(len(addend))), float64(len(sum))))
 
 	var carry int
+	var last bool
 
 	for j := 0; j < count; j++ {
 
 		a, stateOfA := parse(augend, j)
 		b, stateOfB := parse(addend, j)
 		s, stateOfS := parse(sum, j)
+
+		if isLast(addend, j) && !isLast(sum, j) {
+			last = true
+		} else {
+			last = false
+		}
 
 		// d, d, d
 		if stateOfA == Digit && stateOfB == Digit && stateOfS == Digit {
@@ -91,7 +106,7 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 
 		// d, ?, d
 		if stateOfA == Digit && stateOfS == Digit {
-			if s < a+carry {
+			if s < a+carry || last {
 				s = s + 10
 			}
 			b = s - (a + carry)
@@ -100,7 +115,10 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 
 		//d, ? , ?
 		if stateOfA == Digit && stateOfB == Unknown && stateOfS == Unknown {
-			if isFirst(addend, j) {
+
+			if last {
+				b = 10 - (a + carry)
+			} else if isFirst(addend, j) {
 				b = 1
 			} else {
 				b = 0
@@ -115,7 +133,11 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 
 				if stateOfS == Unknown {
 					if isFirst(augend, j) {
-						a = 1
+						if last {
+							a = 10 - (b + carry)
+						} else {
+							a = 1
+						}
 					} else {
 						a = 0
 					}
@@ -132,14 +154,19 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 				}
 			} else if stateOfB == Unknown { //?, ?, _
 				if isFirst(augend, j) {
-					a = 1
+					if last {
+						b = 9
+						a = s + 10 - carry - b
+					} else {
+						a = 1
+					}
 				} else {
 					a = 0
 				}
 
 				if stateOfS == Unknown {
 					if isFirst(addend, j) {
-						if !isFirst(sum, j) {
+						if last {
 							b = 10 - (a + carry)
 						} else {
 							b = 1
@@ -188,7 +215,7 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 		}
 	}
 
-	// fmt.Print("> " + (string(augend) + " + " + string(addend) + " = " + string(sum)) + "\n")
+	fmt.Print("> " + (string(augend) + " + " + string(addend) + " = " + string(sum)) + "\n")
 
 	return (string(augend) + " + " + string(addend) + " = " + string(sum))
 }
