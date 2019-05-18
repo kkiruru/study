@@ -16,13 +16,15 @@ import (
 
 func main() {
 
-	addition([]byte("?2"), []byte("?5"), []byte("?17"))
+	var formula string
+
+	formula = addition([]byte("2?679"), []byte("?31?"), []byte("??9?6"))
+	fmt.Print("Case #0 : ", formula, "\n")
 
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 
 	i := 1
-	var formula string
 
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -78,7 +80,7 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 	count := int(math.Max(math.Max(float64(len(augend)), float64(len(addend))), float64(len(sum))))
 
 	var carry int
-	var last bool
+	// var last bool
 
 	for j := 0; j < count; j++ {
 
@@ -86,136 +88,194 @@ func addition(augend []byte, addend []byte, sum []byte) string {
 		b, stateOfB := parse(addend, j)
 		s, stateOfS := parse(sum, j)
 
-		if isLast(addend, j) && !isLast(sum, j) {
-			last = true
-		} else {
-			last = false
-		}
-
 		// d, d, d
 		if stateOfA == Digit && stateOfB == Digit && stateOfS == Digit {
 			carry = (a + b) / 10
 			continue
 		}
 
-		// d , ( d, e ), ?
-		if stateOfA == Digit && (stateOfB == Digit || stateOfB == Empty) {
-			s = (a + b + carry) % 10
-			carry = (a + b + carry) / 10
-		}
-
-		// d, ?, d
-		if stateOfA == Digit && stateOfS == Digit {
-			if s < a+carry || last {
-				s = s + 10
-			}
-			b = s - (a + carry)
-			carry = s / 10
-		}
-
-		//d, ? , ?
-		if stateOfA == Digit && stateOfB == Unknown && stateOfS == Unknown {
-
-			if last {
-				b = 10 - (a + carry)
-			} else if isFirst(addend, j) {
-				b = 1
-			} else {
-				b = 0
-			}
-			s = (a + b + carry) % 10
-			carry = (a + b + carry) / 10
-		}
-
-		if stateOfA == Unknown {
-			//?, (d, e), _
-			if stateOfB == Digit || stateOfB == Empty {
-
+		// * + E = *
+		if stateOfB == Empty {
+			// ? + E = (?,D)
+			if stateOfA == Unknown {
 				if stateOfS == Unknown {
-					if isFirst(augend, j) {
-						if last {
-							a = 10 - (b + carry)
-						} else {
-							a = 1
-						}
+					if isFirst(addend, j) {
+						a = 1
 					} else {
 						a = 0
 					}
-					//d , ( d, e ), ?
-					s = (a + b + carry) % 10
-					carry = (a + b + carry) / 10
 				} else {
-					// ?, (d,e), (d, e )
-					if s < b+carry {
-						s = s + 10
-					}
-					a = s - (b + carry)
-					carry = s / 10
+					a = s - carry
 				}
-			} else if stateOfB == Unknown { //?, ?, _
+				stateOfA = Digit
+			}
+
+			s = a + carry
+			carry = 0
+			stateOfS = Digit
+
+		} else if isFirst(addend, j) && !isFirst(sum, j) {
+			if stateOfA == Unknown {
 				if isFirst(augend, j) {
-					if last {
-						b = 9
-						a = s + 10 - carry - b
-					} else {
+					if stateOfB == Unknown {
 						a = 1
+					} else {
+						if stateOfS == Unknown {
+							a = 10 - b - carry
+						} else {
+							a = s + 10 - b - carry
+						}
 					}
+				} else {
+					s1, stateOfS1 := parse(sum, j+1)
+					if stateOfS1 == Unknown {
+
+						if stateOfB == Unknown {
+							a = 1
+						} else {
+							if stateOfS == Unknown {
+								a = 10 - b - carry
+							} else {
+								a = s + 10 - b - carry
+							}
+						}
+
+					} else {
+						a1, stateOfA1 := parse(augend, j+1)
+
+						if stateOfA1 == Digit {
+							if s1 == a1 {
+								if stateOfB == Unknown {
+									a = 0
+								} else {
+									if stateOfS == Unknown {
+										a = 0
+									} else {
+										a = s + b - carry
+									}
+								}
+							} else {
+								if stateOfB == Unknown {
+									if stateOfS == Unknown {
+										a = 1 - carry
+									} else {
+										a = s - 9 - carry
+									}
+								} else {
+									if stateOfS == Unknown {
+										a = 0
+									} else {
+										a = s + b - carry
+									}
+								}
+							}
+						}
+
+					}
+				}
+				stateOfA = Digit
+			}
+
+			if stateOfB == Unknown {
+				b = 10 - (a + carry)
+				stateOfB = Digit
+			}
+
+			if stateOfS == Unknown {
+				s = (a + b + carry) % 10
+				stateOfS = Digit
+			}
+
+			carry = (a + b + carry) / 10
+		} else {
+
+			// ? + ? = ?
+			if stateOfA == Unknown && stateOfB == Unknown && stateOfS == Unknown {
+				if isFirst(augend, j) {
+					a = 1
 				} else {
 					a = 0
 				}
-
-				if stateOfS == Unknown {
-					if isFirst(addend, j) {
-						if last {
-							b = 10 - (a + carry)
-						} else {
-							b = 1
-						}
-					} else {
-						b = 0
-					}
-					s = (a + b + carry) % 10
-					carry = (a + b + carry) / 10
-
-				} else {
-					if s < a+carry {
-						s = s + 10
-					}
-					b = s - (a + carry)
-					carry = s / 10
-				}
-
+				stateOfA = Digit
 			}
 
-		} else if stateOfA == Empty {
-			if stateOfB == Unknown {
+			// ? + ? = d
+			if stateOfA == Unknown && stateOfB == Unknown {
+				if isFirst(augend, j) {
+					a = 1
+				} else {
+					a = 0
+				}
+				stateOfA = Digit
+			}
+
+			// ? + d = ?
+			if stateOfA == Unknown && stateOfS == Unknown {
+				if isFirst(augend, j) {
+					a = 1
+				} else {
+					a = 0
+				}
+				stateOfA = Digit
+			}
+
+			// d + ? = ?
+			if stateOfB == Unknown && stateOfS == Unknown {
 				if isFirst(addend, j) {
 					b = 1
 				} else {
 					b = 0
 				}
+				stateOfB = Digit
 			}
-			s = (a + b + carry) % 10
-			carry = s / 10
+
+			// d + d = ?
+			if stateOfA == Digit && stateOfB == Digit {
+				s = (a + b + carry) % 10
+				carry = (a + b + carry) / 10
+			}
+
+			// d + ? = d
+			if stateOfA == Digit && stateOfS == Digit {
+				if s < a+carry {
+					s = s + 10
+				}
+				b = s - (a + carry)
+
+				carry = s / 10
+				s = s % 10
+			}
+
+			// ? + d = d
+			if stateOfB == Digit && stateOfS == Digit {
+				if s < b+carry {
+					a = s + 10 - (b + carry)
+				} else {
+					a = s - (b + carry)
+				}
+				stateOfA = Digit
+				carry = (a + b + carry) / 10
+			}
+
 		}
 
-		if stateOfA == Unknown {
+		if stateOfA != Empty {
 			a = a + int('0')
 			augend[len(augend)-j-1] = byte(a)
 		}
 
-		if stateOfB == Unknown {
+		if stateOfB != Empty {
 			b = b + int('0')
 			addend[len(addend)-j-1] = byte(b)
 		}
 
-		if stateOfS == Unknown {
+		if stateOfS != Empty {
 			s = s + int('0')
 			sum[len(sum)-j-1] = byte(s)
 		}
 	}
 
-	fmt.Print("> " + (string(augend) + " + " + string(addend) + " = " + string(sum)) + "\n")
+	// fmt.Print("> " + (string(augend) + " + " + string(addend) + " = " + string(sum)) + "\n")
 
 	return (string(augend) + " + " + string(addend) + " = " + string(sum))
 }
