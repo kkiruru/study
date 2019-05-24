@@ -17,28 +17,24 @@ func main() {
 
 	for scanner.Scan() {
 		line := scanner.Text()
+		// value := calculate(line)
 		value := calculate(line)
 
 		fmt.Println(value)
 	}
 }
 
+
 func calculate(line string) int {
-	var sum int
-	toggle := 1
-
-	parts := strings.Split(line, "-")
-	for _, part := range parts {
-		sum = sum + (add(part) * toggle)
-		if toggle == 1 {
-			toggle = -1
-		}
+	numbers := strings.SplitN(line, "-", 2)
+	if 1 < len(numbers) {
+		return add(numbers[0]) - add(numbers[1])
 	}
-
-	return sum
+	return add(numbers[0])
 }
 
 func add(arr string) int {
+	arr = strings.Replace(arr, "-", "+", -1)
 	numbers := strings.Split(arr, "+")
 
 	var value int
