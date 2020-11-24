@@ -17,5 +17,5 @@ func Hanoi(n int) {
 }
 
 func main() {
-	Hanoi(3)
+	Hanoi(5)
 }
