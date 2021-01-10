@@ -1,0 +1,17 @@
+{
+  "name": "mdn",
+  "version": "1.0.0",
+  "description": "프로젝트 테스트",
+  "main": "array.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mysql"
+  ],
+  "author": "hyun",
+  "license": "ISC",
+  "dependencies": {
+    "mysql": "^2.16.0"
+  }
+}
