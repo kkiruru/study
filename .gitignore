@@ -4,9 +4,16 @@
 *.so
 
 # Folders
-_obj
-_test
-bin
+_obj/
+_test/
+bin/
+
+## go lib
+go-path/
+
+## rust output directory
+target/
+
 
 # Architecture specific extensions/prefixes
 *.[568vq]
@@ -23,3 +30,5 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+
