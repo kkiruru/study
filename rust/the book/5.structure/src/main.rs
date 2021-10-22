@@ -4,6 +4,8 @@ fn main() {
     create(); //5.1
 
     example(); //5.2 구조체를 이용한 예제 프로그램
+
+    method(); //5.3 메소드 문법
 }
 
 struct User {
@@ -97,6 +99,10 @@ fn example() {
         "The area of the rectangle is {} square pixels.",
         area3(&rect1)
     );
+
+    // println!("rect1 is {}", rect1);
+    println!("rect1 is {:?}", rect1);
+    println!("rect1 is {:#?}", rect1);
 }
 
 fn area(length: u32, width: u32) -> u32 {
@@ -107,6 +113,7 @@ fn area1(dimensions: (u32, u32)) -> u32 {
     dimensions.0 * dimensions.1
 }
 
+#[derive(Debug)]
 struct Rectangle {
     length: u32,
     width: u32,
@@ -114,4 +121,18 @@ struct Rectangle {
 
 fn area3(rectangle: &Rectangle) -> u32 {
     rectangle.length * rectangle.width
+}
+
+fn method() {
+    let rect1 = Rectangle { length:50, width: 30};
+    println!(
+        "The area of the rectangle is {} square pixels.",
+        rect1.area()
+    );
+}
+
+impl Rectangle {
+    fn area(&self) -> u32 {
+        self.length * self.width
+    }
 }
