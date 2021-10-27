@@ -212,4 +212,52 @@ fn hash_map() {
         *count += 1;
     }
     println!("{:?}", map);
+
+    exercise();
+
+}
+
+
+fn exercise(){
+    use std::collections::HashMap;
+
+//정수 리스트가 주어졌을 때, 벡터를 이용하여 이 리스트의 평균값(mean, average),
+//중간값(median, 정렬했을 때 가장 가운데 위치한 값),
+//그리고 최빈값(mode, 가장 많이 발생한 값; 해쉬맵이 여기서 도움이 될 것입니다)를 반환해보세요.
+
+    let mut numbers = vec![1, 12, 56, 2, 5, 23, 5, 9, 17, 19, 8, 2, 3, 5, 8, 1, 23, 7,];
+
+    let mut max = 0;
+    let mut min = 0;
+    // let mut mean = 0;
+    let mut sum = 0;
+    let mut mode = HashMap::new();
+
+    numbers.sort();
+    println!("numbers: {:?}", numbers);
+
+    let len = numbers.len();
+    let median = numbers[len/2];
+
+    for number in numbers {
+        sum += number;
+        let count = mode.entry(number).or_insert(0);
+        *count += 1;
+    }
+
+    let mean = sum / len;
+
+    println!("mean: {}", mean);
+    println!("median: {}", median);
+
+    let mut mode_key = 0;
+    for (key, value) in &mode {
+        if max < *value {
+            mode_key = *key;
+            max = *value;
+        }
+    }
+
+    println!("{:?}", mode);
+    println!("mode  {}", mode_key);
 }
