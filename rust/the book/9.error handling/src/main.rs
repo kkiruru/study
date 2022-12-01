@@ -11,7 +11,7 @@ fn main() {
 fn unrecoverable() {
     // panic!("carsh and burn");
 
-    let v = vec![1, 2, 3];
+    let _v = vec![1, 2, 3];
     // v[99];
 }
 
@@ -19,7 +19,7 @@ use std::fs::File;
 use std::io::ErrorKind;
 
 fn recoverable() {
-//    let f: u32 = File::open("hello.txt");
+    //    let f: u32 = File::open("hello.txt");
 
     // let f = File::open("hello.txt");
     // let f = match f {
@@ -34,26 +34,17 @@ fn recoverable() {
 
     let f = match f {
         Ok(file) => file,
-        Err(ref error) if error.kind() == ErrorKind::NotFound => {
-            match File::create("hello.txt") {
-                Ok(fc) => fc,
-                Err(e) => {
-                    panic!(
-                        "Tried to crate file but there was a problem: {:?}",
-                        e
-                    )
-                },
+        Err(ref error) if error.kind() == ErrorKind::NotFound => match File::create("hello.txt") {
+            Ok(fc) => fc,
+            Err(e) => {
+                panic!("Tried to crate file but there was a problem: {:?}", e)
             }
         },
         Err(error) => {
-            panic!(
-                "There was a problem opening the file: {:?}",
-                error
-            )
-        },
+            panic!("There was a problem opening the file: {:?}", error)
+        }
     };
     println!("2> {:?}", f);
-
 
     let f = File::open("hello.txt");
     let f = match f {
@@ -61,15 +52,14 @@ fn recoverable() {
         Err(error) => match error.kind() {
             ErrorKind::NotFound => match File::create("hello.txt") {
                 Ok(fc) => fc,
-                Err(e) => panic!( "Problem creating the file: {:?}", e),
+                Err(e) => panic!("Problem creating the file: {:?}", e),
             },
             other_error => {
                 panic!("Problem opening the file: {:?}", other_error)
-            },
+            }
         },
     };
     println!("3> {:?}", f);
-
 
     let f = File::open("hello.txt").unwrap();
     println!("4> {:?}", f);
@@ -80,7 +70,6 @@ fn recoverable() {
     let f = read_username_from_file();
     println!(">> {:?}", f);
 
-
     let f = read_username_from_file1();
     println!(">> {:?}", f);
 
@@ -89,7 +78,6 @@ fn recoverable() {
 
     // let f = File::open("hello.txt")?;
 }
-
 
 use std::io;
 use std::io::Read;
@@ -124,7 +112,6 @@ fn read_username_from_file2() -> Result<String, io::Error> {
     Ok(s)
 }
 
-
 fn panic_or_result() {
     use std::net::IpAddr;
 
@@ -142,9 +129,7 @@ impl Guess {
             panic!("Guess value must be between 1 and 100, got {}.", value);
         }
 
-        Guess {
-            value
-        }
+        Guess { value }
     }
 
     pub fn value(&self) -> u32 {
