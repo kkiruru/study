@@ -7,6 +7,8 @@
 _obj/
 _test/
 bin/
+build/
+*/build/
 
 ## go lib
 go-path/

@@ -82,7 +82,7 @@ fun MainContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        repeat(6) { PlaceholderCard() }
+        repeat(10) { PlaceholderCard() }
 
         Card(
             modifier = Modifier
