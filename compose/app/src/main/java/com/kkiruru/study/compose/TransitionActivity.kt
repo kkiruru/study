@@ -28,10 +28,10 @@ class TransitionActivity : ComponentActivity() {
         setContent {
             Box {
 
-                var size by remember { mutableStateOf(1.0f) }
-                val animateScale by animateFloatAsState(
-                        targetValue = size,
-                        animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
+                var initPosition by remember { mutableStateOf(1.0f) }
+                val animatePosition by animateFloatAsState(
+                    targetValue = initPosition,
+                    animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
                 )
 
                 ConstraintLayout(
@@ -41,14 +41,15 @@ class TransitionActivity : ComponentActivity() {
                     val (spacer, button1, text) = createRefs()
 
                     Column(
-                        modifier = Modifier.constrainAs(spacer){}
+                        modifier = Modifier
+                            .constrainAs(spacer) {}
                             .fillMaxHeight()
                     ) {
-                        Log.e("Transition", " $animateScale")
-                        if(0 < animateScale) {
+                        Log.e("Transition", " $animatePosition")
+                        if (0 < animatePosition) {
                             Spacer(
                                 modifier = Modifier
-                                    .weight(animateScale)
+                                    .weight(animatePosition)
                                     .width(20.dp)
                                     .background(color = Color.Blue)
                             )
@@ -56,7 +57,7 @@ class TransitionActivity : ComponentActivity() {
 
                         Text("Hello", Modifier)
 
-                        if( animateScale == 0.0f) {
+                        if (animatePosition == 0.0f) {
                             Text("World", Modifier)
                         }
 
@@ -69,7 +70,7 @@ class TransitionActivity : ComponentActivity() {
                     }
 
                     Button(
-                        onClick = { size = 0.0f },
+                        onClick = { initPosition = 0.0f },
                         modifier = Modifier.constrainAs(button1) {
                             bottom.linkTo(parent.bottom, margin = 20.dp)
                             start.linkTo(parent.start)
