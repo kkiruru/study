@@ -20,12 +20,16 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-//        binding.dialog.setOnClickListener {
-//            val itemListDialog = CustomBottomSheetDialogFragment.newInstance(5)
-//            itemListDialog.show(
-//                supportFragmentManager,
-//                CustomBottomSheetDialogFragment.TAG)
-//        }
+        binding.nested.setOnClickListener {
+            startActivity(
+                Intent(this, NestedScrollActivity::class.java)
+            )
+        }
 
+        binding.transition.setOnClickListener {
+            startActivity(
+                Intent(this, TransitionActivity::class.java)
+            )
+        }
     }
 }
