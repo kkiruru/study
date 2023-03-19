@@ -2,34 +2,66 @@ package com.kkiruru.study.compose
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.kkiruru.study.compose.databinding.ActivityMainBinding
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.core.view.WindowCompat
 
-class MainActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityMainBinding
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_bring_into_view)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        binding.bringIntoView.setOnClickListener {
-            startActivity(
-                Intent(this, BringIntoViewActivity::class.java)
-            )
-        }
+        setContent {
+            MaterialTheme {
+                Column(
+                    modifier = Modifier.statusBarsPadding().fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
 
-        binding.nested.setOnClickListener {
-            startActivity(
-                Intent(this, NestedScrollActivity::class.java)
-            )
-        }
+                    Button(onClick = {
+                        startActivity(
+                            Intent(this@MainActivity, BringIntoViewActivity::class.java)
+                        )
+                    }) {
+                        Text(text = "bring Into View")
+                    }
 
-        binding.transition.setOnClickListener {
-            startActivity(
-                Intent(this, TransitionActivity::class.java)
-            )
+                    Button(onClick = {
+                        startActivity(
+                            Intent(this@MainActivity, NestedScrollActivity::class.java)
+                        )
+                    }) {
+                        Text(text = "nested")
+                    }
+
+                    Button(onClick = {
+                        startActivity(
+                            Intent(this@MainActivity, TransitionActivity::class.java)
+                        )
+                    }) {
+                        Text(text = "transition")
+                    }
+
+                    Button(onClick = {
+                        startActivity(
+                            Intent(this@MainActivity, BackdropScaffoldActivity::class.java)
+                        )
+                    }) {
+                        Text(text = "backDrop")
+                    }
+                }
+            }
         }
     }
 }

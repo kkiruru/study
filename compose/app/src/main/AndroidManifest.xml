@@ -31,6 +31,9 @@
         <activity
             android:name=".TransitionActivity"
             android:exported="false" />
+        <activity
+            android:name=".BackdropScaffoldActivity"
+            android:exported="false" />
 
     </application>
 
