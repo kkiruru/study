@@ -35,6 +35,15 @@
             android:name=".BackdropScaffoldActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".ArgumentActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".BottomSheetDialogActivity"
+            android:exported="false" />
+
+
     </application>
 
 </manifest>

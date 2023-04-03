@@ -60,6 +60,23 @@ class MainActivity : ComponentActivity() {
                     }) {
                         Text(text = "backDrop")
                     }
+
+                    Button(onClick = {
+                        startActivity(
+                            Intent(this@MainActivity, ArgumentActivity::class.java)
+                        )
+                    }) {
+                        Text(text = "argument")
+                    }
+
+                    Button(onClick = {
+                        startActivity(
+                            Intent(this@MainActivity, BottomSheetDialogActivity::class.java)
+                        )
+                    }) {
+                        Text(text = "BottomSheetDialog")
+                    }
+
                 }
             }
         }
