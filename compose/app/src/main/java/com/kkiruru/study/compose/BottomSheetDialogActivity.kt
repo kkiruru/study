@@ -40,7 +40,11 @@ fun ModalBottomSheetSample() {
     val state = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
     ModalBottomSheetLayout(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
         sheetState = state,
+        sheetShape = MaterialTheme.shapes.small,
         sheetContent = {
             LazyColumn {
                 items(5) {
@@ -56,10 +60,7 @@ fun ModalBottomSheetSample() {
                 }
             }
         },
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-
+        scrimColor = Color.Black.copy(alpha = 0.32f),
     ) {
         Column(
             modifier = Modifier
@@ -89,6 +90,8 @@ fun MyUI() {
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
         sheetPeekHeight = 0.dp,
+        sheetShape = MaterialTheme.shapes.small,
+        backgroundColor = Color.Yellow,
         sheetContent = {
             LazyColumn {
                 // the first item that is visible
