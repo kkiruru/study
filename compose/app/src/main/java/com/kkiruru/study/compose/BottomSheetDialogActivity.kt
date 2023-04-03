@@ -8,21 +8,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.BottomSheetScaffold
-import androidx.compose.material.Button
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.ListItem
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.rememberBottomSheetScaffoldState
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -67,11 +56,15 @@ fun ModalBottomSheetSample() {
                 }
             }
         },
-        modifier = Modifier.fillMaxWidth().wrapContentHeight()
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
 
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(16.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text("Rest of the UI")
@@ -88,18 +81,16 @@ fun ModalBottomSheetSample() {
 @Composable
 fun MyUI() {
     val contextForToast = LocalContext.current.applicationContext
-
     val coroutineScope = rememberCoroutineScope()
-
-    val scaffoldState = rememberBottomSheetScaffoldState()
+    val scaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed),
+    )
 
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
-        sheetPeekHeight = 156.dp,
+        sheetPeekHeight = 0.dp,
         sheetContent = {
-
             LazyColumn {
-
                 // the first item that is visible
                 item {
                     Box(
@@ -116,42 +107,59 @@ fun MyUI() {
                     }
                 }
 
-                // remaining items
-                items(count = 5) {
-                    ListItem(
-                        modifier = Modifier.clickable {
+                item {
+                    Box(
+                        modifier = Modifier
+                            .height(156.dp)
+                            .fillMaxWidth()
+                            .background(color = MaterialTheme.colors.primary)
+                    ) {
+                        LazyColumn {
+                            items(count = 5) {
+                                ListItem(
+                                    modifier = Modifier
+                                        .clickable {
+                                            Toast.makeText(contextForToast, "Item $it", Toast.LENGTH_SHORT)
+                                                .show()
 
-                            Toast.makeText(contextForToast, "Item $it", Toast.LENGTH_SHORT)
-                                .show()
-
-                            coroutineScope.launch {
-                                scaffoldState.bottomSheetState.collapse()
+                                            coroutineScope.launch {
+                                                scaffoldState.bottomSheetState.collapse()
+                                            }
+                                        },
+                                    text = {
+                                        Text(text = "Item $it")
+                                    },
+                                    icon = {
+                                        Icon(
+                                            imageVector = Icons.Default.Favorite,
+                                            contentDescription = "Favorite",
+                                            tint = MaterialTheme.colors.primary
+                                        )
+                                    }
+                                )
                             }
-                        },
-                        text = {
-                            Text(text = "Item $it")
-                        },
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Default.Favorite,
-                                contentDescription = "Favorite",
-                                tint = MaterialTheme.colors.primary
-                            )
                         }
-                    )
+                    }
+                }
+
+                item {
+                    Box(
+                        modifier = Modifier
+                            .height(56.dp)
+                            .fillMaxWidth()
+                            .background(color = MaterialTheme.colors.primary)
+                    ) {
+                        Text(
+                            text = "하단 UI",
+                            modifier = Modifier.align(alignment = Alignment.Center),
+                            color = Color.White
+                        )
+                    }
                 }
             }
         },
-        floatingActionButton = {
-            FloatingActionButton(onClick = {
-                Toast.makeText(contextForToast, "FAB Click", Toast.LENGTH_SHORT).show()
-            }) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Favorite"
-                )
-            }
-        }) {
+    )
+    {
         // app UI
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -159,6 +167,14 @@ fun MyUI() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = "Rest of the app UI")
+
+            Button(onClick = {
+                coroutineScope.launch {
+                    scaffoldState.bottomSheetState.expand()
+                }
+            }) {
+                Text("Click to show sheet")
+            }
         }
     }
 }
