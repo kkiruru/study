@@ -1,9 +1,11 @@
-package com.kkiruru.study.compose
+package com.kkiruru.study.compose.viewpager
+
 
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -18,7 +20,6 @@ import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
-import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -32,15 +33,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidViewBinding
+import androidx.core.view.get
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
+import com.kkiruru.study.compose.databinding.ComposeFragmentPurchaseBinding
 import kotlinx.coroutines.launch
 
-class ViewPagerActivity : ComponentActivity() {
+class ViewPagerActivity : AppCompatActivity() {
 
     @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +54,7 @@ class ViewPagerActivity : ComponentActivity() {
 //            MyUI()
         }
     }
+
 }
 
 @Composable
@@ -83,7 +88,6 @@ private fun ModalBottomSheetSample() {
 }
 
 
-
 @Composable
 @OptIn(ExperimentalMaterialApi::class, ExperimentalPagerApi::class)
 private fun ViewPagerApp() {
@@ -102,21 +106,18 @@ private fun ViewPagerApp() {
 
         TabRow(
             selectedTabIndex = pagerState.currentPage,
-            indicator = { tabPositions ->
-                TabRowDefaults.Indicator(
-                    Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
-                )
-            }
-        ){
-            pages.forEachIndexed{ index, title ->
+            backgroundColor = Color.White,
+
+            ) {
+            pages.forEachIndexed { index, title ->
                 Tab(
-                    text ={ Text(text = title)},
                     selected = pagerState.currentPage == index,
                     onClick = {
                         coroutineScope.launch {
                             pagerState.scrollToPage(index)
                         }
-                    }
+                    },
+                    text = { Text(text = title, maxLines = 2, overflow = TextOverflow.Ellipsis) }
                 )
             }
         }
@@ -124,20 +125,41 @@ private fun ViewPagerApp() {
         HorizontalPager(
             count = pages.size,
             state = pagerState,
-        ) {page ->
-            Text(
-                modifier = Modifier.wrapContentSize(),
-                text = page.toString(),
-                textAlign = TextAlign.Center,
-                fontSize = 30.sp
-            )
+        ) { page ->
+            if (page == 0) {
+                FirstContents(page)
+            } else {
+                FragmentContents(page)
+            }
+
+
         }
     }
 }
 
 
+@Composable
+private fun FirstContents(page: Int) {
+    Text(
+        modifier = Modifier.wrapContentSize(),
+        text = page.toString(),
+        textAlign = TextAlign.Center,
+        fontSize = 30.sp
+    )
+}
 
-                        @OptIn(ExperimentalMaterialApi::class)
+
+@Composable
+private fun FragmentContents(page: Int) {
+    AndroidViewBinding(ComposeFragmentPurchaseBinding::inflate) {
+        val myFragment = fragmentContainerView.getFragment<PurchaseFragment>()
+
+    }
+
+}
+
+
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun MyUI() {
     val contextForToast = LocalContext.current.applicationContext
