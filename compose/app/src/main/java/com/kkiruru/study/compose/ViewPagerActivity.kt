@@ -9,7 +9,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.BottomSheetScaffold
-import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -17,6 +16,9 @@ import androidx.compose.material.ListItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
+import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -29,11 +31,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.Navigation
+import androidx.compose.ui.unit.sp
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.pagerTabIndicatorOffset
+import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 
-class BottomSheetDialogActivity : ComponentActivity() {
+class ViewPagerActivity : ComponentActivity() {
 
     @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +56,6 @@ class BottomSheetDialogActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterialApi::class)
 private fun ModalBottomSheetSample() {
     val state = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
-    val scope = rememberCoroutineScope()
     ModalBottomSheetLayout(
         sheetState = state,
         sheetContent = {
@@ -67,24 +73,71 @@ private fun ModalBottomSheetSample() {
                 }
             }
         },
-        modifier = Modifier.fillMaxWidth().wrapContentHeight()
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
 
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize().padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text("Rest of the UI")
-            Spacer(Modifier.height(20.dp))
-            Button(onClick = { scope.launch { state.show() } }) {
-                Text("Click to show sheet")
+        ViewPagerApp()
+    }
+}
+
+
+
+@Composable
+@OptIn(ExperimentalMaterialApi::class, ExperimentalPagerApi::class)
+private fun ViewPagerApp() {
+    val scope = rememberCoroutineScope()
+
+    val pages = listOf("페이지1", "페이지2")
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+    ) {
+
+        val pagerState = rememberPagerState()
+        val coroutineScope = rememberCoroutineScope()
+
+        TabRow(
+            selectedTabIndex = pagerState.currentPage,
+            indicator = { tabPositions ->
+                TabRowDefaults.Indicator(
+                    Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
+                )
             }
+        ){
+            pages.forEachIndexed{ index, title ->
+                Tab(
+                    text ={ Text(text = title)},
+                    selected = pagerState.currentPage == index,
+                    onClick = {
+                        coroutineScope.launch {
+                            pagerState.scrollToPage(index)
+                        }
+                    }
+                )
+            }
+        }
+
+        HorizontalPager(
+            count = pages.size,
+            state = pagerState,
+        ) {page ->
+            Text(
+                modifier = Modifier.wrapContentSize(),
+                text = page.toString(),
+                textAlign = TextAlign.Center,
+                fontSize = 30.sp
+            )
         }
     }
 }
 
 
-@OptIn(ExperimentalMaterialApi::class)
+
+                        @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun MyUI() {
     val contextForToast = LocalContext.current.applicationContext

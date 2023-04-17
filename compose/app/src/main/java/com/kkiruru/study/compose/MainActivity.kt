@@ -77,6 +77,14 @@ class MainActivity : ComponentActivity() {
                         Text(text = "BottomSheetDialog")
                     }
 
+                    Button(onClick = {
+                        startActivity(
+                            Intent(this@MainActivity, ViewPagerActivity::class.java)
+                        )
+                    }) {
+                        Text(text = "ViewPagerActivity")
+                    }
+
                 }
             }
         }
