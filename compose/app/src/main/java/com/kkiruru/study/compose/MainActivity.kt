@@ -6,7 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
@@ -14,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
+import com.kkiruru.study.compose.viewpager.ViewPagerActivity
 
 class MainActivity : ComponentActivity() {
 
@@ -75,6 +75,14 @@ class MainActivity : ComponentActivity() {
                         )
                     }) {
                         Text(text = "BottomSheetDialog")
+                    }
+
+                    Button(onClick = {
+                        startActivity(
+                            Intent(this@MainActivity, ViewPagerActivity::class.java)
+                        )
+                    }) {
+                        Text(text = "ViewPagerActivity")
                     }
 
                 }

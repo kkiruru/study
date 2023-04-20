@@ -36,7 +36,7 @@ class BottomSheetDialogActivity : ComponentActivity() {
 
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
-fun ModalBottomSheetSample() {
+private fun ModalBottomSheetSample() {
     val state = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
     ModalBottomSheetLayout(
@@ -80,7 +80,7 @@ fun ModalBottomSheetSample() {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MyUI() {
+private fun MyUI() {
     val contextForToast = LocalContext.current.applicationContext
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberBottomSheetScaffoldState(
