@@ -3,6 +3,7 @@ package com.kkiruru.study.compose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -91,21 +92,30 @@ class BackdropScaffoldActivity : ComponentActivity() {
                         }
                     }
                 },
-                frontLayerShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
-                frontLayerBackgroundColor = Color.White,
+                frontLayerShape = RoundedCornerShape(topStart = 0.dp, topEnd = 0.dp),
+                frontLayerBackgroundColor = Color.Transparent,
+                frontLayerElevation = 0.dp,
+                frontLayerScrimColor = Color.Unspecified,
                 frontLayerContent = {
-                    Text("Selection: ${selection.value}")
-                    LazyColumn {
-                        items(50) {
-                            ListItem(
-                                text = { Text("Item $it") },
-                                icon = {
-                                    Icon(
-                                        Icons.Default.Favorite,
-                                        contentDescription = "Localized description"
-                                    )
-                                }
-                            )
+                    Column(
+                        modifier = Modifier
+                            .padding(top = 20.dp)
+                            .background(color = Color.White)
+                    ) {
+                        Spacer(modifier = Modifier.height(30.dp))
+                        Text("Selection: ${selection.value}")
+                        LazyColumn {
+                            items(50) {
+                                ListItem(
+                                    text = { Text("Item $it") },
+                                    icon = {
+                                        Icon(
+                                            Icons.Default.Favorite,
+                                            contentDescription = "Localized description"
+                                        )
+                                    }
+                                )
+                            }
                         }
                     }
                 }

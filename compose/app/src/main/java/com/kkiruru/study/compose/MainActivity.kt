@@ -12,6 +12,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import com.kkiruru.study.compose.viewpager.ViewPagerActivity
 
@@ -74,7 +76,11 @@ class MainActivity : ComponentActivity() {
                             Intent(this@MainActivity, BottomSheetDialogActivity::class.java)
                         )
                     }) {
-                        Text(text = "BottomSheetDialog")
+                        Text(
+                            text = "BottomSheetDialog",
+                            modifier = Modifier,
+                            color = Color.White,
+                        )
                     }
 
                     Button(onClick = {
@@ -83,6 +89,20 @@ class MainActivity : ComponentActivity() {
                         )
                     }) {
                         Text(text = "ViewPagerActivity")
+                    }
+
+
+                    Button(onClick = {
+                        startActivity(
+                            Intent(this@MainActivity, FlexibleSheetActivity::class.java)
+                        )
+                    }) {
+                        Text(
+                            text = "FlexibleSheet",
+                            modifier = Modifier,
+                            color = Color.White,
+                            fontSize = 18.sp
+                        )
                     }
 
                 }

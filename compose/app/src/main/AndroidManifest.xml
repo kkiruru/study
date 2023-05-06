@@ -46,7 +46,9 @@
         <activity
             android:name=".viewpager.ViewPagerActivity"
             android:exported="false" />
-
+        <activity
+            android:name=".FlexibleSheetActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

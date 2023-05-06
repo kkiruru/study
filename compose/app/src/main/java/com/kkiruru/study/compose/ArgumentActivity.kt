@@ -151,7 +151,7 @@ private fun SubContent(
 
 
 @Composable
-private fun AddressItem(
+fun AddressItem(
     modifier: Modifier,
 ) {
     Surface(
