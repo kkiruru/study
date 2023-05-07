@@ -65,6 +65,14 @@ class MainActivity : ComponentActivity() {
 
                     Button(onClick = {
                         startActivity(
+                            Intent(this@MainActivity, BackdropScaffold2Activity::class.java)
+                        )
+                    }) {
+                        Text(text = "backDrop2")
+                    }
+
+                    Button(onClick = {
+                        startActivity(
                             Intent(this@MainActivity, ArgumentActivity::class.java)
                         )
                     }) {
@@ -91,7 +99,6 @@ class MainActivity : ComponentActivity() {
                         Text(text = "ViewPagerActivity")
                     }
 
-
                     Button(onClick = {
                         startActivity(
                             Intent(this@MainActivity, FlexibleSheetActivity::class.java)
@@ -105,6 +112,31 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
+                    Button(onClick = {
+                        startActivity(
+                            Intent(this@MainActivity, DraggableActivity::class.java)
+                        )
+                    }) {
+                        Text(
+                            text = "Draggable",
+                            modifier = Modifier,
+                            color = Color.White,
+                            fontSize = 18.sp
+                        )
+                    }
+
+                    Button(onClick = {
+                        startActivity(
+                            Intent(this@MainActivity, SwipeableActivity::class.java)
+                        )
+                    }) {
+                        Text(
+                            text = "Swipeable",
+                            modifier = Modifier,
+                            color = Color.White,
+                            fontSize = 18.sp
+                        )
+                    }
                 }
             }
         }

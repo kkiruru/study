@@ -1,21 +1,16 @@
 package com.kkiruru.study.compose
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -25,7 +20,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -44,6 +38,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.material.swipeable
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -58,9 +53,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -68,13 +61,13 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class FlexibleSheetActivity : ComponentActivity() {
+class SwipeableActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MaterialTheme {
-                FlexibleSheetApp()
+                SwipeableSheetApp()
             }
         }
     }
@@ -83,10 +76,9 @@ class FlexibleSheetActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun FlexibleSheetApp(
+fun SwipeableSheetApp(
     modifier: Modifier = Modifier,
     scope: CoroutineScope = rememberCoroutineScope()
-
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -158,7 +150,7 @@ fun FlexibleSheetApp(
 private fun CollectionDetailScreen(
     modifier: Modifier = Modifier,
     scaffoldState: BackdropScaffoldState,
-    collapsed: Boolean = false,
+    collapsed: Boolean = true,
 ) {
     BackdropBottomSheet(
         modifier = modifier,
@@ -275,7 +267,6 @@ private fun FrontLayer(
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 private fun DefaultBackdropBottomSheet(
@@ -286,8 +277,7 @@ private fun DefaultBackdropBottomSheet(
     }
 }
 
-
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun BackdropBottomSheet(
     modifier: Modifier,
@@ -299,6 +289,11 @@ private fun BackdropBottomSheet(
 
     ) {
     val localDensity = LocalDensity.current
+
+    // Create element height in pixel state
+    var collapse by remember {
+        mutableStateOf(collapsed)
+    }
 
     // Create element height in pixel state
     var backdropLayerHeightPx by remember {
@@ -352,22 +347,21 @@ private fun BackdropBottomSheet(
             backLayerContent()
         }
 
-        var frontHeightDp by remember { mutableStateOf(300.dp) }
-        val initHeightDp by remember { mutableStateOf(300.dp) }
+        var frontHeightDp by remember { mutableStateOf(backdropLayerHeightDp - backLayerHeightDp) }
+        val initHeightDp by remember { mutableStateOf(backdropLayerHeightDp - backLayerHeightDp) }
         val COLLAPSED_HEIGHT = backdropLayerHeightDp - backLayerHeightDp
         val REVEALED_HEIGHT = backdropLayerHeightDp - headerHeight
 
-        val targetHeight = if(collapsed) COLLAPSED_HEIGHT else REVEALED_HEIGHT
+        val targetHeight = if(collapse) COLLAPSED_HEIGHT else REVEALED_HEIGHT
 
         var currentHeight by remember { mutableStateOf(initHeightDp) }
 
-        frontHeightDp = if(collapsed) {
-            backdropLayerHeightDp - backLayerHeightDp
-        } else {
-            backdropLayerHeightDp - headerHeight
-        }
+        frontHeightDp = backdropLayerHeightDp - backLayerHeightDp
+//            backdropLayerHeightDp - backLayerHeightDp
+//        } else {
+//            backdropLayerHeightDp - headerHeight
+//        }
 
-        Log.e("tag", ">>> scaffoldState ${scaffoldState.currentValue}")
 
         val animatePosition by animateDpAsState(
             targetValue = targetHeight,
@@ -378,8 +372,12 @@ private fun BackdropBottomSheet(
             }
         )
 
-        val swipeableState = androidx.compose.material.rememberSwipeableState(initialValue = 0)
-        val point = LocalDensity.current.run { LocalConfiguration.current.screenHeightDp.dp.toPx() }
+        val swipeableState = androidx.compose.material.rememberSwipeableState(
+            initialValue = 0,
+        )
+
+        val point = LocalDensity.current.run { backLayerHeightDp.toPx()}
+
         val anchors = mapOf(0f to 0, -point to 1)
 
         if (swipeableState.isAnimationRunning) {
@@ -388,16 +386,26 @@ private fun BackdropBottomSheet(
                     // -point로 설정한 앵커에 도달하면 currentValue가 1이 됨
                     if (swipeableState.currentValue == 1) {
                         // 애니메이션이 끝나고 실행될 코드
-                        Log.e("tag", "__ swipeableState.currentValue == 1")
+                        collapse = false
+                    } else{
+                        collapse = true
                     }
+
+                    Log.e("tag", "__ swipeableState.currentValue == ${swipeableState.currentValue}")
                 }
             }
         }
 
+        currentHeight = frontHeightDp - with(localDensity) { swipeableState.offset.value.toDp() }
+
+        Log.e("tag", " ${frontHeightDp} - ${with(localDensity) { swipeableState.offset.value.toDp()}} => ${currentHeight}")
+        Log.e("tag", " point : ${point}, ${swipeableState.currentValue}")
+
+
 
         Box(
             modifier = Modifier
-                .height(animatePosition)
+                .height(currentHeight)
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
                 .background(color = Color(0xFF5EA3F3))
@@ -410,28 +418,16 @@ private fun BackdropBottomSheet(
                     state = swipeableState,
                     orientation = Orientation.Vertical,
                     anchors = anchors,
-                    thresholds = { _, _ -> FractionalThreshold(0.8f) },
+                    thresholds = { _, _ -> FractionalThreshold(0.5f) },
                     velocityThreshold = 1000.dp
                 )
         ) {
             frontLayerContent()
+
+//            Log.e("tag", "swipeableState offset :${swipeableState.offset.value}}")
+//            Log.e("tag", "_________________     :${with(localDensity) { swipeableState.offset.value.toDp() }}")
+//            Log.e("tag", "_________________     :${swipeableState.currentValue}")
         }
-
-//        Column(
-//            modifier = Modifier
-//                .height(animatePosition)
-//                .align(Alignment.BottomCenter)
-//                .fillMaxWidth()
-//                .background(color = Color(0xFF5EA3F3))
-//                .onGloballyPositioned { coordinates ->
-//                    // Set column height using the LayoutCoordinates
-//                    frontLayerHeightPx = coordinates.size.height.toFloat()
-//                    frontLayerHeightDp = with(localDensity) { coordinates.size.height.toDp() }
-//                }
-//        ) {
-//            frontLayerContent()
-//        }
-
 
         // debug 정보
         Column(
