@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Box
@@ -24,7 +21,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BackdropScaffoldDefaults
 import androidx.compose.material.BackdropScaffoldState
 import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
@@ -76,7 +72,7 @@ class SwipeableActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SwipeableSheetApp(
+private fun SwipeableSheetApp(
     modifier: Modifier = Modifier,
     scope: CoroutineScope = rememberCoroutineScope()
 ) {
@@ -100,7 +96,6 @@ fun SwipeableSheetApp(
 
         CollectionDetailScreen(
             modifier = Modifier.weight(1f),
-            scaffoldState = scaffoldState,
             collapsed = collapsedValue,
         )
 
@@ -145,19 +140,17 @@ fun SwipeableSheetApp(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun CollectionDetailScreen(
     modifier: Modifier = Modifier,
-    scaffoldState: BackdropScaffoldState,
     collapsed: Boolean = true,
 ) {
-    BackdropBottomSheet(
+    FlexibleBottomSheet(
         modifier = modifier,
         backLayerContent = { BackLayer() },
         frontLayerContent = { FrontLayer() },
-        scaffoldState = scaffoldState,
         collapsed = collapsed,
+        onCollapse = {},
     )
 }
 
@@ -279,31 +272,20 @@ private fun DefaultBackdropBottomSheet(
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
-private fun BackdropBottomSheet(
+private fun FlexibleBottomSheet(
     modifier: Modifier,
     backLayerContent: @Composable () -> Unit,
     frontLayerContent: @Composable () -> Unit,
-    scaffoldState: BackdropScaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed),
-    headerHeight: Dp = BackdropScaffoldDefaults.HeaderHeight,
+    headerHeight: Dp = 48.dp,
     collapsed: Boolean,
-
+    onCollapse: (Boolean) -> Unit,
     ) {
     val localDensity = LocalDensity.current
 
-    // Create element height in pixel state
-    var collapse by remember {
-        mutableStateOf(collapsed)
-    }
+    var collapse by remember { mutableStateOf(collapsed) }
 
-    // Create element height in pixel state
-    var backdropLayerHeightPx by remember {
-        mutableStateOf(0f)
-    }
-
-    // Create element height in dp state
-    var backdropLayerHeightDp by remember {
-        mutableStateOf(0.dp)
-    }
+    var backdropLayerHeightPx by remember { mutableStateOf(0f) }
+    var backdropLayerHeightDp by remember { mutableStateOf(0.dp) }
 
     Box(modifier = modifier
         .fillMaxWidth()
@@ -319,7 +301,6 @@ private fun BackdropBottomSheet(
             mutableStateOf(0f)
         }
 
-        // Create element height in dp state
         var backLayerHeightDp by remember {
             mutableStateOf(0.dp)
         }
@@ -328,7 +309,6 @@ private fun BackdropBottomSheet(
             mutableStateOf(0f)
         }
 
-        // Create element height in dp state
         var frontLayerHeightDp by remember {
             mutableStateOf(0.dp)
         }
@@ -347,30 +327,8 @@ private fun BackdropBottomSheet(
             backLayerContent()
         }
 
-        var frontHeightDp by remember { mutableStateOf(backdropLayerHeightDp - backLayerHeightDp) }
-        val initHeightDp by remember { mutableStateOf(backdropLayerHeightDp - backLayerHeightDp) }
-        val COLLAPSED_HEIGHT = backdropLayerHeightDp - backLayerHeightDp
-        val REVEALED_HEIGHT = backdropLayerHeightDp - headerHeight
-
-        val targetHeight = if(collapse) COLLAPSED_HEIGHT else REVEALED_HEIGHT
-
-        var currentHeight by remember { mutableStateOf(initHeightDp) }
-
-        frontHeightDp = backdropLayerHeightDp - backLayerHeightDp
-//            backdropLayerHeightDp - backLayerHeightDp
-//        } else {
-//            backdropLayerHeightDp - headerHeight
-//        }
-
-
-        val animatePosition by animateDpAsState(
-            targetValue = targetHeight,
-            animationSpec = tween(durationMillis = 150, easing = FastOutSlowInEasing),
-            label = "frontLayerHeight",
-            finishedListener = {
-                Log.e("tag", "__ finishedListener: ${it}.dp")
-            }
-        )
+        val frontHeightDp = backdropLayerHeightDp - backLayerHeightDp
+        var currentHeight by remember { mutableStateOf(frontHeightDp) }
 
         val swipeableState = androidx.compose.material.rememberSwipeableState(
             initialValue = 0,
@@ -383,15 +341,8 @@ private fun BackdropBottomSheet(
         if (swipeableState.isAnimationRunning) {
             DisposableEffect(Unit) {
                 onDispose {
-                    // -point로 설정한 앵커에 도달하면 currentValue가 1이 됨
-                    if (swipeableState.currentValue == 1) {
-                        // 애니메이션이 끝나고 실행될 코드
-                        collapse = false
-                    } else{
-                        collapse = true
-                    }
-
-                    Log.e("tag", "__ swipeableState.currentValue == ${swipeableState.currentValue}")
+                    collapse = swipeableState.currentValue != 1
+                    onCollapse(collapse)
                 }
             }
         }
@@ -400,8 +351,6 @@ private fun BackdropBottomSheet(
 
         Log.e("tag", " ${frontHeightDp} - ${with(localDensity) { swipeableState.offset.value.toDp()}} => ${currentHeight}")
         Log.e("tag", " point : ${point}, ${swipeableState.currentValue}")
-
-
 
         Box(
             modifier = Modifier
@@ -423,10 +372,6 @@ private fun BackdropBottomSheet(
                 )
         ) {
             frontLayerContent()
-
-//            Log.e("tag", "swipeableState offset :${swipeableState.offset.value}}")
-//            Log.e("tag", "_________________     :${with(localDensity) { swipeableState.offset.value.toDp() }}")
-//            Log.e("tag", "_________________     :${swipeableState.currentValue}")
         }
 
         // debug 정보

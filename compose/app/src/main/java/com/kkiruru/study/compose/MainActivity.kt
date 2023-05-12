@@ -137,6 +137,19 @@ class MainActivity : ComponentActivity() {
                             fontSize = 18.sp
                         )
                     }
+
+                    Button(onClick = {
+                        startActivity(
+                            Intent(this@MainActivity, OverflowDetectingActivity::class.java)
+                        )
+                    }) {
+                        Text(
+                            text = "Overflow",
+                            modifier = Modifier,
+                            color = Color.White,
+                            fontSize = 18.sp
+                        )
+                    }
                 }
             }
         }

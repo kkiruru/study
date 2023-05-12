@@ -60,6 +60,10 @@
             android:name=".SwipeableActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".OverflowDetectingActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>
