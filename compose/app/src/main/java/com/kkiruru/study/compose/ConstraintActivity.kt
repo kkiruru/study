@@ -6,6 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,13 +22,11 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.BackdropScaffoldDefaults
 import androidx.compose.material.BackdropScaffoldState
 import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.Icon
 import androidx.compose.material.ListItem
 import androidx.compose.material.Surface
@@ -34,13 +34,9 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.rememberBackdropScaffoldState
-import androidx.compose.material.swipeable
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,117 +46,143 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class SwipeableActivity : ComponentActivity() {
+class ConstraintActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MaterialTheme {
-                SwipeableSheetApp()
+                ConstraintSheetApp()
             }
         }
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+private fun DefaultBackdropBottomSheet(
+    modifier: Modifier = Modifier
+) {
+    MaterialTheme {
+        ConstraintSheetApp()
+    }
+}
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun SwipeableSheetApp(
+fun ConstraintSheetApp(
     modifier: Modifier = Modifier,
     scope: CoroutineScope = rememberCoroutineScope()
 ) {
-    Column(
-        modifier = modifier.fillMaxSize(),
+
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color(0xFFCCCCCC))
     ) {
+        val (header, main, footer) = createRefs()
+
+
+        val barrier = createTopBarrier(footer)
+
         val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
         var title by remember { mutableStateOf("") }
         val titleValue by rememberUpdatedState(newValue = title)
 
 
-        var collapsed by remember { mutableStateOf(true) }
+        var collapsed by remember { mutableStateOf(false) }
         val collapsedValue by rememberUpdatedState(newValue = collapsed)
 
-        Text(
-            text = "타이틀: $titleValue",
-            style = MaterialTheme.typography.titleLarge ,
-            color = Color(0xFF212121),
-            fontWeight = FontWeight.W600
-        )
+        Box(modifier = Modifier
+            .constrainAs(header) {
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                top.linkTo(parent.top)
+            }) {
+            Text(
+                modifier = Modifier,
+                text = "타이틀: $titleValue",
+                style = MaterialTheme.typography.titleLarge,
+                color = Color(0xFF212121),
+                fontWeight = FontWeight.W600
+            )
+        }
 
-        CollectionDetailScreen(
-            modifier = Modifier.weight(1f),
-            collapsed = collapsedValue,
-        )
-
-        Row (
+        BackdropBottomSheet(
             modifier = Modifier
-                .height(56.dp)
-                .fillMaxWidth()
-                .background(color = Color.Gray)
+                .constrainAs(main) {
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    top.linkTo(header.bottom)
+                    bottom.linkTo(barrier)
+                    height = Dimension.fillToConstraints
+                },
+            backLayerContent = { BackLayer() },
+            frontLayerContent = { FrontLayer() },
+            scaffoldState = scaffoldState,
+            collapsed = collapsed,
+        )
+
+
+        Box(modifier = Modifier
+            .constrainAs(footer) {
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                bottom.linkTo(parent.bottom)
+            }
         ) {
-            Button(onClick = {
+            Row(
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .fillMaxWidth()
+                    .background(color = Color.Gray)
+            ) {
+                Button(onClick = {
                     scope.launch {
                         scaffoldState.reveal()
                     }
-                title = "펼치기"
-                collapsed = false
-            }
-            ) {
-                Text(
-                    text = "펼치기",
-                    style = MaterialTheme.typography.titleMedium ,
-                    color = Color(0xFF212121),
-                    fontWeight = FontWeight.W600
-                )
-            }
-            Button(onClick = {
-                scope.launch {
-                    scaffoldState.conceal()
+                    title = "펼치기"
+                    collapsed = false
                 }
-                title = "접기"
-                collapsed = true
-            }
-            ) {
-                Text(
-                    text = "접기",
-                    style = MaterialTheme.typography.titleMedium ,
-                    color = Color(0xFF212121),
-                    fontWeight = FontWeight.W600
-                )
-            }
+                ) {
+                    Text(
+                        text = "펼치기",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color(0xFF212121),
+                        fontWeight = FontWeight.W600
+                    )
+                }
+                Button(onClick = {
+                    scope.launch {
+                        scaffoldState.conceal()
+                    }
+                    title = "접기"
+                    collapsed = true
+                }
+                ) {
+                    Text(
+                        text = "접기",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color(0xFF212121),
+                        fontWeight = FontWeight.W600
+                    )
+                }
 
-       }
+            }
+        }
     }
-}
-
-@Composable
-private fun CollectionDetailScreen(
-    modifier: Modifier = Modifier,
-    collapsed: Boolean = true,
-) {
-    FlexibleBottomSheet(
-        modifier = modifier,
-        backLayerContent = { BackLayer() },
-        frontLayerContent = { FrontLayer() },
-        collapsed = collapsed,
-        onCollapse = {},
-    )
 }
 
 
@@ -188,7 +210,7 @@ private fun BackLayer(
                         spotColor = Color(0x40939393),
                     )
             ) {
-                Column (
+                Column(
                     modifier = Modifier
                         .height(100.dp)
                         .padding(all = 15.dp),
@@ -213,7 +235,7 @@ private fun BackLayer(
                         spotColor = Color(0x40939393),
                     )
             ) {
-                Column (
+                Column(
                     modifier = Modifier
                         .height(84.dp)
                         .padding(all = 15.dp),
@@ -236,43 +258,11 @@ private fun FrontLayer(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState()
 ) {
-
-    val listState = rememberLazyListState()
-
-    LaunchedEffect(listState) {
-        listState.interactionSource.interactions.collect {
-            //at the top of the list so allow sheet scrolling
-//            listener.allowSheetDrag(listState.firstVisibleItemScrollOffset == 0)/**/
-            Log.e("tag", "listener.allowSheetDrag(${listState.firstVisibleItemScrollOffset == 0})")
-        }
-    }
-
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                Log.e("tag", "NestedScrollConnection onPreScroll($available: Offset, $source: NestedScrollSource)")
-                return super.onPreScroll(available, source)
-            }
-
-            override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
-                Log.e("tag",  "NestedScrollConnection onPostScroll($consumed: Offset, $available: Offset, $source: NestedScrollSource)")
-                if (available.y > 0.0 && consumed.y == 0.0f) {
-                    //scolling down up but we're already at the top - kick over to sheet scrolling
-//                    listener.allowSheetDrag(true)
-
-                    Log.e("tag", "listener.allowSheetDrag(true)")
-                }
-                return super.onPostScroll(consumed, available, source)
-            }
-        }
-    }
-
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 20.dp)
-            .nestedScroll(nestedScrollConnection)
+            .background(color = Color(0xFFA35EF3))
+            .padding(top = 20.dp, bottom = 5.dp)
     ) {
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -285,7 +275,8 @@ private fun FrontLayer(
         Spacer(modifier = Modifier.height(30.dp))
 
         LazyColumn(
-            state = lazyListState
+            state = lazyListState,
+            modifier = Modifier.background(color = Color(0xFFA3F35E))
         ) {
             items(20) {
                 ListItem(
@@ -302,36 +293,30 @@ private fun FrontLayer(
     }
 }
 
-@Preview(showBackground = true)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun DefaultBackdropBottomSheet(
-    modifier: Modifier = Modifier
-) {
-    MaterialTheme {
-        FlexibleSheetApp()
-    }
-}
-
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
-@Composable
-private fun FlexibleBottomSheet(
+private fun BackdropBottomSheet(
     modifier: Modifier,
     backLayerContent: @Composable () -> Unit,
     frontLayerContent: @Composable () -> Unit,
-    headerHeight: Dp = 48.dp,
+    scaffoldState: BackdropScaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed),
+    headerHeight: Dp = BackdropScaffoldDefaults.HeaderHeight,
     collapsed: Boolean,
-    onCollapse: (Boolean) -> Unit,
+
     ) {
     val localDensity = LocalDensity.current
 
-    var collapse by remember { mutableStateOf(collapsed) }
+    // Create element height in pixel state
+    var backdropLayerHeightPx by remember {
+        mutableStateOf(0f)
+    }
 
-    var backdropLayerHeightPx by remember { mutableStateOf(0f) }
-    var backdropLayerHeightDp by remember { mutableStateOf(0.dp) }
+    // Create element height in dp state
+    var backdropLayerHeightDp by remember {
+        mutableStateOf(0.dp)
+    }
 
     Box(modifier = modifier
-        .fillMaxWidth()
-        .fillMaxHeight()
         .background(color = Color(0xFF68CFA4))
         .onGloballyPositioned { coordinates ->
             // Set column height using the LayoutCoordinates
@@ -343,6 +328,7 @@ private fun FlexibleBottomSheet(
             mutableStateOf(0f)
         }
 
+        // Create element height in dp state
         var backLayerHeightDp by remember {
             mutableStateOf(0.dp)
         }
@@ -351,13 +337,14 @@ private fun FlexibleBottomSheet(
             mutableStateOf(0f)
         }
 
+        // Create element height in dp state
         var frontLayerHeightDp by remember {
             mutableStateOf(0.dp)
         }
 
         Column(
             modifier = Modifier
-                .wrapContentHeight()
+                .fillMaxHeight()
                 .fillMaxWidth()
                 .align(Alignment.TopCenter)
                 .onGloballyPositioned { coordinates ->
@@ -369,30 +356,27 @@ private fun FlexibleBottomSheet(
             backLayerContent()
         }
 
-        val frontHeightDp = backdropLayerHeightDp - backLayerHeightDp
-        var currentHeight by remember { mutableStateOf(frontHeightDp) }
+        var frontHeightDp by remember { mutableStateOf(300.dp) }
+        val initHeightDp by remember { mutableStateOf(300.dp) }
+        val COLLAPSED_HEIGHT = backdropLayerHeightDp - backLayerHeightDp
+        val REVEALED_HEIGHT = backdropLayerHeightDp - headerHeight
 
-        val swipeableState = androidx.compose.material.rememberSwipeableState(
-            initialValue = 0,
-        )
+        val targetHeight = if (collapsed) COLLAPSED_HEIGHT else REVEALED_HEIGHT
+        var currentHeight by remember { mutableStateOf(initHeightDp) }
 
-        val point = LocalDensity.current.run { backLayerHeightDp.toPx()}
-
-        val anchors = mapOf(0f to 0, -point to 1)
-
-        if (swipeableState.isAnimationRunning) {
-            DisposableEffect(Unit) {
-                onDispose {
-                    collapse = swipeableState.currentValue != 1
-                    onCollapse(collapse)
-                }
-            }
+        frontHeightDp = if (collapsed) {
+            backdropLayerHeightDp - backLayerHeightDp
+        } else {
+            backdropLayerHeightDp - headerHeight
         }
 
-        currentHeight = frontHeightDp - with(localDensity) { swipeableState.offset.value.toDp() }
+        Log.e("tag", ">>> scaffoldState ${scaffoldState.currentValue}")
 
-        Log.e("tag", " ${frontHeightDp} - ${with(localDensity) { swipeableState.offset.value.toDp()}} => ${currentHeight}")
-        Log.e("tag", " point : ${point}, ${swipeableState.currentValue}")
+        val draggableState = rememberDraggableState(
+            onDelta = { delta ->
+                currentHeight -= with(localDensity) { delta.toDp() }
+            }
+        )
 
         Box(
             modifier = Modifier
@@ -405,29 +389,11 @@ private fun FlexibleBottomSheet(
                     frontLayerHeightPx = coordinates.size.height.toFloat()
                     frontLayerHeightDp = with(localDensity) { coordinates.size.height.toDp() }
                 }
-                .swipeable(
-                    state = swipeableState,
+                .draggable(
+                    state = draggableState,
                     orientation = Orientation.Vertical,
-                    anchors = anchors,
-                    thresholds = { _, _ -> FractionalThreshold(0.5f) },
-                    velocityThreshold = 1000.dp
-                )
-                .nestedScroll(
-                    connection = object : NestedScrollConnection {
-//                        override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-//                            Log.e("tag", "onPreScroll available ${available}, ${source.toString()}")
-//                            return Offset.Zero
-//                        }
-
-                        override fun onPostScroll(
-                            consumed: Offset,
-                            available: Offset,
-                            source: NestedScrollSource
-                        ): Offset {
-                            Log.e("tag", "onPostScroll consumed ${consumed}, available ${available}  ${source.toString()}")
-                            return Offset.Zero
-                        }
-                    }
+                    onDragStarted = { Log.e("tag", "__ onDragStarted") },
+                    onDragStopped = { Log.e("tag", "__ onDragStopped") },
                 )
         ) {
             frontLayerContent()
@@ -459,5 +425,4 @@ private fun FlexibleBottomSheet(
             )
         }
     }
-
 }

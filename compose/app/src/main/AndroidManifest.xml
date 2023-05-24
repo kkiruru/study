@@ -53,7 +53,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".DraggableActivity"
+            android:name=".flexiblesheet.DraggableActivity"
             android:exported="false" />
 
         <activity
@@ -61,7 +61,15 @@
             android:exported="false" />
 
         <activity
-            android:name=".OverflowDetectingActivity"
+            android:name=".overflow.OverflowDetectingActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ConstraintActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".FontStyleActivity"
             android:exported="false" />
 
     </application>

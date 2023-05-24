@@ -1,4 +1,4 @@
-package com.kkiruru.study.compose
+package com.kkiruru.study.compose.overflow
 
 import android.os.Bundle
 import android.util.Log
@@ -6,7 +6,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
@@ -45,27 +47,32 @@ fun MainScreen() {
     Column {
 
         val states = arrayOf(
-            "NY", "CA", "NV", "PA", "AZ12312312311123", "AK12312123123213", "NE123123", "CT", "CO", "FL", "IL", "KS", "WA")
+            "보풀제거", "얼룩제거", "다림질", "얼룩제거", "얼룩제거", "원단복원", "원단복원", "원단복원"
+        )
 
         var chipCount by remember { mutableStateOf(0) }
 
         Row(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(start = 40.dp, end = 24.dp)
                 .wrapContentHeight(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ChipRow2(
+
+
+            Spacer(modifier = Modifier.width(1.5.dp))
+
+            ChipOverflow(
                 modifier = Modifier
-                    .padding(end = 4.dp)
                     .weight(1f, fill = false),
                 onPlacementComplete = { chipCount = it }
             ) {
                 for (state in states) {
                     Chip(
                         modifier = Modifier
-                            .padding(4.dp)
-                            .wrapContentSize(), text = state
+                            .padding(2.dp)
+                            .wrapContentSize(),
+                        text = state
                     )
                 }
             }
@@ -130,7 +137,7 @@ fun ChipRow(
 data class Item(val placeable: Placeable, val xPosition: Int)
 
 @Composable
-fun ChipRow2(
+fun ChipOverflow(
     modifier: Modifier = Modifier,
     onPlacementComplete: (Int) -> Unit,
     content: @Composable () -> Unit
@@ -140,20 +147,23 @@ fun ChipRow2(
         content = content
     ) { measurables, constraints ->
 
-        val placeables = measurables.map { it.measure(constraints) };
-
-//        var counter = 0
-
+        val placeables = measurables.map { it.measure(constraints) }
         val items = mutableListOf<Item>()
         var xPosition = 0
+
         for (placeable in placeables) {
             if (xPosition + placeable.width > constraints.maxWidth) break
             items.add(Item(placeable, xPosition))
             xPosition += placeable.width
         }
 
+        Log.e("tag","constraints.maxWidth ${constraints.maxWidth},  xPosition ${xPosition}, items ${items.size}")
+
         layout(
-            width = items.last().let { it.xPosition + it.placeable.width },
+            width = items.last().let {
+                Log.e("tag","_ it.xPosition ${it.xPosition},  it.placeable.width ${it.placeable.width}")
+                it.xPosition + it.placeable.width
+            },
             height = items.maxOf { it.placeable.height }
         ) {
             items.forEach {
@@ -161,18 +171,6 @@ fun ChipRow2(
             }
             onPlacementComplete(items.count())
         }
-
-
-//        layout(constraints.maxWidth, constraints.maxHeight) {
-//            var xPosition = 0
-//            for (placeable in placeables) {
-//                if (xPosition + placeable.width > constraints.maxWidth) break
-//                placeable.placeRelative(x = xPosition, 0)
-//                xPosition += placeable.width
-//                counter++
-//            }
-//            onPlacementComplete(counter)
-//        }
     }
 }
 

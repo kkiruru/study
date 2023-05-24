@@ -1,4 +1,4 @@
-package com.kkiruru.study.compose
+package com.kkiruru.study.compose.flexiblesheet
 
 import android.os.Bundle
 import android.util.Log
@@ -46,13 +46,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
+import com.kkiruru.study.compose.FlexibleSheetApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -233,6 +239,26 @@ private fun FrontLayer(
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .nestedScroll(object: NestedScrollConnection{
+                override fun onPostScroll(
+                    consumed: Offset,
+                    available: Offset,
+                    source: NestedScrollSource
+                ): Offset {
+                    Log.e("onPostScroll", "onPostScroll consumed ${consumed}, available ${available}")
+                    return super.onPostScroll(consumed, available, source)
+                }
+
+                override suspend fun onPostFling(
+                    consumed: Velocity,
+                    available: Velocity
+                ): Velocity {
+
+                    Log.e("onPostFling", "onPostFling consumed ${consumed}, available ${available}")
+                    return super.onPostFling(consumed, available)
+                }
+
+            })
             .padding(top = 20.dp)
     ) {
         Spacer(modifier = Modifier.height(10.dp))
@@ -374,8 +400,8 @@ private fun BackdropBottomSheet(
                 .draggable(
                     state = draggableState,
                     orientation = Orientation.Vertical,
-                    onDragStarted = {Log.e("tag", "__ onDragStarted")},
-                    onDragStopped = {Log.e("tag", "__ onDragStopped")},
+                    onDragStarted = { Log.e("tag", "__ onDragStarted") },
+                    onDragStopped = { Log.e("tag", "__ onDragStopped") },
                 )
         ) {
             frontLayerContent()
@@ -407,5 +433,4 @@ private fun BackdropBottomSheet(
             )
         }
     }
-
 }
