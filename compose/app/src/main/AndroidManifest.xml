@@ -72,6 +72,10 @@
             android:name=".FontStyleActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".textfield.TextFieldActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

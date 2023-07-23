@@ -61,3 +61,4 @@ _testmain.go
 *.prof
 
 
+flutter/HelloWorld/pubspec.lock

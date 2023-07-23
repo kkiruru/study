@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hello_flutter/widget/alert.dart';
+
+import 'destination.dart';
+import 'dialog_demo.dart';
 
 void main() {
   runApp(const MyApp());
@@ -75,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
@@ -102,14 +106,55 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
-          ],
+            Text(
+              '$_counter',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            FilledButton(
+              onPressed:  () {
+                topToastAlert(
+                  context: context,
+                  content: "수거 처리 완료",
+                );
+              },
+              child: Text(
+                  "Top Toast",
+               )
+            ),
+            FilledButton(
+                onPressed:  () {
+                  topWarningToastAlert(
+                    context: context,
+                    content: "기타 사유를 입력해 주세요",
+                  );
+                },
+                child: Text(
+                  "Top warning Toast",
+                )
+            ),
+
+        FilledButton(
+            onPressed:  () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const DialogDemo())
+              );
+            },
+            child: Text(
+              "DialogDemo",
+            )
+        ),
+
+
+
+
+        ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _incrementCounter,
+      //   tooltip: 'Increment',
+      //   child: const Icon(Icons.add),
+      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

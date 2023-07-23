@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,8 +27,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Placeable
+import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 
 class OverflowDetectingActivity : ComponentActivity() {
@@ -55,33 +58,38 @@ fun MainScreen() {
         Row(
             modifier = Modifier
                 .padding(start = 40.dp, end = 24.dp)
-                .wrapContentHeight(),
+                .wrapContentHeight()
+                .background(color = Color.Blue),
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-
-            Spacer(modifier = Modifier.width(1.5.dp))
+//            Spacer(modifier = Modifier.width(1.5.dp))
 
             ChipOverflow(
                 modifier = Modifier
                     .weight(1f, fill = false),
-                onPlacementComplete = { chipCount = it }
-            ) {
-                for (state in states) {
-                    Chip(
-                        modifier = Modifier
-                            .padding(2.dp)
-                            .wrapContentSize(),
-                        text = state
-                    )
+                onPlacementComplete = { chipCount = it },
+                content = {
+                    for (state in states) {
+                        Log.e("tab", "state ${state}")
+                        Chip(
+                            modifier = Modifier
+                                .padding(2.dp)
+                                .wrapContentSize(),
+                            text = state
+                        )
+                    }
+                },
+                overflowContent = {
+                    for (i in states.indices) {
+                        Log.e("tab", "외${i}개")
+                        Text(
+                            text = "외${i}개",
+                            style = MaterialTheme.typography.h6
+                        )
+                    }
                 }
-            }
-            Log.e("tag", "${states.size - chipCount}")
-
-            if (chipCount < states.size) {
-                Log.e("tag", "${states.size - chipCount} ${states[chipCount]}")
-                Text(text = "외${states.size - chipCount}개", style = MaterialTheme.typography.h6)
-            }
+            )
         }
     }
 }
@@ -140,16 +148,39 @@ data class Item(val placeable: Placeable, val xPosition: Int)
 fun ChipOverflow(
     modifier: Modifier = Modifier,
     onPlacementComplete: (Int) -> Unit,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
+    overflowContent: @Composable () -> Unit,
 ) {
+
+    Layout(
+        modifier = modifier,
+        content = overflowContent
+    ) { measurables, constraints ->
+        val placeables = measurables.map { it.measure(constraints) }
+        val items = mutableListOf<Item>()
+
+        Log.e("tag","overflowContent constraints.maxWidth ${constraints.maxWidth}, items ${placeables.size}")
+
+        for (placeable in placeables) {
+            Log.e("tag","overflowContent,  ${placeable.width}")
+            items.add(Item(placeable, 0))
+        }
+        layout(
+            width = 0,
+            height = items.maxOf { it.placeable.height }
+        ) {
+        }
+    }
+
     Layout(
         modifier = modifier,
         content = content
     ) { measurables, constraints ->
-
         val placeables = measurables.map { it.measure(constraints) }
         val items = mutableListOf<Item>()
         var xPosition = 0
+
+        Log.e("tag","constraints.maxWidth ${constraints.maxWidth}, items number ${placeables.size}")
 
         for (placeable in placeables) {
             if (xPosition + placeable.width > constraints.maxWidth) break
@@ -157,7 +188,6 @@ fun ChipOverflow(
             xPosition += placeable.width
         }
 
-        Log.e("tag","constraints.maxWidth ${constraints.maxWidth},  xPosition ${xPosition}, items ${items.size}")
 
         layout(
             width = items.last().let {
