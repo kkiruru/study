@@ -62,3 +62,4 @@ _testmain.go
 
 
 flutter/HelloWorld/pubspec.lock
+*.lock
