@@ -3,6 +3,7 @@ import 'package:hello_flutter/widget/alert.dart';
 
 import 'destination.dart';
 import 'dialog_demo.dart';
+import 'full_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -144,7 +145,16 @@ class _MyHomePageState extends State<MyHomePage> {
             )
         ),
 
-
+            FilledButton(
+                onPressed:  () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const FullScreen())
+                  );
+                },
+                child: Text(
+                  "Full Screen",
+                )
+            ),
 
 
         ],
