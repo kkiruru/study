@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hello_flutter/tab_screen.dart';
 import 'package:hello_flutter/widget/alert.dart';
+import 'package:hello_flutter/widget/card.dart';
 
+import 'card_list.dart';
 import 'destination.dart';
 import 'dialog_demo.dart';
 import 'full_screen.dart';
@@ -112,59 +115,68 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.headline4,
             ),
             FilledButton(
-              onPressed:  () {
-                topToastAlert(
-                  context: context,
-                  content: "수거 처리 완료",
-                );
-              },
-              child: Text(
+                onPressed: () {
+                  topToastAlert(
+                    context: context,
+                    content: "수거 처리 완료",
+                  );
+                },
+                child: const Text(
                   "Top Toast",
-               )
-            ),
+                )),
             FilledButton(
-                onPressed:  () {
+                onPressed: () {
                   topWarningToastAlert(
                     context: context,
                     content: "기타 사유를 입력해 주세요",
                   );
                 },
-                child: Text(
+                child: const Text(
                   "Top warning Toast",
-                )
-            ),
-
-        FilledButton(
-            onPressed:  () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const DialogDemo())
-              );
-            },
-            child: Text(
-              "DialogDemo",
-            )
-        ),
-
+                )),
             FilledButton(
-                onPressed:  () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const FullScreen())
-                  );
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const DialogDemo()));
                 },
-                child: Text(
+                child: const Text(
+                  "DialogDemo",
+                )),
+            FilledButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const FullScreen()));
+                },
+                child: const Text(
                   "Full Screen",
-                )
-            ),
-
-
-        ],
+                )),
+            FilledButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => MyTabs()));
+                },
+                child: const Text(
+                  "Tab Screen",
+                )),
+            FilledButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const CardDemoScreen()));
+                },
+                child: const Text(
+                  "CardDemoScreen",
+                )),
+            FilledButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const CardListDemo()));
+                },
+                child: const Text(
+                  "CardListDemo",
+                )),
+          ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
