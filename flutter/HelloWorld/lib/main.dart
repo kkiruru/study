@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hello_flutter/row_screen.dart';
 import 'package:hello_flutter/tab_screen.dart';
 import 'package:hello_flutter/widget/alert.dart';
 import 'package:hello_flutter/widget/card.dart';
 
 import 'card_list.dart';
+import 'constraints.dart';
 import 'destination.dart';
 import 'dialog_demo.dart';
 import 'full_screen.dart';
@@ -174,6 +176,26 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: const Text(
                   "CardListDemo",
                 )),
+
+            FilledButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const TestConstraints()));
+                },
+                child: const Text(
+                  "Constraint",
+                )),
+
+            FilledButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const RowScreen()));
+                },
+                child: const Text(
+                  "RowScreen",
+                )),
+
+
           ],
         ),
       ),

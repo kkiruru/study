@@ -84,48 +84,64 @@ class CardListDemoState extends State<CardListDemo> {
     final Color backgroundColor = const Color(0xFFD9E5FF);
 
     Widget transportItem(int no, String address) {
-      return Container(
-        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
-        decoration: BoxDecoration(
-          color: LColors.white,
+
+    return Card(
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.25),
-              spreadRadius: 0,
-              blurRadius: 4,
-              offset: const Offset(0, 4), // changes position of shadow
-            ),
-          ],
         ),
+        elevation: 4.0,
+        child:
+        IntrinsicHeight(
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Column(
-              children: [
-                Container(
-                  width: 32,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: backgroundColor,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      bottomLeft: Radius.circular(10),
-                    ),
+            // ConstrainedBox(
+            //   constraints: BoxConstraints.expand(),
+            //   child: Container(
+            //     width: 32,
+            //     alignment: Alignment.center,
+            //     decoration: BoxDecoration(
+            //       color: backgroundColor,
+            //       borderRadius: BorderRadius.only(
+            //         topLeft: Radius.circular(10),
+            //         bottomLeft: Radius.circular(10),
+            //       ),
+            //     ),
+            //     child:
+            //     Text(
+            //       "${no + 1}",
+            //       style: const TextStyle(
+            //           color: LColors.black,
+            //           fontSize: 15,
+            //           fontWeight: FontWeight.w700),
+            //     ),
+            //   ),
+            // ),
+            Center(
+              child: Container(
+                width: 32,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: backgroundColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(10),
                   ),
-                  child: Text(
-                    "${no + 1}",
-                    style: const TextStyle(
-                        color: LColors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700),
-                  ),
-                )
-              ],
+                ),
+                child:
+                Text(
+                  "${no + 1}",
+                  style: const TextStyle(
+                      color: LColors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700),
+                ),
+              ),
             ),
             Expanded(
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -197,7 +213,7 @@ class CardListDemoState extends State<CardListDemo> {
                               children: [
                                 Image(
                                   image:
-                                      AssetImage('assets/images/ic_map.png'),
+                                  AssetImage('assets/images/ic_map.png'),
                                   height: 29,
                                   width: 29,
                                 ),
@@ -228,18 +244,167 @@ class CardListDemoState extends State<CardListDemo> {
             ),
           ],
         ),
-      );
+        )
+    );
+      //
+      //
+      //
+      // return Row(
+      //   children: [
+      //     Container(
+      //       margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
+      //       decoration: BoxDecoration(
+      //         color: LColors.white,
+      //         borderRadius: BorderRadius.circular(10),
+      //         boxShadow: [
+      //           BoxShadow(
+      //             color: Colors.black.withOpacity(0.25),
+      //             spreadRadius: 0,
+      //             blurRadius: 4,
+      //             offset: const Offset(0, 4), // changes position of shadow
+      //           ),
+      //         ],
+      //       ),
+      //       child: Column(
+      //         children: [
+      //           Container(
+      //             width: 32,
+      //             alignment: Alignment.center,
+      //             decoration: BoxDecoration(
+      //               color: backgroundColor,
+      //               borderRadius: BorderRadius.only(
+      //                 topLeft: Radius.circular(10),
+      //                 bottomLeft: Radius.circular(10),
+      //               ),
+      //             ),
+      //           child: Text(
+      //             "${no + 1}",
+      //             style: const TextStyle(
+      //               color: LColors.black,
+      //               fontSize: 15,
+      //               fontWeight: FontWeight.w700),
+      //             ),
+      //           )
+      //         ],
+      //       ),
+      //     ),
+      //     Expanded(
+      //       child: Padding(
+      //         padding:
+      //             const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+      //         child: Column(
+      //             mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //             children: [
+      //               Row(
+      //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                 children: [
+      //                   Text(
+      //                     "2023-07-26",
+      //                     style: const TextStyle(
+      //                         color: Color(0xFF004EA7),
+      //                         fontSize: 14,
+      //                         fontWeight: FontWeight.w700),
+      //                   ),
+      //                   Expanded(
+      //                     child: Row(
+      //                       mainAxisAlignment: MainAxisAlignment.end,
+      //                       children: [
+      //                         const Text(
+      //                           "수거",
+      //                           style: TextStyle(
+      //                               color: LColors.black,
+      //                               fontSize: 14,
+      //                               fontWeight: FontWeight.w700),
+      //                         ),
+      //                         Container(
+      //                           margin: const EdgeInsets.only(left: 8),
+      //                           alignment: Alignment.center,
+      //                           decoration: BoxDecoration(
+      //                             color: LColors.green,
+      //                             borderRadius: BorderRadius.circular(5),
+      //                           ),
+      //                           padding: const EdgeInsets.symmetric(
+      //                               vertical: 2, horizontal: 6),
+      //                           child: Text(
+      //                             "ZFKBF23",
+      //                             style: const TextStyle(
+      //                                 color: LColors.white,
+      //                                 fontSize: 11,
+      //                                 fontWeight: FontWeight.w700),
+      //                           ),
+      //                         ),
+      //                       ],
+      //                     ),
+      //                   ),
+      //                 ],
+      //               ),
+      //               Row(
+      //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                 children: [
+      //                   Container(
+      //                     height: 24,
+      //                     padding: const EdgeInsets.symmetric(horizontal: 8),
+      //                     alignment: Alignment.center,
+      //                     decoration: BoxDecoration(
+      //                       color: LColors.gray200,
+      //                       borderRadius: BorderRadius.circular(15),
+      //                     ),
+      //                     child: Text(
+      //                       "런드렛",
+      //                       style: const TextStyle(
+      //                           color: LColors.black,
+      //                           fontSize: 13,
+      //                           fontWeight: FontWeight.w500),
+      //                     ),
+      //                   ),
+      //                   const Expanded(
+      //                     child: Row(
+      //                       mainAxisAlignment: MainAxisAlignment.end,
+      //                       children: [
+      //                         Image(
+      //                           image:
+      //                               AssetImage('assets/images/ic_map.png'),
+      //                           height: 29,
+      //                           width: 29,
+      //                         ),
+      //                         SizedBox(width: 10),
+      //                         Image(
+      //                           image: AssetImage(
+      //                               'assets/images/ic_picture.png'),
+      //                           height: 29,
+      //                           width: 29,
+      //                         ),
+      //                       ],
+      //                     ),
+      //                   ),
+      //                 ],
+      //               ),
+      //               Container(
+      //                 alignment: Alignment.centerLeft,
+      //                 child: Text(address,
+      //                     style: const TextStyle(
+      //                         color: LColors.black,
+      //                         fontSize: 13,
+      //                         fontWeight: FontWeight.w700),
+      //                     textAlign: TextAlign.left),
+      //               ),
+      //             ]),
+      //           // ),
+      //         ),
+      //       ),
+      //   ],
+      // );
     }
-
 
     List<String> addresses = [
       "경기도 성남시 분당구 동판교로225 봇들마을 3단지",
       "경기도 성남시 분당구 동판교로225 봇들마을 3단지 303동 1001호",
-      "경기도 군포시 군포르 109-143 (대야미동, 군포 대야미 서해그랑블 아파느) 1동 1호",
+      "전라남도 나주시 우정로 101 광주전남공동혁신도시 광주전남공동혁신도시 빛가람 대방엘리움 로얄카운티 2차 2020동 1010호",
     ];
 
     return ListView.separated(
       // shrinkWrap: true,
+      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
       itemBuilder: (BuildContext context, int index) {
         return transportItem(index, addresses[index]);
       },
