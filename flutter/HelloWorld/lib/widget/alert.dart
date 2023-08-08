@@ -42,22 +42,22 @@ _topToastAlert({
   Function()? onDismiss
 }) async {
 
-  Future.delayed(const Duration(milliseconds: 1500), () {
-    Navigator.pop(context);
-    if (onDismiss != null) {
-      return onDismiss();
-    }
-  });
+  // Future.delayed(const Duration(milliseconds: 1500), () {
+  //   Navigator.pop(context);
+  //   if (onDismiss != null) {
+  //     return onDismiss();
+  //   }
+  // });
 
   showGeneralDialog(
     context: context,
     barrierDismissible: false,
     pageBuilder: (_, __, ___) {
       return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-              width: double.maxFinite,
-              margin: const EdgeInsets.fromLTRB(73, 63, 73, 0),
+              margin: const EdgeInsets.symmetric(horizontal: 42, vertical: 62),
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: LColors.white,
@@ -77,13 +77,14 @@ _topToastAlert({
               ),
               child:
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SvgPicture.asset(
                         icon,
                         width: 19,
                         height: 19,
                       ),
-                      const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                      const Padding(padding: EdgeInsets.only(left: 10)),
                       DefaultTextStyle(
                           style: const TextStyle(
                               color: LColors.gray800,

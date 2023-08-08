@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hello_flutter/row_screen.dart';
 import 'package:hello_flutter/tab_screen.dart';
+import 'package:hello_flutter/text_field.dart';
 import 'package:hello_flutter/widget/alert.dart';
 import 'package:hello_flutter/widget/card.dart';
 
@@ -120,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {
                   topToastAlert(
                     context: context,
-                    content: "수거 처리 완료",
+                    content: "현재 운송 사진이 삭제되었습니다.",
                   );
                 },
                 child: const Text(
@@ -194,7 +195,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: const Text(
                   "RowScreen",
                 )),
-
+            FilledButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const TextFieldPage()));
+                },
+                child: const Text(
+                  "TextFieldPage",
+                )),
 
           ],
         ),

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import 'const/LColors.dart';
@@ -15,17 +14,49 @@ class RowScreen extends StatelessWidget {
           color: LColors.blue,
           child: Column(
             mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
+
+            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                child: Row(
+              Text(
+                "운송기사조회",
+                style: TextStyle(fontSize: 18.0),
+              ),
+              // Expanded(
+              //   // child: Row(
+              //   //   children: [
+              //   //     Expanded(
+              //   //       child: Container(
+              //   //         color: Colors.yellow,
+              //   //         child: button2(),
+              //   //     )),
+              //   //   ],
+              //   // ),
+              //     child: button2(),
+              // ),
+              button2(),
+              Text(
+                "운송기사조회",
+                style: TextStyle(fontSize: 18.0),
+              ),
+              Row(children: [
+                Text(
+                  "운송기사조회",
+                  style: TextStyle(fontSize: 18.0),
+                ),
+                Expanded(child: button2()),
+              ]),
+              Row(children: [
+                Expanded(child: button2()),
+                Expanded(child: button2()),
+              ]),
+              Row(
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     Expanded(
-                      child: Container(
-                        color: Colors.yellow,
-                    )),
-                  ],
-                )
+                      child:
+                     button2(),
+                    )
+                  ]
               )
             ],
           )),
@@ -33,62 +64,57 @@ class RowScreen extends StatelessWidget {
   }
 
   Widget button2() {
-    return
-    Container(child:
-        Column(
-          mainAxisSize: MainAxisSize.min,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.max,
           children: [
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Expanded(child:
-                FilledButton(
-                  onPressed: () => {},
-                  style: ButtonStyle(
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    padding: MaterialStateProperty.all(const EdgeInsets.all(0)),
-                    foregroundColor: MaterialStateProperty.all(LColors.white),
-                    backgroundColor:
-                    MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-                      if (states.contains(MaterialState.pressed)) {
-                        return LColors.greenPressed;
-                      }
-                      return LColors.green;
-                    }),
-                    splashFactory: NoSplash.splashFactory,
-                    shape: MaterialStateProperty.all(
-                      const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(12),
-                        ),
-                      ),
+            Expanded(
+                child: FilledButton(
+              onPressed: () => {},
+              style: ButtonStyle(
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                padding: MaterialStateProperty.all(const EdgeInsets.all(0)),
+                foregroundColor: MaterialStateProperty.all(LColors.white),
+                backgroundColor: MaterialStateProperty.resolveWith(
+                    (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.pressed)) {
+                    return LColors.greenPressed;
+                  }
+                  return LColors.green;
+                }),
+                splashFactory: NoSplash.splashFactory,
+                shape: MaterialStateProperty.all(
+                  const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(12),
                     ),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                          margin: const EdgeInsets.all(0.0),
-                          child: const Text(
-                            "운송기사조회",
-                            style: TextStyle(fontSize: 18.0),
-                          ))
-                    ],
-                  ),
-                ))
-              ],
-            )
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                      margin: const EdgeInsets.all(0.0),
+                      child: const Text(
+                        "운송기사조회",
+                        style: TextStyle(fontSize: 18.0),
+                      ))
+                ],
+              ),
+            ))
           ],
         )
-
-      );
+      ],
+    );
   }
-
 
   Widget button() {
     MaterialStateProperty<Color?>? backgroundColor =
-    MaterialStateProperty.resolveWith(
-          (Set<MaterialState> states) {
+        MaterialStateProperty.resolveWith(
+      (Set<MaterialState> states) {
         if (states.contains(MaterialState.pressed)) {
           return LColors.greenPressed;
         }
