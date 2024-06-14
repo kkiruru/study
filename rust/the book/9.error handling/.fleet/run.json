@@ -1,0 +1,27 @@
+{
+    "configurations": [
+        {
+            "type": "cargo",
+            "name": "run",
+            "cargoArgs": ["run"],
+            "executableArgs": ["1","2","3"],
+        },
+        {
+            "type": "cargo",
+            "name": "build",
+            "cargoArgs": ["build"],
+        },
+        {
+            "type": "cargo",
+            "name": "check",
+            "cargoArgs": ["check"],
+        },
+        {
+            "type": "cargo",
+            "name": "test",
+            "cargoArgs": ["test"],
+            "executableArgs": ["1","2","3"],
+        },
+        
+    ]
+}
