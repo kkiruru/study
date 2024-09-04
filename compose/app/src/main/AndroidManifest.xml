@@ -76,6 +76,10 @@
             android:name=".textfield.TextFieldActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".performance.PerformanceActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

@@ -7,13 +7,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -27,10 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Placeable
-import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 
 class OverflowDetectingActivity : ComponentActivity() {
@@ -43,6 +38,13 @@ class OverflowDetectingActivity : ComponentActivity() {
             }
         }
     }
+}
+
+@Composable
+fun OverflowDetectingApp(
+    modifier: Modifier = Modifier,
+) {
+    MainScreen()
 }
 
 @Composable
@@ -202,15 +204,6 @@ fun ChipOverflow(
             onPlacementComplete(items.count())
         }
     }
-}
-
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun OverflowDetectingApp(
-    modifier: Modifier = Modifier,
-) {
-    MainScreen()
 }
 
 

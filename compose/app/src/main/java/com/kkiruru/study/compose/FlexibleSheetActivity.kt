@@ -253,7 +253,7 @@ private fun FrontLayer(
         LazyColumn(
             state = lazyListState
         ) {
-            items(20) {
+            items(5) {
                 ListItem(
                     text = { Text("Item $it") },
                     icon = {

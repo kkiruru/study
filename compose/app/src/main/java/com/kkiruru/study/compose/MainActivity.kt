@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import com.kkiruru.study.compose.flexiblesheet.DraggableActivity
 import com.kkiruru.study.compose.overflow.OverflowDetectingActivity
+import com.kkiruru.study.compose.performance.PerformanceActivity
 import com.kkiruru.study.compose.textfield.TextFieldActivity
 import com.kkiruru.study.compose.viewpager.ViewPagerActivity
 import kotlin.math.roundToInt
@@ -210,6 +211,19 @@ class MainActivity : ComponentActivity() {
                         }) {
                             Text(
                                 text = "TextField",
+                                modifier = Modifier,
+                                color = Color.White,
+                                fontSize = 18.sp
+                            )
+                        }
+
+                        Button(onClick = {
+                            startActivity(
+                                Intent(this@MainActivity, PerformanceActivity::class.java)
+                            )
+                        }) {
+                            Text(
+                                text = "Performance",
                                 modifier = Modifier,
                                 color = Color.White,
                                 fontSize = 18.sp
