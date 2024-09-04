@@ -8,7 +8,6 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,7 +36,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.rememberBackdropScaffoldState
-import androidx.compose.material.swipeable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -223,15 +221,22 @@ fun BackdropScaffold2(
 
             val swipeable = Modifier
                 .then(nestedScroll)
-                .swipeable(
-                    state = scaffoldState,
-                    anchors = mapOf(
-                        peekHeightPx to BackdropValue.Concealed,
-                        revealedHeight to BackdropValue.Revealed
-                    ),
-                    orientation = Orientation.Vertical,
-                    enabled = gesturesEnabled
-                )
+//                .anchoredDraggable(
+//                    state = mapOf(
+//                        peekHeightPx to BackdropValue.Concealed,
+//                        revealedHeight to BackdropValue.Revealed
+//                    ),
+//                    orientation = Orientation.Vertical,
+//                )
+//                .swipeable(
+//                    state = scaffoldState,
+//                    anchors = mapOf(
+//                        peekHeightPx to BackdropValue.Concealed,
+//                        revealedHeight to BackdropValue.Revealed
+//                    ),
+//                    orientation = Orientation.Vertical,
+//                    enabled = gesturesEnabled
+//                )
                 .semantics {
                     if (scaffoldState.isConcealed) {
                         collapse {
@@ -251,7 +256,7 @@ fun BackdropScaffold2(
                         }
                     }
                 }
-            val frontLayerHeight = revealedHeight.dp + with(localDensity) { scaffoldState.offset.value.toDp() }
+            val frontLayerHeight = revealedHeight.dp + with(localDensity) { 10.dp }
 
             // Front layer
 //            Surface(
