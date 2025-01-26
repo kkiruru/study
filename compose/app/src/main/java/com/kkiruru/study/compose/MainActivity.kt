@@ -35,6 +35,7 @@ import com.kkiruru.study.compose.flexiblesheet.DraggableActivity
 import com.kkiruru.study.compose.overflow.OverflowDetectingActivity
 import com.kkiruru.study.compose.performance.PerformanceActivity
 import com.kkiruru.study.compose.textfield.TextFieldActivity
+import com.kkiruru.study.compose.viewpager.ViewPager2Activity
 import com.kkiruru.study.compose.viewpager.ViewPagerActivity
 import kotlin.math.roundToInt
 
@@ -117,6 +118,17 @@ class MainActivity : ComponentActivity() {
                                 color = Color.White,
                             )
                         }
+                        Button(onClick = {
+                            startActivity(
+                                Intent(this@MainActivity, ModalBottomSheetActivity::class.java)
+                            )
+                        }) {
+                            Text(
+                                text = "ModalBottomSheet",
+                                modifier = Modifier,
+                                color = Color.White,
+                            )
+                        }
 
                         Button(onClick = {
                             startActivity(
@@ -124,6 +136,19 @@ class MainActivity : ComponentActivity() {
                             )
                         }) {
                             Text(text = "ViewPagerActivity")
+                        }
+
+                        Button(onClick = {
+                            startActivity(
+                                Intent(this@MainActivity, ViewPager2Activity::class.java)
+                            )
+                        }) {
+                            Text(
+                                text = "ViewPager2",
+                                modifier = Modifier,
+                                color = Color.White,
+                                fontSize = 18.sp
+                            )
                         }
 
                         Button(onClick = {

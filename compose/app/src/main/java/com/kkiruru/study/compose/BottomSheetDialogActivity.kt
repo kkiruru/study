@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.navigation.Navigation
 import kotlinx.coroutines.launch
@@ -44,20 +45,16 @@ private fun ModalBottomSheetSample() {
             .fillMaxWidth()
             .wrapContentHeight(),
         sheetState = state,
+        sheetBackgroundColor = Color.Transparent,
         sheetShape = MaterialTheme.shapes.small,
         sheetContent = {
-            LazyColumn {
-                items(5) {
-                    ListItem(
-                        text = { Text("Item $it") },
-                        icon = {
-                            Icon(
-                                Icons.Default.Favorite,
-                                contentDescription = "Localized description"
-                            )
-                        }
-                    )
-                }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = Color.Black.copy(alpha = 0.5f)),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text("Rest of the UI", color = Color.White)
             }
         },
         scrimColor = Color.Black.copy(alpha = 0.32f),

@@ -46,7 +46,14 @@
             android:exported="false" />
 
         <activity
+            android:name=".ModalBottomSheetActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".viewpager.ViewPagerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".viewpager.ViewPager2Activity"
             android:exported="false" />
         <activity
             android:name=".FlexibleSheetActivity"
