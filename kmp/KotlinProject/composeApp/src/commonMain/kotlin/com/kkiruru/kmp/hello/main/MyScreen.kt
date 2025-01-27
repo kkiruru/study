@@ -9,15 +9,13 @@ import androidx.compose.ui.Modifier
 
 
 @Composable
-fun MyScreen(
-    index: Int,
-) {
+fun MyScreen() {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "MyScreen $index"
+            text = "MyScreen"
         )
     }
 }

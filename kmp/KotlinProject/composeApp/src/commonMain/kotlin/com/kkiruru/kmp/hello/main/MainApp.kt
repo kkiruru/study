@@ -1,11 +1,13 @@
 package com.kkiruru.kmp.hello.main
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.BottomNavigation
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -14,10 +16,18 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
+import com.kkiruru.kmp.hello.Route
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.ic_menu_home_activated
 import kotlinproject.composeapp.generated.resources.ic_menu_home_default
@@ -33,7 +43,7 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun MainScreenRoute(
-    navHostController: NavHostController,
+    navHostController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -57,11 +67,40 @@ fun MainScreenRoute(
         Box(
             modifier = Modifier.padding(innerPadding)
         ) {
-//            NavigationGraph(navHostController = navHostController)
+            NavHost(
+                navController = navHostController,
+                startDestination = Main.route,
+                Modifier.padding(innerPadding)
+            ) {
+                navigation(
+                    startDestination = BottomNavItem.Home.route,
+                    route = Main.route
+                ) {
+                    composable(BottomNavItem.Home.route) {
+                        HomeScreen()
+                    }
+                    composable(BottomNavItem.Store.route) {
+                        StoreScreen()
+                    }
+                    composable(BottomNavItem.Laundry.route) {
+                        LaundryScreen()
+                    }
+                    composable(BottomNavItem.My.route) {
+                        MyScreen()
+                    }
+                }
+            }
         }
     }
 }
 
+
+data object Main: Route("Main") {
+    data object Home: Route("Home")
+    data object Store: Route("Store")
+    data object Laundry: Route("Laundry")
+    data object My: Route("My")
+}
 
 
 sealed class BottomNavItem(
@@ -70,21 +109,18 @@ sealed class BottomNavItem(
     val selectedIcon: DrawableResource,
     val unSelectedIcon: DrawableResource,
 ) {
-    object Home : BottomNavItem("홈", "HOME", Res.drawable.ic_menu_home_activated, Res.drawable.ic_menu_home_default)
-    object Store : BottomNavItem("스토어", "STORE", Res.drawable.ic_menu_store_activated, Res.drawable.ic_menu_store_default)
-    object PickUp : BottomNavItem("수거신청", "PICKUP", Res.drawable.ic_menu_laundry_activated, Res.drawable.ic_menu_laundry_default)
-    object My : BottomNavItem("My", "MY", Res.drawable.ic_menu_my_activated, Res.drawable.ic_menu_my_default)
+    object Home : BottomNavItem("홈", "Home", Res.drawable.ic_menu_home_activated, Res.drawable.ic_menu_home_default)
+    object Store : BottomNavItem("스토어", "Store", Res.drawable.ic_menu_store_activated, Res.drawable.ic_menu_store_default)
+    object Laundry : BottomNavItem("수거신청", "Laundry", Res.drawable.ic_menu_laundry_activated, Res.drawable.ic_menu_laundry_default)
+    object My : BottomNavItem("My", "My", Res.drawable.ic_menu_my_activated, Res.drawable.ic_menu_my_default)
 }
 
 private val navItems = listOf(
     BottomNavItem.Home,
     BottomNavItem.Store,
-    BottomNavItem.PickUp,
+    BottomNavItem.Laundry,
     BottomNavItem.My,
 )
-
-
-
 
 @Composable
 fun BottomAppBarContainer(

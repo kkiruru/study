@@ -9,15 +9,13 @@ import androidx.compose.ui.Modifier
 
 
 @Composable
-fun HomeScreen(
-    index: Int,
-) {
+fun HomeScreen() {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "HomeScreen $index"
+            text = "HomeScreen"
         )
     }
 }
