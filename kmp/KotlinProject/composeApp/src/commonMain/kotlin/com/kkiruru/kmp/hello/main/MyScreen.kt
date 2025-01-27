@@ -1,4 +1,4 @@
-package com.kkiruru.kmp.hello
+package com.kkiruru.kmp.hello.main
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 
 
 @Composable
-fun LaundryScreen(
+fun MyScreen(
     index: Int,
 ) {
     Box(
@@ -17,7 +17,7 @@ fun LaundryScreen(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "LaundryScreen $index"
+            text = "MyScreen $index"
         )
     }
 }
