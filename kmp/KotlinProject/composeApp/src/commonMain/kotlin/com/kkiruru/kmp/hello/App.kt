@@ -12,25 +12,15 @@ import com.kkiruru.kmp.hello.main.MainScreenRoute
 import io.github.aakira.napier.Napier
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-
 object AppMainDestinations {
     const val Intro = "Intro"
     const val Main = "Main"
+    const val OnBoarding = "OnBoarding"
 }
 
 open class Route(
     val route: String
 )
-//
-//sealed class AppRoute {
-//    data object Intro: Route("intro")
-//    data object Main: Route("Main") {
-//        data object Home: Route("Home")
-//        data object Store: Route("Store")
-//        data object Laundry: Route("Laundry")
-//        data object My: Route("My")
-//    }
-//}
 
 @Composable
 @Preview

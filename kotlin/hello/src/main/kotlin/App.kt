@@ -103,30 +103,30 @@ open class Out {
 }
 
 
-class Other : Out() {
-    init {
-        println(aaa)
-        println(bbb)
-        println(ccc)
-        println(ddd)
-        val i = In()
-        println(i.e)
-    }
+//class Other : Out() {
+//    init {
+//        println(aaa)
+//        println(bbb)
+//        println(ccc)
+//        println(ddd)
+//        val i = In()
+//        println(i.e)
+//    }
+//
+//    override val bbb: Int = 22
+//}
 
-    override val bbb: Int = 22
-}
 
-
-class Other2(o: Out) {
-    init {
-        println(o.aaa)
-        println(o.bbb)
-        println(o.ccc)
-        println(o.ddd)
-        val i = o.In()
-        println(i.e)
-    }
-}
+//class Other2(o: Out) {
+//    init {
+//        println(o.aaa)
+//        println(o.bbb)
+//        println(o.ccc)
+//        println(o.ddd)
+//        val i = o.In()
+//        println(i.e)
+//    }
+//}
 
 private fun Double.kg(): String {
     try {

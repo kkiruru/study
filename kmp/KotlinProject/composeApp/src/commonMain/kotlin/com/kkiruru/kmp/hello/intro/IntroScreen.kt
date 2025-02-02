@@ -9,7 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import com.kkiruru.kmp.hello.LColor
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -32,7 +32,7 @@ fun IntroScreen(
     }
 
     Box(
-        modifier = Modifier.fillMaxSize().background(Color.Green),
+        modifier = Modifier.fillMaxSize().background(LColor.Green),
         contentAlignment = Alignment.Center
     ) {
         Text(
