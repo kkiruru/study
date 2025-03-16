@@ -26,28 +26,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BringIntoViewActivity"
+            android:name=".ui.BringIntoViewActivity"
             android:exported="false" />
         <activity
-            android:name=".NestedScrollActivity"
+            android:name=".ui.NestedScrollActivity"
             android:exported="false" />
         <activity
-            android:name=".TransitionActivity"
+            android:name=".ui.TransitionActivity"
             android:exported="false" />
         <activity
-            android:name=".BackdropScaffoldActivity"
+            android:name=".ui.BackdropScaffoldActivity"
             android:exported="false" />
         <activity
-            android:name=".BackdropScaffold2Activity"
+            android:name=".ui.BackdropScaffold2Activity"
             android:exported="false" />
         <activity
-            android:name=".ArgumentActivity"
+            android:name=".ui.ArgumentActivity"
             android:exported="false" />
         <activity
-            android:name=".BottomSheetDialogActivity"
+            android:name=".ui.BottomSheetDialogActivity"
             android:exported="false" />
         <activity
-            android:name=".ModalBottomSheetActivity"
+            android:name=".ui.ModalBottomSheetActivity"
             android:exported="false" />
 
         <activity
@@ -57,22 +57,22 @@
             android:name=".viewpager.ViewPager2Activity"
             android:exported="false" />
         <activity
-            android:name=".FlexibleSheetActivity"
+            android:name=".ui.FlexibleSheetActivity"
             android:exported="false" />
         <activity
             android:name=".flexiblesheet.DraggableActivity"
             android:exported="false" />
         <activity
-            android:name=".SwipeableActivity"
+            android:name=".ui.SwipeableActivity"
             android:exported="false" />
         <activity
             android:name=".overflow.OverflowDetectingActivity"
             android:exported="false" />
         <activity
-            android:name=".ConstraintActivity"
+            android:name=".ui.ConstraintActivity"
             android:exported="false" />
         <activity
-            android:name=".FontStyleActivity"
+            android:name=".ui.FontStyleActivity"
             android:exported="false" />
         <activity
             android:name=".textfield.TextFieldActivity"

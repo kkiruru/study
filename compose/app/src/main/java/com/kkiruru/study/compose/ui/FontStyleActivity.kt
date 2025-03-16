@@ -1,4 +1,4 @@
-package com.kkiruru.study.compose
+package com.kkiruru.study.compose.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -8,12 +8,7 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.getValue
@@ -25,8 +20,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 
-class TransitionActivity : ComponentActivity() {
+class FontStyleActivity : ComponentActivity() {
 
+
+    //https://android-developers.googleblog.com/2022/05/whats-new-in-jetpack-compose.html
+    //https://medium.com/androiddevelopers/fixing-font-padding-in-compose-text-768cd232425b
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -35,8 +33,7 @@ class TransitionActivity : ComponentActivity() {
                 var initPosition by remember { mutableStateOf(1.0f) }
                 val animatePosition by animateFloatAsState(
                     targetValue = initPosition,
-                    animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing),
-                    label = ""
+                    animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
                 )
 
                 ConstraintLayout(

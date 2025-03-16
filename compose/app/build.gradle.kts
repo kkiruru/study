@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.kkiruru.study.compose"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.kkiruru.study.compose"

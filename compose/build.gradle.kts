@@ -5,4 +5,3 @@ plugins {
     alias(libs.plugins.hilt) apply false
     id("com.google.devtools.ksp") version "1.9.25-1.0.20" apply false
 }
-

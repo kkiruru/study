@@ -1,4 +1,4 @@
-package com.kkiruru.study.compose
+package com.kkiruru.study.compose.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
+import com.kkiruru.study.compose.R
 import kotlinx.coroutines.launch
 
 class BringIntoViewActivity : ComponentActivity() {

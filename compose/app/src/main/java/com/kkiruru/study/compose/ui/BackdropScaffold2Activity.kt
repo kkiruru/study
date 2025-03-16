@@ -1,4 +1,4 @@
-package com.kkiruru.study.compose
+package com.kkiruru.study.compose.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

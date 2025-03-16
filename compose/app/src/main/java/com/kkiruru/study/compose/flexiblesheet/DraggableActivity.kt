@@ -58,7 +58,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
-import com.kkiruru.study.compose.FlexibleSheetApp
+import com.kkiruru.study.compose.ui.FlexibleSheetApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
