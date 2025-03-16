@@ -58,7 +58,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
-import com.kkiruru.study.compose.ui.FlexibleSheetApp
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -289,15 +289,7 @@ private fun FrontLayer(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun DefaultBackdropBottomSheet(
-    modifier: Modifier = Modifier
-) {
-    MaterialTheme {
-        FlexibleSheetApp()
-    }
-}
+
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

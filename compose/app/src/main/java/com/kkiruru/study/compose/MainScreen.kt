@@ -14,8 +14,17 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.kkiruru.study.compose.ui.ArgumentScreenRoute
+import com.kkiruru.study.compose.ui.BackdropScaffoldScreen2Route
+import com.kkiruru.study.compose.ui.BackdropScaffoldScreenRoute
+import com.kkiruru.study.compose.ui.BottomSheetDialogScreenRoute
 import com.kkiruru.study.compose.ui.BringIntoViewRoute
+import com.kkiruru.study.compose.ui.ConstraintSheetScreenRoute
+import com.kkiruru.study.compose.ui.FlexibleSheetScreenRoute
+import com.kkiruru.study.compose.ui.FontStyleScreenRoute
+import com.kkiruru.study.compose.ui.ModalBottomSheetScreenRoute
 import com.kkiruru.study.compose.ui.NestedScrollRoute
+import com.kkiruru.study.compose.ui.TransitionScreenRoute
 import com.kkiruru.study.compose.ui.coordinator.CoordinatorRoute
 
 
@@ -24,6 +33,15 @@ enum class ExampleDestinations(val description: String = "") {
     REGISTER_ADDRESS("CoordinatorLayout to Compose"),
     BRING_INTO_VIEW("BringIntoView"),
     NESTED_SCROLL("Nested Scroll"),
+    TRANSITION("Transition"),
+    BACK_DROP_SCAFFOLD("BackdropScaffold"),
+    BACK_DROP_SCAFFOLD2("BackdropScaffold2"),
+    ARGUMENT("Argument"),
+    BOTTOM_SHEET_DIALOG("BottomSheetDialog"),
+    CONSTRAINT_SHEET("CONSTRAINT_SHEET"),
+    FLEXIBLE_SHEET("FlexibleSheet"),
+    FONT_STYLE("FONT_STYLE"),
+    MODAL_BOTTOM_SHEET("ModalBottomSheet"),
 }
 
 @Composable
@@ -68,6 +86,53 @@ fun MainNavHost(
         ){
             NestedScrollRoute()
         }
+        composable(
+            ExampleDestinations.TRANSITION.toString(),
+        ){
+            TransitionScreenRoute()
+        }
+        composable(
+            ExampleDestinations.BACK_DROP_SCAFFOLD.toString(),
+        ){
+            BackdropScaffoldScreenRoute()
+        }
+        composable(
+            ExampleDestinations.BACK_DROP_SCAFFOLD.toString(),
+        ){
+            BackdropScaffoldScreen2Route()
+        }
+        composable(
+            ExampleDestinations.ARGUMENT.toString(),
+        ){
+            ArgumentScreenRoute()
+        }
+        composable(
+            ExampleDestinations.BOTTOM_SHEET_DIALOG.toString(),
+        ){
+            BottomSheetDialogScreenRoute()
+        }
+        composable(
+            ExampleDestinations.CONSTRAINT_SHEET.toString(),
+        ){
+            ConstraintSheetScreenRoute()
+        }
+        composable(
+            ExampleDestinations.FLEXIBLE_SHEET.toString(),
+        ){
+            FlexibleSheetScreenRoute()
+        }
+        composable(
+            ExampleDestinations.FONT_STYLE.toString(),
+        ){
+            FontStyleScreenRoute()
+        }
+        composable(
+            ExampleDestinations.MODAL_BOTTOM_SHEET.toString(),
+        ){
+            ModalBottomSheetScreenRoute()
+        }
+
+
     }
 }
 
@@ -111,30 +176,6 @@ private fun MainScreen(
         }
 
 //        item {
-//            Button(onClick = {
-//                startActivity(
-//                    Intent(this@MainActivity, TransitionActivity::class.java)
-//                )
-//            }) {
-//                Text(text = "transition")
-//            }
-//
-//            Button(onClick = {
-//                startActivity(
-//                    Intent(this@MainActivity, BackdropScaffoldActivity::class.java)
-//                )
-//            }) {
-//                Text(text = "backDrop")
-//            }
-//
-//            Button(onClick = {
-//                startActivity(
-//                    Intent(this@MainActivity, BackdropScaffold2Activity::class.java)
-//                )
-//            }) {
-//                Text(text = "backDrop2")
-//            }
-//
 //            Button(onClick = {
 //                startActivity(
 //                    Intent(this@MainActivity, ArgumentActivity::class.java)

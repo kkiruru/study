@@ -297,15 +297,7 @@ private fun FrontLayer(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun DefaultBackdropBottomSheet(
-    modifier: Modifier = Modifier
-) {
-    MaterialTheme {
-        FlexibleSheetApp()
-    }
-}
+
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable

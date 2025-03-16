@@ -1,13 +1,11 @@
 package com.kkiruru.study.compose.ui
 
-import android.os.Bundle
 import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.draggable
-import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +25,7 @@ import androidx.compose.material.BackdropScaffoldDefaults
 import androidx.compose.material.BackdropScaffoldState
 import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.Icon
 import androidx.compose.material.ListItem
 import androidx.compose.material.Surface
@@ -34,9 +33,11 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.rememberBackdropScaffoldState
+import androidx.compose.material.swipeable
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,141 +49,107 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class ConstraintActivity : ComponentActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            MaterialTheme {
-                ConstraintSheetApp()
-            }
-        }
-    }
-}
-
-@Preview(showBackground = true)
 @Composable
-private fun DefaultBackdropBottomSheet(
-    modifier: Modifier = Modifier
-) {
-    MaterialTheme {
-        ConstraintSheetApp()
-    }
+fun FlexibleSheetScreenRoute() {
+    FlexibleSheetScreen(
+
+    )
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ConstraintSheetApp(
+fun FlexibleSheetScreen(
     modifier: Modifier = Modifier,
     scope: CoroutineScope = rememberCoroutineScope()
+
 ) {
-
-    ConstraintLayout(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color(0xFFCCCCCC))
+    Column(
+        modifier = modifier.fillMaxSize(),
     ) {
-        val (header, main, footer) = createRefs()
-
-
-        val barrier = createTopBarrier(footer)
-
         val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
         var title by remember { mutableStateOf("") }
         val titleValue by rememberUpdatedState(newValue = title)
 
 
-        var collapsed by remember { mutableStateOf(false) }
+        var collapsed by remember { mutableStateOf(true) }
         val collapsedValue by rememberUpdatedState(newValue = collapsed)
 
-        Box(modifier = Modifier
-            .constrainAs(header) {
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                top.linkTo(parent.top)
-            }) {
-            Text(
-                modifier = Modifier,
-                text = "타이틀: $titleValue",
-                style = MaterialTheme.typography.titleLarge,
-                color = Color(0xFF212121),
-                fontWeight = FontWeight.W600
-            )
-        }
-
-        BackdropBottomSheet(
-            modifier = Modifier
-                .constrainAs(main) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    top.linkTo(header.bottom)
-                    bottom.linkTo(barrier)
-                    height = Dimension.fillToConstraints
-                },
-            backLayerContent = { BackLayer() },
-            frontLayerContent = { FrontLayer() },
-            scaffoldState = scaffoldState,
-            collapsed = collapsed,
+        Text(
+            text = "타이틀: $titleValue",
+            style = MaterialTheme.typography.titleLarge ,
+            color = Color(0xFF212121),
+            fontWeight = FontWeight.W600
         )
 
+        CollectionDetailScreen(
+            modifier = Modifier.weight(1f),
+            scaffoldState = scaffoldState,
+            collapsed = collapsedValue,
+        )
 
-        Box(modifier = Modifier
-            .constrainAs(footer) {
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                bottom.linkTo(parent.bottom)
-            }
+        Row (
+            modifier = Modifier
+                .height(56.dp)
+                .fillMaxWidth()
+                .background(color = Color.Gray)
         ) {
-            Row(
-                modifier = Modifier
-                    .wrapContentHeight()
-                    .fillMaxWidth()
-                    .background(color = Color.Gray)
-            ) {
-                Button(onClick = {
+            Button(onClick = {
                     scope.launch {
                         scaffoldState.reveal()
                     }
-                    title = "펼치기"
-                    collapsed = false
-                }
-                ) {
-                    Text(
-                        text = "펼치기",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = Color(0xFF212121),
-                        fontWeight = FontWeight.W600
-                    )
-                }
-                Button(onClick = {
-                    scope.launch {
-                        scaffoldState.conceal()
-                    }
-                    title = "접기"
-                    collapsed = true
-                }
-                ) {
-                    Text(
-                        text = "접기",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = Color(0xFF212121),
-                        fontWeight = FontWeight.W600
-                    )
-                }
-
+                title = "펼치기"
+                collapsed = false
             }
-        }
+            ) {
+                Text(
+                    text = "펼치기",
+                    style = MaterialTheme.typography.titleMedium ,
+                    color = Color(0xFF212121),
+                    fontWeight = FontWeight.W600
+                )
+            }
+            Button(onClick = {
+                scope.launch {
+                    scaffoldState.conceal()
+                }
+                title = "접기"
+                collapsed = true
+            }
+            ) {
+                Text(
+                    text = "접기",
+                    style = MaterialTheme.typography.titleMedium ,
+                    color = Color(0xFF212121),
+                    fontWeight = FontWeight.W600
+                )
+            }
+
+       }
     }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun CollectionDetailScreen(
+    modifier: Modifier = Modifier,
+    scaffoldState: BackdropScaffoldState,
+    collapsed: Boolean = false,
+) {
+    BackdropBottomSheet(
+        modifier = modifier,
+        backLayerContent = { BackLayer() },
+        frontLayerContent = { FrontLayer() },
+        scaffoldState = scaffoldState,
+        collapsed = collapsed,
+    )
 }
 
 
@@ -210,7 +177,7 @@ private fun BackLayer(
                         spotColor = Color(0x40939393),
                     )
             ) {
-                Column(
+                Column (
                     modifier = Modifier
                         .height(100.dp)
                         .padding(all = 15.dp),
@@ -235,7 +202,7 @@ private fun BackLayer(
                         spotColor = Color(0x40939393),
                     )
             ) {
-                Column(
+                Column (
                     modifier = Modifier
                         .height(84.dp)
                         .padding(all = 15.dp),
@@ -261,8 +228,7 @@ private fun FrontLayer(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Color(0xFFA35EF3))
-            .padding(top = 20.dp, bottom = 5.dp)
+            .padding(top = 20.dp)
     ) {
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -275,10 +241,9 @@ private fun FrontLayer(
         Spacer(modifier = Modifier.height(30.dp))
 
         LazyColumn(
-            state = lazyListState,
-            modifier = Modifier.background(color = Color(0xFFA3F35E))
+            state = lazyListState
         ) {
-            items(20) {
+            items(5) {
                 ListItem(
                     text = { Text("Item $it") },
                     icon = {
@@ -292,6 +257,8 @@ private fun FrontLayer(
         }
     }
 }
+
+
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -317,6 +284,8 @@ private fun BackdropBottomSheet(
     }
 
     Box(modifier = modifier
+        .fillMaxWidth()
+        .fillMaxHeight()
         .background(color = Color(0xFF68CFA4))
         .onGloballyPositioned { coordinates ->
             // Set column height using the LayoutCoordinates
@@ -344,7 +313,7 @@ private fun BackdropBottomSheet(
 
         Column(
             modifier = Modifier
-                .fillMaxHeight()
+                .wrapContentHeight()
                 .fillMaxWidth()
                 .align(Alignment.TopCenter)
                 .onGloballyPositioned { coordinates ->
@@ -361,10 +330,11 @@ private fun BackdropBottomSheet(
         val COLLAPSED_HEIGHT = backdropLayerHeightDp - backLayerHeightDp
         val REVEALED_HEIGHT = backdropLayerHeightDp - headerHeight
 
-        val targetHeight = if (collapsed) COLLAPSED_HEIGHT else REVEALED_HEIGHT
+        val targetHeight = if(collapsed) COLLAPSED_HEIGHT else REVEALED_HEIGHT
+
         var currentHeight by remember { mutableStateOf(initHeightDp) }
 
-        frontHeightDp = if (collapsed) {
+        frontHeightDp = if(collapsed) {
             backdropLayerHeightDp - backLayerHeightDp
         } else {
             backdropLayerHeightDp - headerHeight
@@ -372,15 +342,35 @@ private fun BackdropBottomSheet(
 
         Log.e("tag", ">>> scaffoldState ${scaffoldState.currentValue}")
 
-        val draggableState = rememberDraggableState(
-            onDelta = { delta ->
-                currentHeight -= with(localDensity) { delta.toDp() }
+        val animatePosition by animateDpAsState(
+            targetValue = targetHeight,
+            animationSpec = tween(durationMillis = 150, easing = FastOutSlowInEasing),
+            label = "frontLayerHeight",
+            finishedListener = {
+                Log.e("tag", "__ finishedListener: ${it}.dp")
             }
         )
 
+        val swipeableState = androidx.compose.material.rememberSwipeableState(initialValue = 0)
+        val point = LocalDensity.current.run { LocalConfiguration.current.screenHeightDp.dp.toPx() }
+        val anchors = mapOf(0f to 0, -point to 1)
+
+        if (swipeableState.isAnimationRunning) {
+            DisposableEffect(Unit) {
+                onDispose {
+                    // -point로 설정한 앵커에 도달하면 currentValue가 1이 됨
+                    if (swipeableState.currentValue == 1) {
+                        // 애니메이션이 끝나고 실행될 코드
+                        Log.e("tag", "__ swipeableState.currentValue == 1")
+                    }
+                }
+            }
+        }
+
+
         Box(
             modifier = Modifier
-                .height(currentHeight)
+                .height(animatePosition)
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
                 .background(color = Color(0xFF5EA3F3))
@@ -389,15 +379,32 @@ private fun BackdropBottomSheet(
                     frontLayerHeightPx = coordinates.size.height.toFloat()
                     frontLayerHeightDp = with(localDensity) { coordinates.size.height.toDp() }
                 }
-                .draggable(
-                    state = draggableState,
+                .swipeable(
+                    state = swipeableState,
                     orientation = Orientation.Vertical,
-                    onDragStarted = { Log.e("tag", "__ onDragStarted") },
-                    onDragStopped = { Log.e("tag", "__ onDragStopped") },
+                    anchors = anchors,
+                    thresholds = { _, _ -> FractionalThreshold(0.8f) },
+                    velocityThreshold = 1000.dp
                 )
         ) {
             frontLayerContent()
         }
+
+//        Column(
+//            modifier = Modifier
+//                .height(animatePosition)
+//                .align(Alignment.BottomCenter)
+//                .fillMaxWidth()
+//                .background(color = Color(0xFF5EA3F3))
+//                .onGloballyPositioned { coordinates ->
+//                    // Set column height using the LayoutCoordinates
+//                    frontLayerHeightPx = coordinates.size.height.toFloat()
+//                    frontLayerHeightDp = with(localDensity) { coordinates.size.height.toDp() }
+//                }
+//        ) {
+//            frontLayerContent()
+//        }
+
 
         // debug 정보
         Column(
@@ -425,4 +432,5 @@ private fun BackdropBottomSheet(
             )
         }
     }
+
 }

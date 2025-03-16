@@ -1,8 +1,5 @@
 package com.kkiruru.study.compose.ui
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,20 +23,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
-class ModalBottomSheetActivity : ComponentActivity() {
+@Composable
+fun ModalBottomSheetScreenRoute() {
+    ModalBottomSheetScreen(
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            ModalBottomSheetSample()
-        }
-    }
+    )
 }
 
-
-@Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun ModalBottomSheetSample() {
+@Composable
+private fun ModalBottomSheetScreen() {
     val sheetState = androidx.compose.material3.rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )

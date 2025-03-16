@@ -1,8 +1,5 @@
 package com.kkiruru.study.compose.ui
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
@@ -63,102 +60,103 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-class BackdropScaffold2Activity : ComponentActivity() {
+@Composable
+fun BackdropScaffoldScreen2Route() {
+    BackdropScaffoldScreen2()
+}
 
-    @OptIn(ExperimentalMaterialApi::class)
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterialApi::class)
+@Composable
+private fun BackdropScaffoldScreen2(
+) {
 
-            val scope = rememberCoroutineScope()
-            val selection = remember { mutableStateOf(1) }
-            val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
-            LaunchedEffect(scaffoldState) {
-                scaffoldState.reveal()
-            }
-            BackdropScaffold2(
-                scaffoldState = scaffoldState,
-                appBar = {
-                    TopAppBar(
-                        title = { Text("Backdrop scaffold") },
-                        navigationIcon = {
-                            if (scaffoldState.isConcealed) {
-                                IconButton(onClick = { scope.launch { scaffoldState.reveal() } }) {
-                                    Icon(Icons.Default.Menu, contentDescription = "Localized description")
-                                }
-                            } else {
-                                IconButton(onClick = { scope.launch { scaffoldState.conceal() } }) {
-                                    Icon(Icons.Default.Close, contentDescription = "Localized description")
-                                }
-                            }
-                        },
-                        actions = {
-                            var clickCount by remember { mutableStateOf(0) }
-                            IconButton(
-                                onClick = {
-                                    // show snackbar as a suspend function
-                                    scope.launch {
-                                        scaffoldState.snackbarHostState
-                                            .showSnackbar("Snackbar #${++clickCount}")
-                                    }
-                                }
-                            ) {
-                                Icon(Icons.Default.Favorite, contentDescription = "Localized description")
-                            }
-                        },
-                        elevation = 0.dp,
-                        backgroundColor = Color.Transparent
-                    )
-                },
-                backLayerContent = {
-                    LazyColumn {
-                        items(if (selection.value >= 3) 3 else 5) {
-                            ListItem(
-                                Modifier.clickable {
-                                    selection.value = it
-                                    scope.launch { scaffoldState.conceal() }
-                                },
-                                text = { Text("Select $it") }
-                            )
+    val scope = rememberCoroutineScope()
+    val selection = remember { mutableStateOf(1) }
+    val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
+    LaunchedEffect(scaffoldState) {
+        scaffoldState.reveal()
+    }
+    BackdropScaffold2(
+        scaffoldState = scaffoldState,
+        appBar = {
+            TopAppBar(
+                title = { Text("Backdrop scaffold") },
+                navigationIcon = {
+                    if (scaffoldState.isConcealed) {
+                        IconButton(onClick = { scope.launch { scaffoldState.reveal() } }) {
+                            Icon(Icons.Default.Menu, contentDescription = "Localized description")
+                        }
+                    } else {
+                        IconButton(onClick = { scope.launch { scaffoldState.conceal() } }) {
+                            Icon(Icons.Default.Close, contentDescription = "Localized description")
                         }
                     }
                 },
-                frontLayerShape = RoundedCornerShape(topStart = 0.dp, topEnd = 0.dp),
-                frontLayerBackgroundColor = Color.Transparent,
-                frontLayerElevation = 0.dp,
-                frontLayerScrimColor = Color.Unspecified,
-                frontLayerContent = {
-                    Column(
-                        modifier = Modifier
-                            .padding(top = 20.dp)
-                            .background(color = Color.White)
+                actions = {
+                    var clickCount by remember { mutableStateOf(0) }
+                    IconButton(
+                        onClick = {
+                            // show snackbar as a suspend function
+                            scope.launch {
+                                scaffoldState.snackbarHostState
+                                    .showSnackbar("Snackbar #${++clickCount}")
+                            }
+                        }
                     ) {
-                        Spacer(modifier = Modifier.height(30.dp))
-                        Text("Selection: ${selection.value}")
-                        LazyColumn {
-                            items(50) {
-                                ListItem(
-                                    text = { Text("Item $it") },
-                                    icon = {
-                                        Icon(
-                                            Icons.Default.Favorite,
-                                            contentDescription = "Localized description"
-                                        )
-                                    }
+                        Icon(Icons.Default.Favorite, contentDescription = "Localized description")
+                    }
+                },
+                elevation = 0.dp,
+                backgroundColor = Color.Transparent
+            )
+        },
+        backLayerContent = {
+            LazyColumn {
+                items(if (selection.value >= 3) 3 else 5) {
+                    ListItem(
+                        Modifier.clickable {
+                            selection.value = it
+                            scope.launch { scaffoldState.conceal() }
+                        },
+                        text = { Text("Select $it") }
+                    )
+                }
+            }
+        },
+        frontLayerShape = RoundedCornerShape(topStart = 0.dp, topEnd = 0.dp),
+        frontLayerBackgroundColor = Color.Transparent,
+        frontLayerElevation = 0.dp,
+        frontLayerScrimColor = Color.Unspecified,
+        frontLayerContent = {
+            Column(
+                modifier = Modifier
+                    .padding(top = 20.dp)
+                    .background(color = Color.White)
+            ) {
+                Spacer(modifier = Modifier.height(30.dp))
+                Text("Selection: ${selection.value}")
+                LazyColumn {
+                    items(50) {
+                        ListItem(
+                            text = { Text("Item $it") },
+                            icon = {
+                                Icon(
+                                    Icons.Default.Favorite,
+                                    contentDescription = "Localized description"
                                 )
                             }
-                        }
+                        )
                     }
                 }
-            )
+            }
         }
-    }
+    )
 }
 
 
 @Composable
 @ExperimentalMaterialApi
-fun BackdropScaffold2(
+private fun BackdropScaffold2(
     appBar: @Composable () -> Unit,
     backLayerContent: @Composable () -> Unit,
     frontLayerContent: @Composable () -> Unit,
@@ -269,11 +267,13 @@ fun BackdropScaffold2(
 //                color = frontLayerBackgroundColor,
 //                contentColor = frontLayerContentColor
 //            ) {
-                Box(
-                    Modifier.padding(bottom = peekHeight)
-                            .then(swipeable)
-                            .height(frontLayerHeight)) {
-                    frontLayerContent()
+            Box(
+                Modifier
+                    .padding(bottom = peekHeight)
+                    .then(swipeable)
+                    .height(frontLayerHeight)
+            ) {
+                frontLayerContent()
 //                    Scrim(
 //                        color = frontLayerScrimColor,
 //                        onDismiss = {
@@ -284,7 +284,7 @@ fun BackdropScaffold2(
 //                        },
 //                        visible = scaffoldState.targetValue == BackdropValue.Revealed
 //                    )
-                }
+            }
 //            }
 
             // Snackbar host
