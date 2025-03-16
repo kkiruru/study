@@ -26,12 +26,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.BringIntoViewActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.NestedScrollActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.TransitionActivity"
             android:exported="false" />
         <activity

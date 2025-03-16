@@ -14,12 +14,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.kkiruru.study.compose.ui.BringIntoViewRoute
+import com.kkiruru.study.compose.ui.NestedScrollRoute
 import com.kkiruru.study.compose.ui.coordinator.CoordinatorRoute
 
 
 enum class ExampleDestinations(val description: String = "") {
     MAIN_HOME,
     REGISTER_ADDRESS("CoordinatorLayout to Compose"),
+    BRING_INTO_VIEW("BringIntoView"),
+    NESTED_SCROLL("Nested Scroll"),
 }
 
 @Composable
@@ -36,8 +40,15 @@ fun MainNavHost(
         ){
             MainScreenRoute(
                 onNavigation  = {
-                    if (it != ExampleDestinations.MAIN_HOME.toString())
+                    if (it == ExampleDestinations.MAIN_HOME.toString()) {
+                        navHostController.navigate(it) {
+                            popUpTo(navHostController.graph.id) {
+                                inclusive = false
+                            }
+                        }
+                    } else {
                         navHostController.navigate(it)
+                    }
                 },
                 navHostController = navHostController,
             )
@@ -45,9 +56,17 @@ fun MainNavHost(
         composable(
             ExampleDestinations.REGISTER_ADDRESS.toString(),
         ){
-            CoordinatorRoute(
-
-            )
+            CoordinatorRoute()
+        }
+        composable(
+            ExampleDestinations.BRING_INTO_VIEW.toString(),
+        ){
+            BringIntoViewRoute()
+        }
+        composable(
+            ExampleDestinations.NESTED_SCROLL.toString(),
+        ){
+            NestedScrollRoute()
         }
     }
 }
@@ -92,22 +111,6 @@ private fun MainScreen(
         }
 
 //        item {
-//            Button(onClick = {
-//                startActivity(
-//                    Intent(this@MainActivity, BringIntoViewActivity::class.java)
-//                )
-//            }) {
-//                Text(text = "bring Into View")
-//            }
-//
-//            Button(onClick = {
-//                startActivity(
-//                    Intent(this@MainActivity, NestedScrollActivity::class.java)
-//                )
-//            }) {
-//                Text(text = "nested")
-//            }
-//
 //            Button(onClick = {
 //                startActivity(
 //                    Intent(this@MainActivity, TransitionActivity::class.java)
