@@ -15,6 +15,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
+
+//CoordinatorLayout 적용 예제
+//https://sukzoon1234.tistory.com/42
+
 @Composable
 fun CoordinatorRoute(
 
