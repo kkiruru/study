@@ -18,6 +18,7 @@ import com.kkiruru.study.compose.ui.ArgumentScreenRoute
 import com.kkiruru.study.compose.ui.BackdropScaffoldScreen2Route
 import com.kkiruru.study.compose.ui.BackdropScaffoldScreenRoute
 import com.kkiruru.study.compose.ui.BottomSheetDialogScreenRoute
+import com.kkiruru.study.compose.ui.BottomSheetScaffoldScreenRoute
 import com.kkiruru.study.compose.ui.BringIntoViewRoute
 import com.kkiruru.study.compose.ui.ConstraintSheetScreenRoute
 import com.kkiruru.study.compose.ui.FlexibleSheetScreenRoute
@@ -42,6 +43,7 @@ enum class ExampleDestinations(val description: String = "") {
     FLEXIBLE_SHEET("FlexibleSheet"),
     FONT_STYLE("FONT_STYLE"),
     MODAL_BOTTOM_SHEET("ModalBottomSheet"),
+    BOTTOM_SHEET_SCAFFOLD3("BottomSheetScaffold 3"),
 }
 
 @Composable
@@ -131,8 +133,11 @@ fun MainNavHost(
         ){
             ModalBottomSheetScreenRoute()
         }
-
-
+        composable(
+            ExampleDestinations.BOTTOM_SHEET_SCAFFOLD3.toString(),
+        ){
+            BottomSheetScaffoldScreenRoute()
+        }
     }
 }
 
