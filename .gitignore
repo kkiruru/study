@@ -64,3 +64,6 @@ _testmain.go
 flutter/HelloWorld/pubspec.lock
 *.lock
 *.lock
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies

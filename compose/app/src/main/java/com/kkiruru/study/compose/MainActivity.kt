@@ -72,7 +72,7 @@ class MainActivity : ComponentActivity() {
                                 Intent(this@MainActivity, NestedScrollActivity::class.java)
                             )
                         }) {
-                            Text(text = "nested")
+                            Text(text = "Nested Scroll")
                         }
 
                         Button(onClick = {

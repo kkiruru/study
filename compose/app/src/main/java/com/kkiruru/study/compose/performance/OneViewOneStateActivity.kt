@@ -20,11 +20,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 
-
-
 /*
 //  https://proandroiddev.com/improve-performance-in-jetpack-compose-via-one-view-one-state-pattern-ec9d808f4eaf
  */
+
 
 class OneViewOneStateActivity : ComponentActivity() {
 
