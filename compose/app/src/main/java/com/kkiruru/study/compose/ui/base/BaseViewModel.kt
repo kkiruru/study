@@ -1,4 +1,4 @@
-package com.kkiruru.study.compose.ui
+package com.kkiruru.study.compose.ui.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

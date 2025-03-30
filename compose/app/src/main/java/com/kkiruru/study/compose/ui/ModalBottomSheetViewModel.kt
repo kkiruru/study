@@ -2,6 +2,10 @@ package com.kkiruru.study.compose.ui
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.kkiruru.study.compose.ui.base.BaseViewModel
+import com.kkiruru.study.compose.ui.base.UiEffect
+import com.kkiruru.study.compose.ui.base.UiEvent
+import com.kkiruru.study.compose.ui.base.UiState
 import kotlinx.coroutines.launch
 
 class ModalBottomSheetViewModel : BaseViewModel<ModalBottomSheetEvent, ModalBottomSheetState, ModalBottomSheetEffect>() {
