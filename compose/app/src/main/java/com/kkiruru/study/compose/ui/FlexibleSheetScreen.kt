@@ -1,9 +1,6 @@
-package com.kkiruru.study.compose
+package com.kkiruru.study.compose.ui
 
-import android.os.Bundle
 import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
@@ -55,28 +52,21 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class FlexibleSheetActivity : ComponentActivity() {
+@Composable
+fun FlexibleSheetScreenRoute() {
+    FlexibleSheetScreen(
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            MaterialTheme {
-                FlexibleSheetApp()
-            }
-        }
-    }
+    )
 }
-
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun FlexibleSheetApp(
+fun FlexibleSheetScreen(
     modifier: Modifier = Modifier,
     scope: CoroutineScope = rememberCoroutineScope()
 
@@ -268,16 +258,6 @@ private fun FrontLayer(
     }
 }
 
-
-@Preview(showBackground = true)
-@Composable
-private fun DefaultBackdropBottomSheet(
-    modifier: Modifier = Modifier
-) {
-    MaterialTheme {
-        FlexibleSheetApp()
-    }
-}
 
 
 @OptIn(ExperimentalMaterialApi::class)

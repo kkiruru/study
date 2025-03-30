@@ -1,9 +1,6 @@
-package com.kkiruru.study.compose
+package com.kkiruru.study.compose.ui
 
-import android.os.Bundle
 import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
@@ -50,7 +47,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -58,31 +54,16 @@ import androidx.constraintlayout.compose.Dimension
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class ConstraintActivity : ComponentActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            MaterialTheme {
-                ConstraintSheetApp()
-            }
-        }
-    }
-}
-
-@Preview(showBackground = true)
 @Composable
-private fun DefaultBackdropBottomSheet(
-    modifier: Modifier = Modifier
-) {
-    MaterialTheme {
-        ConstraintSheetApp()
-    }
+fun ConstraintSheetScreenRoute() {
+    ConstraintSheetScreen(
+
+    )
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ConstraintSheetApp(
+fun ConstraintSheetScreen(
     modifier: Modifier = Modifier,
     scope: CoroutineScope = rememberCoroutineScope()
 ) {

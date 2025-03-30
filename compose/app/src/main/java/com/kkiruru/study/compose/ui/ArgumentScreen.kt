@@ -1,25 +1,20 @@
-package com.kkiruru.study.compose
+package com.kkiruru.study.compose.ui
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
@@ -31,48 +26,46 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
+import com.kkiruru.study.compose.R
 
-class ArgumentActivity : ComponentActivity() {
+@Composable
+fun ArgumentScreenRoute() {
+    ArgumentScreen()
+}
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterialApi::class)
+@Composable
+private fun ArgumentScreen(
+) {
+    MaterialTheme {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color(0xFFFAFAFA))
+                .statusBarsPadding()
+                .padding(horizontal = 20.dp)
+        ) {
+            AddressItem(Modifier)
 
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+            Spacer(modifier = Modifier.height(10.dp))
 
-        setContent {
-            MaterialTheme {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(color = Color(0xFFFAFAFA))
-                        .statusBarsPadding()
-                        .padding(horizontal = 20.dp)
-                ) {
-                    AddressItem(Modifier)
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    SubContent(
-                        modifier = Modifier
-                    ){
-                        Text(
-                            text = "배송지",
-                            color = Color(0xFF212121),
-                            fontWeight = FontWeight.W600
-                        )
-                        Text(
-                            modifier = Modifier.padding(top = 2.dp),
-                            text = "용산구 세탁로 1701, 런드리고 10층 1005호",
-                            color = Color(0xFF212121),
-                            fontWeight = FontWeight.W600
-                        )
-                    }
-
-                }
+            SubContent(
+                modifier = Modifier
+            ) {
+                Text(
+                    text = "배송지",
+                    color = Color(0xFF212121),
+                    fontWeight = FontWeight.W600
+                )
+                Text(
+                    modifier = Modifier.padding(top = 2.dp),
+                    text = "용산구 세탁로 1701, 런드리고 10층 1005호",
+                    color = Color(0xFF212121),
+                    fontWeight = FontWeight.W600
+                )
             }
+
         }
     }
 }
@@ -88,10 +81,10 @@ private fun DefaultPreview(
         Spacer(modifier = Modifier.height(10.dp))
         SubContent(
             modifier = Modifier
-        ){
+        ) {
             Text(
                 text = "배송지",
-                style = MaterialTheme.typography.titleLarge ,
+                style = MaterialTheme.typography.titleLarge,
                 color = Color(0xFF212121),
                 fontWeight = FontWeight.W600
             )
@@ -110,7 +103,6 @@ private fun DefaultPreview(
         }
     }
 }
-
 
 
 @Composable
@@ -134,7 +126,7 @@ private fun SubContent(
                 .padding(all = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Column (
+            Column(
                 modifier = Modifier.weight(1.0f),
             ) {
                 content()
@@ -170,7 +162,7 @@ fun AddressItem(
                 .padding(all = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Column (
+            Column(
                 modifier = Modifier.weight(1.0f),
             ) {
                 Text(

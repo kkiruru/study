@@ -25,30 +25,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".BringIntoViewActivity"
-            android:exported="false" />
-        <activity
-            android:name=".NestedScrollActivity"
-            android:exported="false" />
-        <activity
-            android:name=".TransitionActivity"
-            android:exported="false" />
-        <activity
-            android:name=".BackdropScaffoldActivity"
-            android:exported="false" />
-        <activity
-            android:name=".BackdropScaffold2Activity"
-            android:exported="false" />
-        <activity
-            android:name=".ArgumentActivity"
-            android:exported="false" />
-        <activity
-            android:name=".BottomSheetDialogActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ModalBottomSheetActivity"
-            android:exported="false" />
 
         <activity
             android:name=".viewpager.ViewPagerActivity"
@@ -57,22 +33,13 @@
             android:name=".viewpager.ViewPager2Activity"
             android:exported="false" />
         <activity
-            android:name=".FlexibleSheetActivity"
-            android:exported="false" />
-        <activity
             android:name=".flexiblesheet.DraggableActivity"
             android:exported="false" />
         <activity
-            android:name=".SwipeableActivity"
+            android:name=".ui.SwipeableActivity"
             android:exported="false" />
         <activity
             android:name=".overflow.OverflowDetectingActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ConstraintActivity"
-            android:exported="false" />
-        <activity
-            android:name=".FontStyleActivity"
             android:exported="false" />
         <activity
             android:name=".textfield.TextFieldActivity"

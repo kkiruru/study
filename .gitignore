@@ -67,3 +67,4 @@ flutter/HelloWorld/pubspec.lock
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
+/compose/.kotlin
