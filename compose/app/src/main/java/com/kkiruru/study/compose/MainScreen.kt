@@ -36,7 +36,7 @@ enum class ExampleDestinations(val description: String = "") {
     NESTED_SCROLL("Nested Scroll"),
     TRANSITION("Transition"),
     BACK_DROP_SCAFFOLD("BackdropScaffold"),
-    BACK_DROP_SCAFFOLD2("BackdropScaffold2"),
+    BACK_DROP_SCAFFOLD2("BackdropScaffold 2"),
     ARGUMENT("Argument"),
     BOTTOM_SHEET_DIALOG("BottomSheetDialog"),
     CONSTRAINT_SHEET("CONSTRAINT_SHEET"),
@@ -99,7 +99,7 @@ fun MainNavHost(
             BackdropScaffoldScreenRoute()
         }
         composable(
-            ExampleDestinations.BACK_DROP_SCAFFOLD.toString(),
+            ExampleDestinations.BACK_DROP_SCAFFOLD2.toString(),
         ){
             BackdropScaffoldScreen2Route()
         }
