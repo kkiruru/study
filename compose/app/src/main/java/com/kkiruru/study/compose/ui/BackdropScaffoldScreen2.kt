@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.offset
+import com.kkiruru.study.compose.ui.theme.LColor
 import kotlinx.coroutines.launch
 import kotlin.math.max
 import kotlin.math.min
@@ -72,7 +73,8 @@ private fun BackdropScaffoldScreen2(
 
     val scope = rememberCoroutineScope()
     val selection = remember { mutableStateOf(1) }
-    val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
+    val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed)
+
     LaunchedEffect(scaffoldState) {
         scaffoldState.reveal()
     }
@@ -111,14 +113,18 @@ private fun BackdropScaffoldScreen2(
             )
         },
         backLayerContent = {
-            LazyColumn {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize().background(color = Color.White)
+            ) {
                 items(if (selection.value >= 3) 3 else 5) {
                     ListItem(
                         Modifier.clickable {
                             selection.value = it
                             scope.launch { scaffoldState.conceal() }
                         },
-                        text = { Text("Select $it") }
+                        text = {
+                            Text("Select $it", color = Color.Black)
+                        }
                     )
                 }
             }
@@ -128,25 +134,25 @@ private fun BackdropScaffoldScreen2(
         frontLayerElevation = 0.dp,
         frontLayerScrimColor = Color.Unspecified,
         frontLayerContent = {
-            Column(
+            LazyColumn(
                 modifier = Modifier
                     .padding(top = 20.dp)
-                    .background(color = Color.White)
+                    .background(color = LColor.Gray400)
             ) {
-                Spacer(modifier = Modifier.height(30.dp))
-                Text("Selection: ${selection.value}")
-                LazyColumn {
-                    items(50) {
-                        ListItem(
-                            text = { Text("Item $it") },
-                            icon = {
-                                Icon(
-                                    Icons.Default.Favorite,
-                                    contentDescription = "Localized description"
-                                )
-                            }
-                        )
-                    }
+                item {
+                    Spacer(modifier = Modifier.height(30.dp))
+                    Text("Selection: ${selection.value}")
+                }
+                items(50) {
+                    ListItem(
+                        text = { Text("Item $it") },
+                        icon = {
+                            Icon(
+                                Icons.Default.Favorite,
+                                contentDescription = "Localized description"
+                            )
+                        }
+                    )
                 }
             }
         }
