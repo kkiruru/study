@@ -10,38 +10,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
-class WebViewScreen {
-}
-
-
-
-
-@Composable
-fun StoreScreen(
-    index: Int,
-) {
-
-    LaunchedEffect(Unit) {
-        Log.e("OtherScreen", "StoreScreen  LaunchedEffect")
-    }
-
-    DisposableEffect(Unit) {
-        onDispose {
-            Log.e("OtherScreen", "StoreScreen  DisposableEffect  onDispose")
-        }
-    }
-
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "StoreScreen $index"
-        )
-    }
-}
-
-
 
 @Composable
 fun MainScreen(

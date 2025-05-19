@@ -3,6 +3,7 @@ package com.kkiruru.study.compose.ui.webview
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.webkit.WebView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -23,18 +24,20 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ProvidedValue
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.kkiruru.study.compose.ExampleDestinations
-import com.kkiruru.study.compose.MainScreenRoute
 import com.kkiruru.study.compose.R
 
 
@@ -84,27 +87,41 @@ private val navItems = listOf(
     BottomNavItem.My,
 )
 
+internal object LocalWebOwner {
+    private val LocalComposition = staticCompositionLocalOf<WebView?> { null }
 
+    val current: WebView?
+        @Composable
+        get() = LocalComposition.current
+
+    infix fun provides(registerOwner: WebView?): ProvidedValue<WebView?> =
+        LocalComposition provides registerOwner
+}
 
 @Composable
 fun NavigationGraph(
     navHostController: NavHostController,
 ) {
-    NavHost(
-        navController = navHostController,
-        startDestination = BottomNavItem.Home.screenRoute,
+    val context = LocalContext.current
+    CompositionLocalProvider(
+        LocalWebOwner provides WebView(context)
     ) {
-        composable(BottomNavItem.Home.screenRoute) {
-            MainScreen(1)
-        }
-        composable(BottomNavItem.Store.screenRoute) {
-            StoreScreen(2)
-        }
-        composable(BottomNavItem.PickUp.screenRoute) {
-            LaundryScreen(3)
-        }
-        composable(BottomNavItem.My.screenRoute) {
-            MyScreen(4)
+        NavHost(
+            navController = navHostController,
+            startDestination = BottomNavItem.Home.screenRoute,
+        ) {
+            composable(BottomNavItem.Home.screenRoute) {
+                MainScreen(1)
+            }
+            composable(BottomNavItem.Store.screenRoute) {
+                StoreScreenRoute(2)
+            }
+            composable(BottomNavItem.PickUp.screenRoute) {
+                LaundryScreen(3)
+            }
+            composable(BottomNavItem.My.screenRoute) {
+                MyScreen(4)
+            }
         }
     }
 }
