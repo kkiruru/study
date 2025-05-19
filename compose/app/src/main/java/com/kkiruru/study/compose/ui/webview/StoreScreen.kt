@@ -3,7 +3,6 @@ package com.kkiruru.study.compose.ui.webview
 import android.annotation.SuppressLint
 import android.net.http.SslError
 import android.os.Bundle
-import android.util.Log
 import android.webkit.SslErrorHandler
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
@@ -15,11 +14,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -29,11 +26,9 @@ import androidx.compose.ui.viewinterop.AndroidView
 
 @Composable
 fun StoreScreenRoute(
-//    webView: WebView,
-    index: Int,
 ) {
     StoreScreen(
-//        webView = webView,
+        key = "store",
         onLoadedPage = {},
     )
 }
@@ -42,95 +37,54 @@ fun StoreScreenRoute(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun StoreScreen(
-//    webView: WebView,
-//    url: String = "",
+    key: String,
     onLoadedPage: () -> Unit,
     chromeClient: WebChromeClient = remember { object : WebChromeClient() {} },
     client: WebViewClient = remember { object : WebViewClient() {} },
 ){
+    val webView = LocalWebOwner.current
 
-
-    val url by rememberUpdatedState(newValue = "https://m.naver.com/")
-
-    val password by rememberSaveable { mutableStateOf("https://m.naver.com/") }
-
-
-    val context = LocalContext.current
-//    val webView = LocalWebOwner.current
-    val webView = rememberWebView()
-//
-    LaunchedEffect(key1 = password) {
-        Log.e("", "LaunchedEffect ${password}")
-        webView?.loadUrl(url)
+    var canGoBack by remember {
+        mutableStateOf(false)
     }
 
-    AndroidView(
+    BackHandler(canGoBack) {
+        webView?.goBack()
+    }
+
+    Box(
         modifier = Modifier.fillMaxSize(),
-        factory = { webView },
-    )
-//
-//
-//    Box {
-//        webView?.let {
-//            AndroidView(
-////            modifier = Modifier.fillMaxSize(),
-//                factory = { context ->
-//                    webView
-//                }
-//            )
-//        }
+    ) {
+        webView?.let {
+            AndroidView(
+                modifier = Modifier.fillMaxSize(),
+                factory = {
+                    webView
+                },
+            )
+        }
+//        WebView(
+//            key = "store",
+//        )
+
+    }
+
+//    val savedBundle: Bundle = rememberSaveable(key) { Bundle() }
+//    var canGoBack by remember {
+//        mutableStateOf(true)
 //    }
-
-
-//    BoxWithConstraints(
-//        modifier = Modifier
-//            .fillMaxSize()
-//    ) {
-//        // WebView changes it's layout strategy based on
-//        // it's layoutParams. We convert from Compose Modifier to
-//        // layout params here.
-//        val width = if (constraints.hasFixedWidth) {
-//            ViewGroup.LayoutParams.MATCH_PARENT
-//        } else {
-//            ViewGroup.LayoutParams.WRAP_CONTENT
-//        }
-//        val height = if (constraints.hasFixedHeight) {
-//            ViewGroup.LayoutParams.MATCH_PARENT
-//        } else {
-//            ViewGroup.LayoutParams.WRAP_CONTENT
-//        }
-//
-//        val layoutParams = FrameLayout.LayoutParams(
-//            width,
-//            height
-//        )
-//
-////        var webView by remember { mutableStateOf<WebView?>(null) }
-//
-//
-//        LaunchedEffect(key1 = Unit) {
-//            webView?.loadUrl("https://m.naver.com/")
-//        }
-//        AndroidView(
+//    webView?.let {
+//        WebViewInternal(
 //            modifier = Modifier.fillMaxSize(),
-//            factory = { webView }
-//        )
-//        AndroidView(
-//            factory = {
-//                webView
-//            },
-//            update = {
-//                Log.i("TEMP", "AndroidView update - $webView")
-//            },
-//            onRelease = { parentFrame ->
-//                Log.i("TEMP", "AndroidView onRelease - $webView")
-//                (parentFrame.children.first() as? WebView)?.let {
-//                    parentFrame.removeView(it)
-//                }
+//            webView = it,
+//            canGoBack = canGoBack,
+//            onDispose = {
+//                webView.saveState(savedBundle)
+//                webView.destroy()
 //            }
 //        )
-    }
-//}
+//    }
+}
 
 @Composable
 fun WebView(
@@ -143,19 +97,19 @@ fun WebView(
     var canGoBack by remember {
         mutableStateOf(false)
     }
-    val webView = remember(key) {
-        WebView(context).apply {
-            loadUrl("https://m.naver.com")
-        }
-    }
+//    val webView = remember(key) {
+//        WebView(context).apply {
+//            loadUrl("https://m.naver.com")
+//        }
+//    }
 
     WebViewInternal(
         modifier = modifier,
-        webView = webView,
+        webView = rememberWebView(),
         canGoBack = canGoBack,
         onDispose = {
-            webView.saveState(savedBundle)
-            webView.destroy()
+//            webView.saveState(savedBundle)
+//            webView.destroy()
         }
     )
 }

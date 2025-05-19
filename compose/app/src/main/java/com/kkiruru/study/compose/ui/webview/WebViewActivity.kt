@@ -2,8 +2,12 @@ package com.kkiruru.study.compose.ui.webview
 
 import android.content.Context
 import android.content.Intent
+import android.net.http.SslError
 import android.os.Bundle
+import android.webkit.SslErrorHandler
+import android.webkit.WebSettings
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -103,8 +107,21 @@ fun NavigationGraph(
     navHostController: NavHostController,
 ) {
     val context = LocalContext.current
+
     CompositionLocalProvider(
-        LocalWebOwner provides WebView(context)
+        LocalWebOwner provides WebView(context).apply {
+            settings.apply {
+                javaScriptEnabled = true
+                domStorageEnabled = true
+                mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+            }
+            webViewClient = object : WebViewClient() {
+                override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
+                    handler?.proceed()
+                }
+            }
+            loadUrl("https://m.naver.com")
+        }
     ) {
         NavHost(
             navController = navHostController,
@@ -114,7 +131,7 @@ fun NavigationGraph(
                 MainScreen(1)
             }
             composable(BottomNavItem.Store.screenRoute) {
-                StoreScreenRoute(2)
+                StoreScreenRoute()
             }
             composable(BottomNavItem.PickUp.screenRoute) {
                 LaundryScreen(3)
