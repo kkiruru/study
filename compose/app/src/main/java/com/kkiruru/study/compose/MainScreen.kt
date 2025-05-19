@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,6 +29,7 @@ import com.kkiruru.study.compose.ui.ModalBottomSheetScreenRoute2
 import com.kkiruru.study.compose.ui.NestedScrollRoute
 import com.kkiruru.study.compose.ui.TransitionScreenRoute
 import com.kkiruru.study.compose.ui.coordinator.CoordinatorRoute
+import com.kkiruru.study.compose.ui.webview.WebViewActivity
 
 
 enum class ExampleDestinations(val description: String = "") {
@@ -46,6 +48,7 @@ enum class ExampleDestinations(val description: String = "") {
     MODAL_BOTTOM_SHEET("ModalBottomSheet"),
     MODAL_BOTTOM_SHEET2("ModalBottomSheet2"),
     BOTTOM_SHEET_SCAFFOLD3("BottomSheetScaffold 3"),
+    WEB_VIEW("WEB_VIEW"),
 }
 
 @Composable
@@ -53,6 +56,9 @@ fun MainNavHost(
     startDestination: String = ExampleDestinations.MAIN_HOME.toString(),
     navHostController: NavHostController = rememberNavController(),
 ) {
+
+    val context = LocalContext.current
+
     NavHost(
         navController = navHostController,
         startDestination = startDestination,
@@ -62,15 +68,32 @@ fun MainNavHost(
         ) {
             MainScreenRoute(
                 onNavigation = {
-                    if (it == ExampleDestinations.MAIN_HOME.toString()) {
-                        navHostController.navigate(it) {
-                            popUpTo(navHostController.graph.id) {
-                                inclusive = false
+                    when(it) {
+                        ExampleDestinations.WEB_VIEW.toString() -> {
+                            WebViewActivity.startActivity(context)
+                        }
+
+                        ExampleDestinations.MAIN_HOME.toString() -> {
+                            navHostController.navigate(it) {
+                                popUpTo(navHostController.graph.id) {
+                                    inclusive = false
+                                }
                             }
                         }
-                    } else {
-                        navHostController.navigate(it)
+
+                        else -> {
+                            navHostController.navigate(it)
+                        }
                     }
+//                    if (it == ExampleDestinations.MAIN_HOME.toString()) {
+//                        navHostController.navigate(it) {
+//                            popUpTo(navHostController.graph.id) {
+//                                inclusive = false
+//                            }
+//                        }
+//                    } else {
+//                        navHostController.navigate(it)
+//                    }
                 },
                 navHostController = navHostController,
             )

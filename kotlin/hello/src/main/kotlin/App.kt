@@ -59,6 +59,21 @@ fun main() {
 
     val h = 4.6
     println("next ${h.kg}")
+
+
+// 사용 예시
+    val num = 42317
+    val strArray = intToStringArray(num)
+
+
+    strArray.forEach {
+        println(" ${it}")
+    }
+
+    val foo = List<Int>(5){0}
+
+    val bar = foo[1]
+    println("bar ${bar}")
 }
 
 
@@ -146,4 +161,8 @@ private fun Double.kg(): String {
     } catch (e: NumberFormatException) {
         return "0"
     }
+}
+
+fun intToStringArray(number: Int): Array<String> {
+    return number.toString().map { it.toString() }.toTypedArray()
 }

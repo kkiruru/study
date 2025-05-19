@@ -49,6 +49,9 @@
         <activity
             android:name=".performance.PerformanceActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.webview.WebViewActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
