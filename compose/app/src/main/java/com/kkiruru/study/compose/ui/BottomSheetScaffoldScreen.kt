@@ -1,6 +1,5 @@
 package com.kkiruru.study.compose.ui
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -63,15 +62,15 @@ private fun BottomSheetScaffoldScreen(
     )
 
 //    LaunchedEffect(scaffoldState.bottomSheetState) {
-        Log.e(
-            "BottomSheetScaffold",
-            "scaffoldState.bottomSheetState " +
-            "${scaffoldState.bottomSheetState.currentValue}" +
-            "/${scaffoldState.bottomSheetState.targetValue}" +
-            "/${scaffoldState.bottomSheetState.isVisible}" +
-            "/${scaffoldState.bottomSheetState.hasExpandedState}" +
-            "/${scaffoldState.bottomSheetState.hasPartiallyExpandedState}"
-        )
+//        Log.e(
+//            "BottomSheetScaffold",
+//            "scaffoldState.bottomSheetState " +
+//            "${scaffoldState.bottomSheetState.currentValue}" +
+//            "/${scaffoldState.bottomSheetState.targetValue}" +
+//            "/${scaffoldState.bottomSheetState.isVisible}" +
+//            "/${scaffoldState.bottomSheetState.hasExpandedState}" +
+//            "/${scaffoldState.bottomSheetState.hasPartiallyExpandedState}"
+//        )
 //    }
 
     BottomSheetScaffold(

@@ -1,6 +1,7 @@
 package com.kkiruru.study.compose
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -19,6 +20,7 @@ import com.kkiruru.study.compose.ui.ArgumentScreenRoute
 import com.kkiruru.study.compose.ui.BackdropScaffoldScreen2Route
 import com.kkiruru.study.compose.ui.BackdropScaffoldScreenRoute
 import com.kkiruru.study.compose.ui.BottomSheetDialogScreenRoute
+import com.kkiruru.study.compose.ui.BottomSheetOnWebViewScreenRoute
 import com.kkiruru.study.compose.ui.BottomSheetScaffoldScreenRoute
 import com.kkiruru.study.compose.ui.BringIntoViewRoute
 import com.kkiruru.study.compose.ui.ConstraintSheetScreenRoute
@@ -47,6 +49,8 @@ enum class ExampleDestinations(val description: String = "") {
     MODAL_BOTTOM_SHEET("ModalBottomSheet"),
     BOTTOM_SHEET_SCAFFOLD3("BottomSheetScaffold 3"),
     WEB_VIEW("WEB_VIEW"),
+
+    BOTTOM_SHEET_ON_WEB_VIEW("bottomSheet on WebView"),
 }
 
 @Composable
@@ -152,9 +156,13 @@ fun MainNavHost(
         ){
             BottomSheetScaffoldScreenRoute()
         }
+        composable(
+            ExampleDestinations.BOTTOM_SHEET_ON_WEB_VIEW.toString(),
+        ){
+            BottomSheetOnWebViewScreenRoute()
+        }
     }
 }
-
 
 
 @Composable
@@ -178,6 +186,7 @@ private fun MainScreen(
     LazyColumn(
         modifier = Modifier
             .statusBarsPadding()
+            .navigationBarsPadding()
             .fillMaxSize(),
         state = state,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -193,165 +202,5 @@ private fun MainScreen(
                 }
             }
         }
-
-//        item {
-//            Button(onClick = {
-//                startActivity(
-//                    Intent(this@MainActivity, ArgumentActivity::class.java)
-//                )
-//            }) {
-//                Text(text = "argument")
-//            }
-//
-//            Button(onClick = {
-//                startActivity(
-//                    Intent(this@MainActivity, BottomSheetDialogActivity::class.java)
-//                )
-//            }) {
-//                Text(
-//                    text = "BottomSheetDialog",
-//                    modifier = Modifier,
-//                    color = Color.White,
-//                )
-//            }
-//            Button(onClick = {
-//                startActivity(
-//                    Intent(this@MainActivity, ModalBottomSheetActivity::class.java)
-//                )
-//            }) {
-//                Text(
-//                    text = "ModalBottomSheet",
-//                    modifier = Modifier,
-//                    color = Color.White,
-//                )
-//            }
-//
-//            Button(onClick = {
-//                startActivity(
-//                    Intent(this@MainActivity, ViewPagerActivity::class.java)
-//                )
-//            }) {
-//                Text(text = "ViewPagerActivity")
-//            }
-//
-//            Button(onClick = {
-//                startActivity(
-//                    Intent(this@MainActivity, ViewPager2Activity::class.java)
-//                )
-//            }) {
-//                Text(
-//                    text = "ViewPager2",
-//                    modifier = Modifier,
-//                    color = Color.White,
-//                    fontSize = 18.sp
-//                )
-//            }
-//
-//            Button(onClick = {
-//                startActivity(
-//                    Intent(this@MainActivity, FlexibleSheetActivity::class.java)
-//                )
-//            }) {
-//                Text(
-//                    text = "FlexibleSheet",
-//                    modifier = Modifier,
-//                    color = Color.White,
-//                    fontSize = 18.sp
-//                )
-//            }
-//
-//            Button(onClick = {
-//                startActivity(
-//                    Intent(this@MainActivity, DraggableActivity::class.java)
-//                )
-//            }) {
-//                Text(
-//                    text = "Draggable",
-//                    modifier = Modifier,
-//                    color = Color.White,
-//                    fontSize = 18.sp
-//                )
-//            }
-//
-//            Button(onClick = {
-//                startActivity(
-//                    Intent(this@MainActivity, SwipeableActivity::class.java)
-//                )
-//            }) {
-//                Text(
-//                    text = "Swipeable",
-//                    modifier = Modifier,
-//                    color = Color.White,
-//                    fontSize = 18.sp
-//                )
-//            }
-//
-//            Button(onClick = {
-//                startActivity(
-//                    Intent(this@MainActivity, OverflowDetectingActivity::class.java)
-//                )
-//            }) {
-//                Text(
-//                    text = "Overflow",
-//                    modifier = Modifier,
-//                    color = Color.White,
-//                    fontSize = 18.sp
-//                )
-//            }
-//
-//            Button(onClick = {
-//                startActivity(
-//                    Intent(this@MainActivity, ConstraintActivity::class.java)
-//                )
-//            }) {
-//                Text(
-//                    text = "Constraint",
-//                    modifier = Modifier,
-//                    color = Color.White,
-//                    fontSize = 18.sp
-//                )
-//            }
-//
-//            Button(onClick = {
-//                startActivity(
-//                    Intent(this@MainActivity, FontStyleActivity::class.java)
-//                )
-//            }) {
-//                Text(
-//                    text = "FontStyle",
-//                    modifier = Modifier,
-//                    color = Color.White,
-//                    fontSize = 18.sp
-//                )
-//            }
-//
-//            Button(onClick = {
-//                startActivity(
-//                    Intent(this@MainActivity, TextFieldActivity::class.java)
-//                )
-//            }) {
-//                Text(
-//                    text = "TextField",
-//                    modifier = Modifier,
-//                    color = Color.White,
-//                    fontSize = 18.sp
-//                )
-//            }
-//
-//            Button(onClick = {
-//                startActivity(
-//                    Intent(this@MainActivity, PerformanceActivity::class.java)
-//                )
-//            }) {
-//                Text(
-//                    text = "Performance",
-//                    modifier = Modifier,
-//                    color = Color.White,
-//                    fontSize = 18.sp
-//                )
-//            }
-//            SwipeableSample()
-//        }
     }
-
 }
