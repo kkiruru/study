@@ -13,7 +13,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,7 +20,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
@@ -53,11 +51,10 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import com.kkiruru.study.compose.ui.theme.LColor
 import kotlinx.coroutines.launch
 
 
-// WebViewActivity.kt에서 참조한 LocalWebOwner는 여기서는 직접 관리하므로 제거합니다.
-// import com.kkiruru.study.compose.ui.webview.LocalWebOwner
 @Composable
 fun BottomSheetOnWebViewScreenRoute() {
     BottomSheetOnWebViewScreen()
@@ -70,8 +67,10 @@ private fun BottomSheetOnWebViewScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
-    val sheetState = rememberModalBottomSheetState()
-    var openAlertDialog = remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = false
+    )
+    val openAlertDialog = remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -93,20 +92,17 @@ private fun BottomSheetOnWebViewScreen(
 
     if (showBottomSheet) {
         ModalBottomSheet(
-            modifier = Modifier.fillMaxHeight(),
+            modifier = Modifier.fillMaxWidth(),
             sheetState = sheetState,
             onDismissRequest = {
-                Log.e(">>>>>>>", ">>>>>>>  onDismissRequest")
                 showBottomSheet = false
             }
         ) {
             BottomSheetScreen(
                 onClickDialog = {
                     coroutineScope.launch {
-                        Log.e(">>>>>>>", ">>>>>>>  onClickClose")
                         sheetState.hide()
                     }.invokeOnCompletion {
-                        Log.e(">>>>>>>", ">>>>>>>  invokeOnCompletion")
                         if (!sheetState.isVisible) {
                             showBottomSheet = false
                         }
@@ -119,7 +115,7 @@ private fun BottomSheetOnWebViewScreen(
 
     when {
         openAlertDialog.value -> {
-            AlertDialogExample(
+            AlertDialogContainer(
                 onDismissRequest = { openAlertDialog.value = false },
                 onConfirmation = {
                     openAlertDialog.value = false
@@ -134,8 +130,9 @@ private fun BottomSheetOnWebViewScreen(
 
 }
 
+
 @Composable
-fun AlertDialogExample(
+private fun AlertDialogContainer(
     onDismissRequest: () -> Unit,
     onConfirmation: () -> Unit,
     dialogTitle: String,
@@ -233,59 +230,44 @@ private fun MainContentContainer(
 private fun BottomSheetScreen(
     onClickDialog : () -> Unit,
 ) {
-    LazyColumn {
-        // the first item that is visible
-        item {
-            Box(
-                modifier = Modifier
-                    .height(56.dp)
-                    .fillMaxWidth()
-                    .background(color = Color.White)
-            ) {
-                Text(
-                    text = "Swipe up to Expand the sheet",
-                    modifier = Modifier.align(alignment = Alignment.Center),
-                    color = Color.Black
-                )
-            }
-
-            Button(
-                modifier = Modifier.padding(vertical = 20.dp),
-                onClick = {
-                    onClickDialog.invoke()
-                }) {
-                Text("Click to show Dialog")
-            }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .background(color = LColor.White)
+    ) {
+        Box(
+            modifier = Modifier
+                .height(56.dp)
+                .fillMaxWidth()
+                .background(color = Color.White)
+        ) {
+            Text(
+                text = "Swipe up to Expand the sheet",
+                modifier = Modifier.align(alignment = Alignment.Center),
+                color = Color.Black
+            )
         }
 
-        item {
-            Box(
-                modifier = Modifier
-                    .height(156.dp)
-                    .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.primary)
-            ) {
-                LazyColumn {
-                    items(count = 5) {
-
-                    }
-                }
-            }
+        Button(
+            modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
+            onClick = {
+                onClickDialog.invoke()
+            }) {
+            Text("Click to show Dialog")
         }
 
-        item {
-            Box(
-                modifier = Modifier
-                    .height(56.dp)
-                    .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.primary)
-            ) {
-                Text(
-                    text = "하단 UI",
-                    modifier = Modifier.align(alignment = Alignment.Center),
-                    color = Color.White
-                )
-            }
+        Box(
+            modifier = Modifier
+                .height(56.dp)
+                .fillMaxWidth()
+                .background(color = MaterialTheme.colorScheme.primary)
+        ) {
+            Text(
+                text = "하단 UI",
+                modifier = Modifier.align(alignment = Alignment.Center),
+                color = Color.White
+            )
         }
     }
 }

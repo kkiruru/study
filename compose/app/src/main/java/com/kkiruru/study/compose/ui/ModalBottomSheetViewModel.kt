@@ -44,6 +44,16 @@ class ModalBottomSheetViewModel : BaseViewModel<ModalBottomSheetEvent, ModalBott
             ModalBottomSheetEvent.OnDismissBottomSheetRequest -> {
                 hideBottomSheet()
             }
+
+            ModalBottomSheetEvent.ShowSecondBottomSheetRequest -> {
+                viewModelScope.launch {
+                    setState {
+                        copy (
+                            bottomSheetUiState = BottomSheetState.SecondSheet(message = "Hi")
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -64,6 +74,7 @@ sealed class ModalBottomSheetEvent : UiEvent {
     object OnFirstClicked : ModalBottomSheetEvent()
     data class OnSecondClicked(val message: String) : ModalBottomSheetEvent()
     data object OnDismissBottomSheetRequest: ModalBottomSheetEvent()
+    data object ShowSecondBottomSheetRequest: ModalBottomSheetEvent()
 }
 
 data class ModalBottomSheetState(

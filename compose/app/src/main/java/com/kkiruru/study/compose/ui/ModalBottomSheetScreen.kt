@@ -1,11 +1,12 @@
 package com.kkiruru.study.compose.ui
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Button
@@ -70,12 +71,21 @@ private fun ModalBottomSheetScreen(
             }
             showBottomSheet = true
         } else {
+
+            Log.e("ModalBottomSheetScreen", "BottomSheetState.None")
+            Log.e("ModalBottomSheetScreen", "__ sheetState ${sheetState.isVisible}")
+            Log.e("ModalBottomSheetScreen", "__ showBottomSheet ${showBottomSheet}")
+
             scope.launch {
+                Log.e("ModalBottomSheetScreen", "____ sheetState.hide()")
                 sheetState.hide()
             }.invokeOnCompletion {
+                Log.e("ModalBottomSheetScreen", "____ invokeOnCompletion")
                 if (!sheetState.isVisible) {
+                    Log.e("ModalBottomSheetScreen", ">>>> invokeOnCompletion: showBottomSheet = false")
                     showBottomSheet = false
                 }
+                showBottomSheet = false
             }
         }
     }
@@ -107,11 +117,17 @@ private fun ModalBottomSheetScreen(
             }
         }
 
+
+        Log.e("ModalBottomSheetScreen", "showBottomSheet ${showBottomSheet}")
+
         if (showBottomSheet) {
             ModalBottomSheet(
-                modifier = Modifier.fillMaxHeight(),
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .heightIn(min = 150.dp),
                 sheetState = sheetState,
                 onDismissRequest = {
+                    Log.e("ModalBottomSheetScreen", "onDismissRequest >> onEvent.invoke(OnDismissBottomSheetRequest)")
                     onEvent.invoke(ModalBottomSheetEvent.OnDismissBottomSheetRequest)
                 }
             ) {
@@ -147,22 +163,40 @@ private fun BottomSheetContainer(
                     "FirstSheet",
                     modifier = Modifier.padding(16.dp)
                 )
+
                 Button(onClick = {
-                    scope.launch { sheetState.hide() }.invokeOnCompletion {
-                        if (!sheetState.isVisible) {
-                            onEvent.invoke(ModalBottomSheetEvent.OnDismissBottomSheetRequest)
-                        }
+                    scope.launch {
+                        onEvent.invoke(ModalBottomSheetEvent.OnDismissBottomSheetRequest)
                     }
                 }) {
                     Text("Hide bottom sheet")
                 }
+
+                Button(onClick = {
+//                    scope.launch {
+//                        onEvent.invoke(ModalBottomSheetEvent.ShowSecondBottomSheetRequest)
+//                    }
+
+                    scope.launch {
+                        sheetState.hide()
+                    }.invokeOnCompletion {
+                        Log.e("ModalBottomSheetScreen", "____ invokeOnCompletion")
+                        if (!sheetState.isVisible) {
+                            Log.e("ModalBottomSheetScreen", ">>>> invokeOnCompletion: showBottomSheet = false")
+                            onEvent.invoke(ModalBottomSheetEvent.ShowSecondBottomSheetRequest)
+                        }
+                    }
+                }) {
+                    Text("Second Sheet")
+                }
+
             }
         }
 
         is BottomSheetState.SecondSheet -> {
             Column(
                 modifier = Modifier
-                    .wrapContentHeight()
+                    .heightIn(200.dp)
                     .fillMaxWidth()
             ) {
                 Text(text = "222222 ${bottomSheet.message}",
