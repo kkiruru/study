@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
 // iOS 플랫폼별 기능을 사용하기 위해 필요
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 import 'dart:io';
@@ -51,7 +52,7 @@ class _CommonWebViewWidgetState extends State<CommonWebViewWidget> {
     }
 
     final WebViewController controller =
-    WebViewController.fromPlatformCreationParams(params);
+        WebViewController.fromPlatformCreationParams(params);
 
     controller
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -97,14 +98,14 @@ Page resource error:
           },
         ),
       )
-      ..addJavaScriptChannel( // 필요 시 JavaScript 채널 추가
+      ..addJavaScriptChannel(
+        // 필요 시 JavaScript 채널 추가
         'FlutterBridge',
         onMessageReceived: (JavaScriptMessage message) {
           print('onMessageReceived: ${message.message}');
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message.message)),
-          );
-
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(message.message)));
 
           final msg = message.message;
 
@@ -193,15 +194,10 @@ Page resource error:
       body: Stack(
         children: [
           WebViewWidget(controller: _controller!),
-          if (isLoading)
-            const Center(
-              child: CircularProgressIndicator(),
-            ),
+          if (isLoading) const Center(child: CircularProgressIndicator()),
           if (Platform.isIOS && _isRefreshing)
             const Positioned.fill(
-              child: Center(
-                child: CupertinoActivityIndicator(radius: 15.0),
-              ),
+              child: Center(child: CupertinoActivityIndicator(radius: 15.0)),
             ),
         ],
       ),
