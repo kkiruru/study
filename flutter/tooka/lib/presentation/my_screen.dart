@@ -60,7 +60,7 @@ class _MyScreenState extends State<MyScreen> {
           ],
         ),
         body: CommonWebViewWidget(
-          initialUrl: 'https://m.naver.com',
+          initialUrl: 'https://v2webapp.laundry24.kr/home',
           enablePopGesture: true, // iOS 스와이프 제스처 활성화
           onPop: () {
             // 커스텀 뒤로가기 동작
