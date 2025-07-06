@@ -103,6 +103,7 @@ Page resource error:
         'FlutterBridge',
         onMessageReceived: (JavaScriptMessage message) {
           print('onMessageReceived: ${message.message}');
+
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(message.message)));
@@ -110,6 +111,11 @@ Page resource error:
           final msg = message.message;
 
           switch (msg) {
+            case 'goBack':
+              print('___ goBack');
+              _handleBackPress();
+              break;
+
             default:
               if (msg.startsWith('push:')) {
                 _handlePushNavigation(msg);
@@ -154,6 +160,9 @@ Page resource error:
   Future<bool> _handleBackPress() async {
     if (_controller != null) {
       final canGoBack = await _controller!.canGoBack();
+
+      print('_handleBackPress ___ canGoBack ${canGoBack}');
+
       if (canGoBack) {
         // WebView 히스토리가 있으면 뒤로가기
         await _controller!.goBack();
