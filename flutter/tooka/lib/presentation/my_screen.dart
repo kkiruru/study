@@ -1,7 +1,7 @@
-// my_widget.dart
+// my_screen.dart
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../widgets/common_webview_widget.dart'; // 경로 확인
+import 'widgets/common_webview_widget.dart'; // 경로 확인
 import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:io';
 

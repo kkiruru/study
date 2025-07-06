@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../widgets/common_webview_widget.dart';
+import '../widgets/common_webview_widget.dart';
 
 class ThirdTabWidget extends StatelessWidget {
   const ThirdTabWidget({super.key});

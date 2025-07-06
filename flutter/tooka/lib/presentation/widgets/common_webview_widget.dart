@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-// iOS 플랫폼별 기능을 사용하기 위해 필요
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 class CommonWebViewWidget extends StatefulWidget {
   final String initialUrl;
