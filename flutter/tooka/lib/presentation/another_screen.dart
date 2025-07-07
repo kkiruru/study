@@ -9,7 +9,7 @@ class AnotherScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Another Widget'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Colors.blue,
       ),
       body: Center(
         child: Column(

@@ -1,18 +1,19 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
-import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
-import 'dart:async';
 
 class CommonWebViewWidget extends StatefulWidget {
   final String initialUrl;
   final String? title;
-  final Color backgroundColor = Colors.white;
+  final Color backgroundColor;
   final Function(WebViewController)? onWebViewCreated;
-  final Function()? onWebViewCanGoBackChanged;
+  final Function(bool)? onWebViewCanGoBackChanged;
+  final Function(String)? onError;
   final bool enablePopGesture;
   final VoidCallback? onPop;
 
@@ -24,6 +25,8 @@ class CommonWebViewWidget extends StatefulWidget {
     this.onWebViewCanGoBackChanged,
     this.enablePopGesture = false,
     this.onPop,
+    this.onError,
+    this.backgroundColor = Colors.white,
   });
 
   @override
@@ -34,9 +37,6 @@ class _CommonWebViewWidgetState extends State<CommonWebViewWidget> {
   WebViewController? _controller;
   bool _isRefreshing = false;
   bool _isLoading = true; // 로딩 상태 관리
-  bool _hasError = false; // 에러 상태 관리
-  bool _canGoBack = false;
-  String? _errorMessage; // 에러 메시지
   Timer? _timeoutTimer; // 타임아웃 타이머
 
   @override
@@ -80,7 +80,6 @@ class _CommonWebViewWidgetState extends State<CommonWebViewWidget> {
           onPageStarted: (String url) {
             print('onPageStarted : $url');
             _setLoadingState(true);
-            _setErrorState(false);
             _startTimeoutTimer();
           },
           onPageFinished: (String url) async {
@@ -95,8 +94,8 @@ class _CommonWebViewWidgetState extends State<CommonWebViewWidget> {
                 _isRefreshing = false;
               });
             }
-            _updateCanGoBack();
-            widget.onWebViewCanGoBackChanged?.call();
+            final canGoBack = await _controller!.canGoBack();
+            widget.onWebViewCanGoBackChanged?.call(canGoBack);
           },
           onWebResourceError: (WebResourceError error) {
             print('WebResourceError: ${error.description}');
@@ -135,23 +134,13 @@ class _CommonWebViewWidgetState extends State<CommonWebViewWidget> {
     }
   }
 
-  // 에러 상태 설정
-  void _setErrorState(bool hasError, {String? message}) {
-    if (mounted) {
-      setState(() {
-        _hasError = hasError;
-        _errorMessage = message;
-        _isLoading = false;
-      });
-    }
-  }
 
   // 타임아웃 타이머 시작
   void _startTimeoutTimer() {
     _timeoutTimer?.cancel();
     _timeoutTimer = Timer(const Duration(seconds: 30), () {
       if (_isLoading) {
-        _setErrorState(true, message: '페이지 로딩 시간이 초과되었습니다.');
+        widget.onError?.call('페이지 로딩 시간이 초과되었습니다.');
       }
     });
   }
@@ -241,8 +230,7 @@ class _CommonWebViewWidgetState extends State<CommonWebViewWidget> {
         }
         break;
     }
-    
-    _setErrorState(true, message: errorMessage);
+    widget.onError?.call(errorMessage);
   }
 
   // JavaScript 메시지 처리
@@ -266,35 +254,23 @@ class _CommonWebViewWidgetState extends State<CommonWebViewWidget> {
     context.push('/web-view/$encodedUrl');
   }
 
-  // WebView 뒤로가기 가능 여부 업데이트
-  Future<void> _updateCanGoBack() async {
-    if (_controller != null) {
-      final canGoBack = await _controller!.canGoBack();
-      if (mounted) {
-        setState(() {
-          _canGoBack = canGoBack;
-        });
-      }
-    }
-  }
-
   // 뒤로가기 처리
   Future<bool> _handleBackPress() async {
     if (_controller != null) {
       final canGoBack = await _controller!.canGoBack();
-
       print('_handleBackPress ___ canGoBack ${canGoBack}');
-
       if (canGoBack) {
         // WebView 히스토리가 있으면 뒤로가기
         await _controller!.goBack();
-        _updateCanGoBack(); // 상태 업데이트
+
+        widget.onWebViewCanGoBackChanged?.call(canGoBack);
         return false; // PopScope가 처리하지 않도록
       } else {
         // WebView 히스토리가 없으면 위젯 팝
         if (widget.onPop != null) {
           widget.onPop!();
         }
+        widget.onWebViewCanGoBackChanged?.call(canGoBack);
         return true; // PopScope가 처리하도록
       }
     }
@@ -341,32 +317,7 @@ class _CommonWebViewWidgetState extends State<CommonWebViewWidget> {
                 ],
               ),
             ),
-          
-          // 에러 화면
-          if (_hasError)
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.error_outline, size: 64, color: Colors.red),
-                  const SizedBox(height: 16),
-                  Text(
-                    _errorMessage ?? '오류가 발생했습니다.',
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      _setErrorState(false);
-                      _controller?.reload();
-                    },
-                    child: const Text('다시 시도'),
-                  ),
-                ],
-              ),
-            ),
-          
+
           // iOS 새로고침 인디케이터
           if (Platform.isIOS && _isRefreshing)
             const Positioned.fill(

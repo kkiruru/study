@@ -15,6 +15,8 @@ class MyScreen extends StatefulWidget {
 class _MyScreenState extends State<MyScreen> {
   WebViewController? _webViewController;
   bool _canGoBack = false;
+  bool _hasError = false;
+  String? _errorMessage = null;
 
   @override
   Widget build(BuildContext context) {
@@ -59,24 +61,67 @@ class _MyScreenState extends State<MyScreen> {
             ),
           ],
         ),
-        body: CommonWebViewWidget(
-          initialUrl: 'https://v2webapp.laundry24.kr/home',
-          enablePopGesture: true, // iOS 스와이프 제스처 활성화
-          onPop: () {
-            // 커스텀 뒤로가기 동작
-            print('MyWidget onPop callback');
-            context.pop();
-          },
-          onWebViewCreated: (controller) {
-            print('MyWidget: WebView Created with webview_flutter');
-            _webViewController = controller;
-            _updateCanGoBack();
-          },
-          onWebViewCanGoBackChanged: () {
-            print('MyWidget: WebView canGoBack status changed (webview_flutter).');
-            _updateCanGoBack();
-          },
-        )
+        body:  Stack(
+          children: [
+            CommonWebViewWidget(
+              initialUrl: 'https://v2webapp.laundry24.kr/home',
+              enablePopGesture: true, // iOS 스와이프 제스처 활성화
+              onPop: () {
+                // 커스텀 뒤로가기 동작
+                print('MyWidget onPop callback');
+                context.pop();
+              },
+              onWebViewCreated: (controller) {
+                print('MyWidget: WebView Created with webview_flutter');
+                _webViewController = controller;
+                _updateCanGoBack();
+              },
+              onWebViewCanGoBackChanged: (canGoBack) {
+                print('MyWidget: WebView canGoBack status changed (webview_flutter).');
+                _updateCanGoBack();
+              },
+              onError: (message) {
+                setState(() {
+                  if (message.isNotEmpty) {
+                    _hasError = true;
+                    _errorMessage = message;
+                  } else {
+                    _hasError = false;
+                    _errorMessage = null;
+                  }
+                });
+              },
+            ),
+            // 에러 화면
+            if (_hasError)
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                    const SizedBox(height: 16),
+                    Text(
+                      _errorMessage ?? '오류가 발생했습니다.',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                            _hasError = false;
+                            _errorMessage = null;
+                          }
+                        );
+                        _webViewController?.reload();
+                      },
+                      child: const Text('다시 시도'),
+                    ),
+                  ],
+                ),
+              ),
+          ]
+        ),
       )
     );
 
