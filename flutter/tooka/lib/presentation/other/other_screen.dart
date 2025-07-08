@@ -4,21 +4,21 @@ import 'package:go_router/go_router.dart';
 
 import '../my/my_screen.dart';
 
-class AnotherScreen extends StatelessWidget {
-  const AnotherScreen({super.key});
+class OtherScreen extends StatelessWidget {
+  const OtherScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Another Widget'),
+        title: const Text('Other Screen'),
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () {
             context.pop();
           },
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.greenAccent,
       ),
       body: Center(
         child: Column(
@@ -92,35 +92,9 @@ class AnotherScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
               ),
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                context.push('/main/other/bar');
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-              ),
-              child: const Text(
-                'push /main/other/bar',
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                context.go('/main/other/bar');
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-              ),
-              child: const Text(
-                'go /main/other/bar',
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
           ],
         ),
       ),
     );
   }
-} 
+}

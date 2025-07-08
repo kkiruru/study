@@ -7,6 +7,8 @@ import 'package:tooka/presentation/another/foo_screen.dart';
 import 'package:tooka/presentation/error/error_screen.dart';
 import 'package:tooka/presentation/main/main_screen.dart';
 import 'package:tooka/presentation/my/my_screen.dart';
+import 'package:tooka/presentation/other/bar_screen.dart';
+import 'package:tooka/presentation/other/other_screen.dart';
 import 'package:tooka/presentation/splash/splash_screen.dart';
 import 'package:tooka/presentation/webview/web_view_screen.dart';
 
@@ -54,6 +56,36 @@ class AppRouter {
                   pageBuilder: (context, state) => MaterialPage(
                     fullscreenDialog: true,
                     child: FooScreen(),
+                  ),
+                ),
+              ]
+          ),
+          GoRoute(
+              path: '/other',
+              pageBuilder: (context, state) {
+                return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: const OtherScreen(),
+                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                      const begin = Offset(0.0, 1.0);
+                      const end = Offset.zero;
+                      const curve = Curves.easeInOut;
+
+                      final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                      final offsetAnimation = animation.drive(tween);
+
+                      return SlideTransition(
+                        position: offsetAnimation,
+                        child: child,
+                      );
+                    });
+              },
+              routes: [
+                GoRoute(
+                  path: '/bar',
+                  pageBuilder: (context, state) => MaterialPage(
+                    fullscreenDialog: true,
+                    child: BarScreen(),
                   ),
                 ),
               ]

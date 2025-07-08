@@ -54,7 +54,21 @@ class SecondTabWidget extends StatelessWidget {
               'Navigator.push AnotherScreen',
               style: TextStyle(fontSize: 16),
             ),
-          ),        ],
+          ),
+          const SizedBox(height: 30),
+          ElevatedButton(
+            onPressed: () {
+              context.push('/main/another/foo');
+            },
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+            ),
+            child: const Text(
+              'go /main/another/foo',
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+        ],
       ),
     );
   }

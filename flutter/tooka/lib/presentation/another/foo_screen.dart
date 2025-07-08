@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tooka/presentation/another/baz_screen.dart';
 
 class FooScreen extends StatelessWidget {
   const FooScreen({super.key});
@@ -23,22 +24,20 @@ class FooScreen extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                context.push('/my-widget');
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.red,
+                  builder: (_) => BazScreen(),
+                );
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
               ),
               child: const Text(
-                'Go to My Widget',
+                'showModalBottomSheet',
                 style: TextStyle(fontSize: 16),
               ),
-            ),
-            const SizedBox(height: 20),
-            TextButton(
-              onPressed: () {
-                context.go('/main');
-              },
-              child: const Text('go /main'),
             ),
           ],
         ),
