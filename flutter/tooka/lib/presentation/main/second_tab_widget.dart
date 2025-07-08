@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+import '../another/another_screen.dart';
 
 class SecondTabWidget extends StatelessWidget {
   const SecondTabWidget({super.key});
@@ -25,17 +28,33 @@ class SecondTabWidget extends StatelessWidget {
           const SizedBox(height: 30),
           ElevatedButton(
             onPressed: () {
-              context.push('/another');
+              context.push('/main/another');
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
             ),
             child: const Text(
-              'Go to Another Screen',
+              'Go to push /main/another',
               style: TextStyle(fontSize: 16),
             ),
           ),
-        ],
+          const SizedBox(height: 30),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push<bool>(
+                CupertinoPageRoute(
+                  builder: (_) => AnotherScreen(),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+            ),
+            child: const Text(
+              'Navigator.push AnotherScreen',
+              style: TextStyle(fontSize: 16),
+            ),
+          ),        ],
       ),
     );
   }

@@ -1,7 +1,7 @@
 // my_screen.dart
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'widgets/common_webview_widget.dart'; // 경로 확인
+import '../widgets/common_webview_widget.dart'; // 경로 확인
 import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:io';
 
@@ -21,7 +21,7 @@ class _MyScreenState extends State<MyScreen> {
   @override
   Widget build(BuildContext context) {
     Widget content = PopScope(
-      canPop: false,
+      canPop: true,
       onPopInvokedWithResult: (bool didPop, dynamic result) async {
         print('MyWidget onPopInvokedWithResult ${didPop}');
         if (didPop) return;

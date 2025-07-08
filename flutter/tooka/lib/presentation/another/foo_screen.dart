@@ -1,39 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class AnotherScreen extends StatelessWidget {
-  const AnotherScreen({super.key});
+class FooScreen extends StatelessWidget {
+  const FooScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Another Widget'),
+        title: const Text('Foo'),
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () {
             context.pop();
           },
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.orange,
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Another Widget',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'This is the another widget page',
-              style: TextStyle(fontSize: 16),
-            ),
-            const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
                 context.push('/my-widget');
@@ -51,7 +38,7 @@ class AnotherScreen extends StatelessWidget {
               onPressed: () {
                 context.go('/main');
               },
-              child: const Text('Back to Main'),
+              child: const Text('go /main'),
             ),
           ],
         ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
-import 'widgets/common_webview_widget.dart';
+import '../widgets/common_webview_widget.dart';
 
 class WebViewScreen extends StatelessWidget {
   final String url;
@@ -15,7 +15,7 @@ class WebViewScreen extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         // Status bar 스타일 설정
-        statusBarColor: backgroundColor, // 투명 배경
+        statusBarColor: backgroundColor,
         statusBarIconBrightness: Brightness.dark, // 다크 아이콘 (iOS)
         statusBarBrightness: Brightness.light, // 라이트 배경 (Android)
         // Navigation bar 스타일 설정
@@ -24,6 +24,16 @@ class WebViewScreen extends StatelessWidget {
         systemNavigationBarDividerColor: Colors.transparent, // 네비게이션 바 구분선 투명
       ),
       child: Scaffold(
+        appBar: AppBar(
+          title: Text(title ?? '-----'),
+          leading: IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () {
+              context.pop();
+            },
+          ),
+          backgroundColor: backgroundColor,
+        ),
         backgroundColor: backgroundColor,
         // SafeArea로 감싸서 status bar와 navigation bar 영역 모두 보호
         body: SafeArea(
