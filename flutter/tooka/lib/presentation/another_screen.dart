@@ -9,6 +9,12 @@ class AnotherScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Another Widget'),
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () {
+            context.pop();
+          },
+        ),
         backgroundColor: Colors.blue,
       ),
       body: Center(
