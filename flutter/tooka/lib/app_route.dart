@@ -28,7 +28,11 @@ class AppRouter {
       ),
       GoRoute(
         path: '/main',
-        builder: (context, state) => const MainScreen(),
+        builder: (context, state) {
+          final String? tabName = state.uri.queryParameters['tab'];
+          print('>>>>>> GoRoute path: /main tabName: $tabName');
+          return MainScreen(initializeTabName: tabName);
+        },
         routes: [
           GoRoute(
               path: '/another',
@@ -97,6 +101,10 @@ class AppRouter {
         builder: (context, state) => const MyScreen(),
       ),
       GoRoute(
+        path: '/another',
+        builder: (context, state) => const AnotherScreen(),
+      ),
+      GoRoute(
         path: '/web-view/:url',
         builder: (context, state) {
           // 경로 파라미터 'url' 값을 가져옵니다.
@@ -121,7 +129,30 @@ class AppRouter {
     ],
     errorBuilder: (context, state) => ErrorScreen(error: state.error!),
   );
+
+
+  static void printStack() {
+    final RouteMatchList matchList = router.routerDelegate.currentConfiguration;
+
+    for (var match in matchList.matches) {
+      print('매치된 경로: ${match.matchedLocation}');
+    };
+  }
 }
 
 
+class NavigationData extends ChangeNotifier {
+  Map<String, dynamic>? _dataFromC;
 
+  Map<String, dynamic>? get dataFromC => _dataFromC;
+
+  void setDataFromC(Map<String, dynamic> data) {
+    _dataFromC = data;
+    notifyListeners();
+  }
+
+  void clearData() {
+    _dataFromC = null;
+    notifyListeners();
+  }
+}

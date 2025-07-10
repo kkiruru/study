@@ -2,23 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../app_route.dart';
+
 class BazScreen extends StatelessWidget {
   const BazScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    print('BazScreen: build');
+    AppRouter.printStack();
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 156.0,
-        // // title: SafeArea(
-        // //     top : true,
-        // //     bottom: false,
-        // //     child: const Text('Baz1'),
-        // // ),
-        // title: Padding(
-        //   padding: const EdgeInsets.only(top: 56.0),
-        //   child: const Text('Baz2'),
-        // ),
         leading: IconButton(
             onPressed: () {
               context.pop();

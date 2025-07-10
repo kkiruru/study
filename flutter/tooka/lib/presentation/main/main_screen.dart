@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -6,10 +5,15 @@ import 'package:tooka/presentation/main/first_tab_widget.dart';
 import 'package:tooka/presentation/main/second_tab_widget.dart';
 import 'package:tooka/presentation/main/third_tab_widget.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+import '../../app_route.dart';
 
-  @override
+class MainScreen extends StatefulWidget {
+
+  final String? initializeTabName;
+  const MainScreen({super.key, this.initializeTabName});
+
+
+@override
   State<MainScreen> createState() => _MainScreenState();
 }
 
@@ -22,8 +26,56 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+
+  @override
+  void initState() {
+    super.initState();
+    print('MainScreen initState ${widget.initializeTabName} : ${_selectedIndex}');
+    _updateTabFromName(widget.initializeTabName);
+  }
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // 라우트 파라미터가 변경되었는지 확인
+    final currentTabName = GoRouterState.of(context).uri.queryParameters['tab'];
+    print('MainScreen didChangeDependencies ${currentTabName}');
+
+    _updateTabFromName(currentTabName);
+  }
+
+
+  void _updateTabFromName(String? tabName) {
+    print('MainScreen _updateTabFromName: $tabName');
+    
+    switch (tabName) {
+      case 'first':
+        _selectedIndex = 0;
+        break;
+      case 'second':
+        _selectedIndex = 1;
+        break;
+      case 'third':
+        _selectedIndex = 2;
+        break;
+      default:
+        _selectedIndex = 0;
+        break;
+    }
+
+    print('MainScreen _updateTabFromName:  [${_selectedIndex}] $tabName');
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    print('MainScreen: build() >>>> ');
+    AppRouter.printStack();
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
         // 투명한 status bar 설정
@@ -103,5 +155,11 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    print('MainScreen: dispose()');
+    super.dispose();
   }
 }

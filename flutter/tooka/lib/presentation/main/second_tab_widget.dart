@@ -15,10 +15,7 @@ class SecondTabWidget extends StatelessWidget {
         children: [
           const Text(
             'Second Tab',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 20),
           const Text(
@@ -26,50 +23,126 @@ class SecondTabWidget extends StatelessWidget {
             style: TextStyle(fontSize: 16),
           ),
           const SizedBox(height: 30),
-          ElevatedButton(
-            onPressed: () {
-              context.push('/main/another');
-            },
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-            ),
-            child: const Text(
-              'Go to push /main/another',
-              style: TextStyle(fontSize: 16),
-            ),
-          ),
-          const SizedBox(height: 30),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push<bool>(
-                CupertinoPageRoute(
-                  builder: (_) => AnotherScreen(),
+          SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    context.push('/main/another');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 30,
+                      vertical: 15,
+                    ),
+                  ),
+                  child: const Text(
+                    'push /main/another',
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-            ),
-            child: const Text(
-              'Navigator.push AnotherScreen',
-              style: TextStyle(fontSize: 16),
-            ),
-          ),
-          const SizedBox(height: 30),
-          ElevatedButton(
-            onPressed: () {
-              context.push('/main/another/foo');
-            },
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-            ),
-            child: const Text(
-              'go /main/another/foo',
-              style: TextStyle(fontSize: 16),
+                const SizedBox(height: 30),
+                ElevatedButton(
+                  onPressed: () {
+                    context.go('/main/another');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 30,
+                      vertical: 15,
+                    ),
+                  ),
+                  child: const Text(
+                    'go /main/another',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push<bool>(
+                      CupertinoPageRoute(builder: (_) => AnotherScreen()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 30,
+                      vertical: 15,
+                    ),
+                  ),
+                  child: const Text(
+                    'Navigator.push AnotherScreen',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                ElevatedButton(
+                  onPressed: () {
+                    context.go('/main/another/foo');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 30,
+                      vertical: 15,
+                    ),
+                  ),
+                  child: const Text(
+                    'go /main/another/foo',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    context.push('/main/another/foo');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 30,
+                      vertical: 15,
+                    ),
+                  ),
+                  child: const Text(
+                    'push /main/another/foo',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                ElevatedButton(
+                  onPressed: () {
+                    context.go('/another');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 30,
+                      vertical: 15,
+                    ),
+                  ),
+                  child: const Text(
+                    'go /another',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    context.push('/another');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 30,
+                      vertical: 15,
+                    ),
+                  ),
+                  child: const Text(
+                    'push /another',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
     );
   }
-} 
+}

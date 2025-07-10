@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../app_route.dart';
 import '../my/my_screen.dart';
 
 class OtherScreen extends StatelessWidget {
@@ -9,6 +10,10 @@ class OtherScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    print('OtherScreen: build');
+    AppRouter.printStack();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Other Screen'),
