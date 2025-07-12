@@ -1,6 +1,5 @@
 // my_screen.dart
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import '../widgets/common_webview_widget.dart'; // 경로 확인
 import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:io';
@@ -38,11 +37,11 @@ class _MyScreenState extends State<MyScreen> {
           } else {
             // WebView 히스토리가 없으면 위젯 팝
             print('MyWidget: No WebView history, popping widget');
-            context.pop();
+            // context.pop();
           }
         } else {
           print('MyWidget: No WebViewController, popping widget');
-          context.pop();
+          // context.pop();
         }
       },
       child: Scaffold(
@@ -69,7 +68,7 @@ class _MyScreenState extends State<MyScreen> {
               onPop: () {
                 // 커스텀 뒤로가기 동작
                 print('MyWidget onPop callback');
-                context.pop();
+                // context.pop();
               },
               onWebViewCreated: (controller) {
                 print('MyWidget: WebView Created with webview_flutter');
@@ -150,10 +149,10 @@ class _MyScreenState extends State<MyScreen> {
         await _webViewController!.goBack();
         _updateCanGoBack();
       } else {
-        context.pop();
+        // context.pop();
       }
     } else {
-      context.pop();
+      // context.pop();
     }
   }
 

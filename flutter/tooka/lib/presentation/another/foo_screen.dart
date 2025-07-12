@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tooka/presentation/another/baz_screen.dart';
 
-import '../../app_route.dart';
+import '../../core/services/deep_link_service.dart';
 
 class FooScreen extends StatelessWidget {
   const FooScreen({super.key});
@@ -11,7 +10,7 @@ class FooScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     print('FooScreen: build');
-    AppRouter.printStack();
+    DeepLinkService.printStack();
 
     return Scaffold(
       appBar: AppBar(
@@ -19,7 +18,7 @@ class FooScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () {
-            context.pop();
+            // context.pop();
           },
         ),
         backgroundColor: Colors.orange,
@@ -48,7 +47,7 @@ class FooScreen extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                context.go('/main?tab=first');
+                // context.go('/main?tab=first');
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(

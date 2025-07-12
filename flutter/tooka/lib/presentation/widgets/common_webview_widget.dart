@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+// import 'package:go_router/go_router.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
@@ -251,7 +251,7 @@ class _CommonWebViewWidgetState extends State<CommonWebViewWidget> {
   void _handlePushNavigation(String msg) {
     final uri = Uri.parse(msg.substring('push:'.length));
     final String encodedUrl = Uri.encodeComponent(uri.toString());
-    context.push('/web-view/$encodedUrl');
+    // context.push('/web-view/$encodedUrl');
   }
 
   // 뒤로가기 처리

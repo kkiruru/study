@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:tooka/presentation/another/another_screen.dart';
 
 import '../../app_route.dart';
 import '../../core/services/deep_link_service.dart';
+import '../main/main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -46,7 +47,6 @@ class _SplashScreenState extends State<SplashScreen>
 
     _animationController.forward();
 
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       print('SplashScreen: >>>> addPostFrameCallback');
 
@@ -54,13 +54,40 @@ class _SplashScreenState extends State<SplashScreen>
 
       Future.delayed(const Duration(seconds: 3), () {
         if (mounted) {
-          print('SplashScreen: >>>> context.go(main)');
-          context.go('/main');
+          print('SplashScreen: >>>> Navigator.push(main)');
+
+          // DeepLinkService().push();
+
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (_) => const MainScreen(),
+          //     settings: const RouteSettings(name: '/main'), // 라우트 이름 지정
+          //   ),
+          // );
+          print('SplashScreen: About to navigate to MainScreen');
+          final navigatorState = DeepLinkService().navigatorKey.currentState;
+          print('SplashScreen: navigatorState = $navigatorState');
+          
+          if (navigatorState != null) {
+            navigatorState.pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const MainScreen(),
+              ),
+            );
+            print('SplashScreen: Navigation to MainScreen completed (pushReplacement)');
+          } else {
+            print('SplashScreen: navigatorState is null!');
+          }
+          // Navigator.of(context).push<bool>(
+          //     MaterialPageRoute(
+          //       builder: (_) => MainScreen(),
+          //     ),
+          // );
+          // Navigator.
         }
       });
     });
-
-
   }
 
   @override
@@ -74,7 +101,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     print('SplashScreen: build() >>>> ');
-    AppRouter.printStack();
+    DeepLinkService.printStack();
 
     return Scaffold(
       backgroundColor: Colors.deepPurple,

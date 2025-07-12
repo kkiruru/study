@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
+import 'package:tooka/core/services/deep_link_service.dart';
 import 'package:tooka/presentation/main/first_tab_widget.dart';
 import 'package:tooka/presentation/main/second_tab_widget.dart';
 import 'package:tooka/presentation/main/third_tab_widget.dart';
@@ -39,10 +39,10 @@ class _MainScreenState extends State<MainScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // 라우트 파라미터가 변경되었는지 확인
-    final currentTabName = GoRouterState.of(context).uri.queryParameters['tab'];
-    print('MainScreen didChangeDependencies ${currentTabName}');
+    // final currentTabName = GoRouterState.of(context).uri.queryParameters['tab'];
+    // print('MainScreen didChangeDependencies ${currentTabName}');
 
-    _updateTabFromName(currentTabName);
+    // _updateTabFromName(currentTabName);
   }
 
 
@@ -74,7 +74,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     print('MainScreen: build() >>>> ');
-    AppRouter.printStack();
+    DeepLinkService.printStack();
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
@@ -106,8 +106,8 @@ class _MainScreenState extends State<MainScreen> {
                 TextButton(
                   onPressed: () {
                     // 디버깅을 위해 현재 라우트 스택 상태 확인
-                    print('Current route stack: ${GoRouter.of(context).routerDelegate.currentConfiguration.matches}');
-                    print('Can pop: ${context.canPop()}');
+                    // print('Current route stack: ${GoRouter.of(context).routerDelegate.currentConfiguration.matches}');
+                    // print('Can pop: ${context.canPop()}');
 
                     // 강제로 앱 종료
                     SystemNavigator.pop();

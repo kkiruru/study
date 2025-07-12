@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+// import 'package:go_router/go_router.dart';
 
 import '../../app_route.dart';
+import '../../core/services/deep_link_service.dart';
 
 class BarScreen extends StatelessWidget {
   const BarScreen({super.key});
@@ -10,7 +11,7 @@ class BarScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     print('BarScreen: build');
-    AppRouter.printStack();
+    DeepLinkService.printStack();
 
     return Scaffold(
       appBar: AppBar(
@@ -18,7 +19,7 @@ class BarScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () {
-            context.pop();
+            // context.pop();
           },
         ),
         backgroundColor: Colors.grey,

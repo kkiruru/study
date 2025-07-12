@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../app_route.dart';
+import '../../core/services/deep_link_service.dart';
 
 class BazScreen extends StatelessWidget {
   const BazScreen({super.key});
@@ -11,14 +11,14 @@ class BazScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     print('BazScreen: build');
-    AppRouter.printStack();
+    DeepLinkService.printStack();
 
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 156.0,
         leading: IconButton(
             onPressed: () {
-              context.pop();
+              // context.pop();
             },
             icon: Icon(Icons.wallet),
         ),

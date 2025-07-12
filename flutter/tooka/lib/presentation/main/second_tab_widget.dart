@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
+import '../../app_route.dart';
+import '../../core/services/deep_link_service.dart';
 import '../another/another_screen.dart';
 
 class SecondTabWidget extends StatelessWidget {
@@ -28,9 +29,48 @@ class SecondTabWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
+                  // lib/presentation/main/second_tab_widget.dart
                   onPressed: () {
-                    context.push('/main/another');
+                    print('SecondTabWidget: Navigate to Another button pressed');
+                    final navigatorState = DeepLinkService().navigatorKey.currentState;
+                    print('SecondTabWidget: navigatorState = $navigatorState');
+                    print('SecondTabWidget: navigatorState.mounted = ${navigatorState?.mounted}');
+
+                    if (navigatorState != null && navigatorState.mounted) {
+                      print('SecondTabWidget: Attempting to push AnotherScreen...');
+                      navigatorState.push(
+                        MaterialPageRoute(
+                          builder: (context) => const AnotherScreen(), // 단순화된 AnotherScreen 사용
+                        ),
+                      ).then((_) {
+                        print('SecondTabWidget: Navigation to AnotherScreen push completed (then)');
+                      }).catchError((error) {
+                        print('SecondTabWidget: Navigation to AnotherScreen FAILED with error: $error');
+                      });
+                      print('SecondTabWidget: Navigation to AnotherScreen push initiated');
+                    } else {
+                      print('SecondTabWidget: navigatorState is null or not mounted!');
+                    }
                   },
+                    // ...
+
+                  // onPressed: () {
+                  //   print('SecondTabWidget: Navigate to Another button pressed');
+                  //   final navigatorState = DeepLinkService().navigatorKey.currentState;
+                  //   print('SecondTabWidget: navigatorState = $navigatorState');
+                  //   if (navigatorState != null) {
+                  //     navigatorState.push(
+                  //       MaterialPageRoute(
+                  //         builder: (context) => const AnotherScreen(),
+                  //       ),
+                  //     );
+                  //     print('SecondTabWidget: Navigation to AnotherScreen completed (pushReplacement)');
+                  //   } else {
+                  //     print('SecondTabWidget: navigatorState is null!');
+                  //   }
+                  //
+                  //
+                  // },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 30,
@@ -38,14 +78,14 @@ class SecondTabWidget extends StatelessWidget {
                     ),
                   ),
                   child: const Text(
-                    'push /main/another',
+                    'Navigate to Another',
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
                 const SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: () {
-                    context.go('/main/another');
+                    AppRouter.navigateToAnother(context);
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
@@ -54,7 +94,7 @@ class SecondTabWidget extends StatelessWidget {
                     ),
                   ),
                   child: const Text(
-                    'go /main/another',
+                    'Navigate to Another (Replace)',
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
@@ -62,7 +102,7 @@ class SecondTabWidget extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).push<bool>(
-                      CupertinoPageRoute(builder: (_) => AnotherScreen()),
+                      CupertinoPageRoute(builder: (_) => const AnotherScreen()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -79,7 +119,9 @@ class SecondTabWidget extends StatelessWidget {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    context.go('/main?tab=third');
+                    // 탭 변경은 부모 위젯에서 처리해야 함
+                    // 여기서는 단순히 메시지만 출력
+                    print('Navigate to third tab');
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
@@ -88,14 +130,14 @@ class SecondTabWidget extends StatelessWidget {
                     ),
                   ),
                   child: const Text(
-                    'go /main?tab=third',
+                    'Navigate to Third Tab',
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
                 const SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: () {
-                    context.go('/main/another/foo');
+                    AppRouter.navigateToFoo(context);
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
@@ -104,13 +146,13 @@ class SecondTabWidget extends StatelessWidget {
                     ),
                   ),
                   child: const Text(
-                    'go /main/another/foo',
+                    'Navigate to Foo',
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    context.push('/main/another/foo');
+                    AppRouter.navigateToFoo(context);
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
@@ -119,14 +161,14 @@ class SecondTabWidget extends StatelessWidget {
                     ),
                   ),
                   child: const Text(
-                    'push /main/another/foo',
+                    'Push to Foo',
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
                 const SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: () {
-                    context.go('/another');
+                    AppRouter.navigateToAnother(context);
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
@@ -135,13 +177,13 @@ class SecondTabWidget extends StatelessWidget {
                     ),
                   ),
                   child: const Text(
-                    'go /another',
+                    'Navigate to Another',
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    context.push('/another');
+                    AppRouter.navigateToAnother(context);
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
@@ -150,7 +192,7 @@ class SecondTabWidget extends StatelessWidget {
                     ),
                   ),
                   child: const Text(
-                    'push /another',
+                    'Push to Another',
                     style: TextStyle(fontSize: 16),
                   ),
                 ),

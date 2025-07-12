@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tooka/app_route.dart';
+import 'package:tooka/presentation/splash/splash_screen.dart';
 
 import 'core/services/deep_link_service.dart';
 
@@ -7,7 +7,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await DeepLinkService().initialize();
-
 
   runApp(const MyApp());
 }
@@ -17,9 +16,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp(
       title: 'Tooka App',
-      routerConfig: AppRouter.router,
+      navigatorKey: DeepLinkService().navigatorKey,
+      home: const SplashScreen(),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
