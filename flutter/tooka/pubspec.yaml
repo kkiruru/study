@@ -103,8 +103,8 @@ flutter_native_splash:
   image_dark: "assets/images/loth-cat.png"
   
   # 브랜딩 설정
-  branding: "assets/images/loth-cat.png"
-  branding_dark: "assets/images/loth-cat.png"
+#  branding: "assets/images/loth-cat.png"
+#  branding_dark: "assets/images/loth-cat.png"
   
   android_12:
     image: "assets/images/loth-cat.png"
