@@ -57,7 +57,7 @@ class FooScreen extends StatelessWidget {
                 ),
               ),
               child: const Text(
-                'go /main?tab=my',
+                'go /main?tab=first',
                 style: TextStyle(fontSize: 16),
               ),
             ),

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../app_route.dart';
+import '../../core/services/deep_link_service.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -17,6 +20,9 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
+
+    print('SplashScreen: initState() ');
+
     _animationController = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
@@ -40,22 +46,36 @@ class _SplashScreenState extends State<SplashScreen>
 
     _animationController.forward();
 
-    // 3초 후 메인 화면으로 이동
-    Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) {
-        context.go('/main');
-      }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      print('SplashScreen: >>>> addPostFrameCallback');
+
+      DeepLinkService().onAppReady();
+
+      Future.delayed(const Duration(seconds: 3), () {
+        if (mounted) {
+          print('SplashScreen: >>>> context.go(main)');
+          context.go('/main');
+        }
+      });
     });
+
+
   }
 
   @override
   void dispose() {
+    print('SplashScreen: dispose() ');
+
     _animationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    print('SplashScreen: build() >>>> ');
+    AppRouter.printStack();
+
     return Scaffold(
       backgroundColor: Colors.deepPurple,
       body: Center(

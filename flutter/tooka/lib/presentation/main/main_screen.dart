@@ -98,7 +98,9 @@ class _MainScreenState extends State<MainScreen> {
               content: const Text('정말로 앱을 종료하시겠습니까?'),
               actions: [
                 TextButton(
-                  onPressed: () => Navigator.of(context).pop(false),
+                  onPressed: () => {
+                    Navigator.of(context).pop(false)
+                  },
                   child: const Text('취소'),
                 ),
                 TextButton(

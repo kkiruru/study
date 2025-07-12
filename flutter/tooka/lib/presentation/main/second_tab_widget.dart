@@ -76,6 +76,22 @@ class SecondTabWidget extends StatelessWidget {
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    context.go('/main?tab=third');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 30,
+                      vertical: 15,
+                    ),
+                  ),
+                  child: const Text(
+                    'go /main?tab=third',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
                 const SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: () {

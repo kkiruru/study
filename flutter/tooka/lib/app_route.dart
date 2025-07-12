@@ -12,6 +12,8 @@ import 'package:tooka/presentation/other/other_screen.dart';
 import 'package:tooka/presentation/splash/splash_screen.dart';
 import 'package:tooka/presentation/webview/web_view_screen.dart';
 
+import 'core/services/deep_link_service.dart';
+
 
 
 class AppRouter {
@@ -100,10 +102,10 @@ class AppRouter {
         path: '/my-widget',
         builder: (context, state) => const MyScreen(),
       ),
-      GoRoute(
-        path: '/another',
-        builder: (context, state) => const AnotherScreen(),
-      ),
+      // GoRoute(
+      //   path: '/another',
+      //   builder: (context, state) => const AnotherScreen(),
+      // ),
       GoRoute(
         path: '/web-view/:url',
         builder: (context, state) {
@@ -126,7 +128,23 @@ class AppRouter {
           }
         },
       ),
+      GoRoute(
+        path: '/nothing',
+        builder: (context, state) => const SplashScreen(),
+      ),
     ],
+    redirect: (context, state) {
+      print('>>> redirect: ${state.matchedLocation}, isInitialized:${DeepLinkService().isInitialized}');
+
+      print('>>> ______ fullPath ${state.fullPath}');
+      print('>>> ______ uri ${state.uri.toString()}');
+      if (DeepLinkService().isInitialized && state.matchedLocation == "/") {
+
+        print('>>> ______ return null');
+        return null;
+      }
+
+    },
     errorBuilder: (context, state) => ErrorScreen(error: state.error!),
   );
 
