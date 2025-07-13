@@ -17,22 +17,23 @@ import 'core/services/deep_link_service.dart';
 
 
 class AppRouter {
-  // private constructor. 이 클래스는 인스턴스화될 필요가 없습니다.
   AppRouter._();
+
+  static String initialLocation = '/splash';
 
   // GoRouter 설정을 static final 변수로 정의합니다.
   static final GoRouter router = GoRouter(
-    initialLocation: '/',
+    initialLocation: initialLocation,
     routes: [
       GoRoute(
-        path: '/',
+        path: '/splash',
         builder: (context, state) => const SplashScreen(),
       ),
       GoRoute(
-        path: '/main',
+        path: '/',
         builder: (context, state) {
           final String? tabName = state.uri.queryParameters['tab'];
-          print('>>>>>> GoRoute path: /main tabName: $tabName');
+          print('>>>>>> GoRoute path: / tabName: $tabName');
           return MainScreen(initializeTabName: tabName);
         },
         routes: [
@@ -138,10 +139,10 @@ class AppRouter {
 
       print('>>> ______ fullPath ${state.fullPath}');
       print('>>> ______ uri ${state.uri.toString()}');
-      if (DeepLinkService().isInitialized && state.matchedLocation == "/") {
 
-        print('>>> ______ return null');
-        return null;
+      switch (state.uri.host) {
+        case 'guide':
+          return '/?tab=guide';
       }
 
     },
@@ -152,9 +153,12 @@ class AppRouter {
   static void printStack() {
     final RouteMatchList matchList = router.routerDelegate.currentConfiguration;
 
+    print('====== printStack  =====================');
     for (var match in matchList.matches) {
-      print('매치된 경로: ${match.matchedLocation}');
+      print('   : ${match.matchedLocation}');
     };
+    print('----------------------------------------');
+
   }
 }
 

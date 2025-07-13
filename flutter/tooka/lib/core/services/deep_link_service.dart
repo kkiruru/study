@@ -97,6 +97,8 @@ class DeepLinkService {
       case 'openweb':
         _openWebView(queryParams, isInitial);
         break;
+      case 'main':
+        _navigateToMain();
       case 'home':
         _navigateToHome();
         break;
@@ -162,11 +164,19 @@ class DeepLinkService {
     }
   }
 
+  void _navigateToMain() {
+    final context = _getCurrentContext();
+    if (context != null) {
+      context.go('/');
+    }
+  }
+
+
   /// 홈 탭으로 이동
   void _navigateToHome() {
     final context = _getCurrentContext();
     if (context != null) {
-      context.go('/main?tab=home');
+      context.go('/?tab=home');
 
       Future.delayed(const Duration(milliseconds: 300), () {
         _isProcessingDeepLink = false;
@@ -178,7 +188,7 @@ class DeepLinkService {
   void _navigateToMy() {
     final context = _getCurrentContext();
     if (context != null) {
-      context.go('/main?tab=my');
+      context.go('/?tab=my');
 
       Future.delayed(const Duration(milliseconds: 300), () {
         _isProcessingDeepLink = false;
@@ -188,14 +198,14 @@ class DeepLinkService {
 
   /// 가이드 탭으로 이동
   void _navigateToGuide() {
-    final context = _getCurrentContext();
-    if (context != null) {
-      context.go('/main?tab=guide');
-
-      Future.delayed(const Duration(milliseconds: 300), () {
-        _isProcessingDeepLink = false;
-      });
-    }
+    // final context = _getCurrentContext();
+    // if (context != null) {
+    //   context.go('/?tab=guide');
+    //
+    //   Future.delayed(const Duration(milliseconds: 300), () {
+    //     _isProcessingDeepLink = false;
+    //   });
+    // }
   }
 
   /// 서비스 정리

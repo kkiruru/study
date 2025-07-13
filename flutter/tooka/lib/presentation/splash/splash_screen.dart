@@ -46,7 +46,6 @@ class _SplashScreenState extends State<SplashScreen>
 
     _animationController.forward();
 
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       print('SplashScreen: >>>> addPostFrameCallback');
 
@@ -55,7 +54,8 @@ class _SplashScreenState extends State<SplashScreen>
       Future.delayed(const Duration(seconds: 3), () {
         if (mounted) {
           print('SplashScreen: >>>> context.go(main)');
-          context.go('/main');
+          context.go('/');
+          AppRouter.initialLocation = '/';
         }
       });
     });
