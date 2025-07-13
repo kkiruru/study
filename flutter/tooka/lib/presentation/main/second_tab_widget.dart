@@ -31,46 +31,9 @@ class SecondTabWidget extends StatelessWidget {
                 ElevatedButton(
                   // lib/presentation/main/second_tab_widget.dart
                   onPressed: () {
-                    print('SecondTabWidget: Navigate to Another button pressed');
-                    final navigatorState = DeepLinkService().navigatorKey.currentState;
-                    print('SecondTabWidget: navigatorState = $navigatorState');
-                    print('SecondTabWidget: navigatorState.mounted = ${navigatorState?.mounted}');
 
-                    if (navigatorState != null && navigatorState.mounted) {
-                      print('SecondTabWidget: Attempting to push AnotherScreen...');
-                      navigatorState.push(
-                        MaterialPageRoute(
-                          builder: (context) => const AnotherScreen(), // 단순화된 AnotherScreen 사용
-                        ),
-                      ).then((_) {
-                        print('SecondTabWidget: Navigation to AnotherScreen push completed (then)');
-                      }).catchError((error) {
-                        print('SecondTabWidget: Navigation to AnotherScreen FAILED with error: $error');
-                      });
-                      print('SecondTabWidget: Navigation to AnotherScreen push initiated');
-                    } else {
-                      print('SecondTabWidget: navigatorState is null or not mounted!');
-                    }
+
                   },
-                    // ...
-
-                  // onPressed: () {
-                  //   print('SecondTabWidget: Navigate to Another button pressed');
-                  //   final navigatorState = DeepLinkService().navigatorKey.currentState;
-                  //   print('SecondTabWidget: navigatorState = $navigatorState');
-                  //   if (navigatorState != null) {
-                  //     navigatorState.push(
-                  //       MaterialPageRoute(
-                  //         builder: (context) => const AnotherScreen(),
-                  //       ),
-                  //     );
-                  //     print('SecondTabWidget: Navigation to AnotherScreen completed (pushReplacement)');
-                  //   } else {
-                  //     print('SecondTabWidget: navigatorState is null!');
-                  //   }
-                  //
-                  //
-                  // },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 30,
@@ -85,7 +48,7 @@ class SecondTabWidget extends StatelessWidget {
                 const SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: () {
-                    AppRouter.navigateToAnother(context);
+                    // AppRouter.navigateToAnother(context);
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
@@ -116,28 +79,10 @@ class SecondTabWidget extends StatelessWidget {
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    // 탭 변경은 부모 위젯에서 처리해야 함
-                    // 여기서는 단순히 메시지만 출력
-                    print('Navigate to third tab');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 30,
-                      vertical: 15,
-                    ),
-                  ),
-                  child: const Text(
-                    'Navigate to Third Tab',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
                 const SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: () {
-                    AppRouter.navigateToFoo(context);
+                    // AppRouter.navigateToFoo(context);
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
@@ -152,7 +97,7 @@ class SecondTabWidget extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    AppRouter.navigateToFoo(context);
+                    // AppRouter.navigateToFoo(context);
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
@@ -168,7 +113,7 @@ class SecondTabWidget extends StatelessWidget {
                 const SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: () {
-                    AppRouter.navigateToAnother(context);
+                    // AppRouter.navigateToAnother(context);
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
@@ -183,7 +128,7 @@ class SecondTabWidget extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    AppRouter.navigateToAnother(context);
+                    // AppRouter.navigateToAnother(context);
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(

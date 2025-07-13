@@ -11,7 +11,7 @@ class BarScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     print('BarScreen: build');
-    DeepLinkService.printStack();
+    AppRouter.printStack();
 
     return Scaffold(
       appBar: AppBar(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tooka/presentation/another/baz_screen.dart';
 
+import '../../app_route.dart';
 import '../../core/services/deep_link_service.dart';
 
 class FooScreen extends StatelessWidget {
@@ -10,7 +11,7 @@ class FooScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     print('FooScreen: build');
-    DeepLinkService.printStack();
+    AppRouter.printStack();
 
     return Scaffold(
       appBar: AppBar(
@@ -56,7 +57,7 @@ class FooScreen extends StatelessWidget {
                 ),
               ),
               child: const Text(
-                'go /main?tab=first',
+                'go /main?tab=my',
                 style: TextStyle(fontSize: 16),
               ),
             ),

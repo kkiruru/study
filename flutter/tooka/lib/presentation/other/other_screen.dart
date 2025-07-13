@@ -12,7 +12,7 @@ class OtherScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     print('OtherScreen: build');
-    DeepLinkService.printStack();
+    AppRouter.printStack();
 
     return Scaffold(
       appBar: AppBar(

@@ -11,7 +11,7 @@ class BazScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     print('BazScreen: build');
-    DeepLinkService.printStack();
+    AppRouter.printStack();
 
     return Scaffold(
       appBar: AppBar(

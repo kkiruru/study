@@ -1,13 +1,18 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tooka/presentation/another/another_screen.dart';
 import 'package:tooka/presentation/another/foo_screen.dart';
+import 'package:tooka/presentation/error/error_screen.dart';
 import 'package:tooka/presentation/main/main_screen.dart';
 import 'package:tooka/presentation/my/my_screen.dart';
 import 'package:tooka/presentation/other/bar_screen.dart';
 import 'package:tooka/presentation/other/other_screen.dart';
+import 'package:tooka/presentation/splash/splash_screen.dart';
 import 'package:tooka/presentation/webview/web_view_screen.dart';
+
+import 'core/services/deep_link_service.dart';
 
 
 
@@ -15,85 +20,142 @@ class AppRouter {
   // private constructor. 이 클래스는 인스턴스화될 필요가 없습니다.
   AppRouter._();
 
-  // 네비게이션 헬퍼 메서드들
-  static void navigateToMain(BuildContext context, {String? tabName}) {
-
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) => MainScreen(initializeTabName: tabName),
-        settings: const RouteSettings(name: '/'), 
+  // GoRouter 설정을 static final 변수로 정의합니다.
+  static final GoRouter router = GoRouter(
+    initialLocation: '/',
+    routes: [
+      GoRoute(
+        path: '/',
+        builder: (context, state) => const SplashScreen(),
       ),
-    );
-  }
+      GoRoute(
+        path: '/main',
+        builder: (context, state) {
+          final String? tabName = state.uri.queryParameters['tab'];
+          print('>>>>>> GoRoute path: /main tabName: $tabName');
+          return MainScreen(initializeTabName: tabName);
+        },
+        routes: [
+          GoRoute(
+              path: '/another',
+              pageBuilder: (context, state) {
+                return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: const AnotherScreen(),
+                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                      const begin = Offset(0.0, 1.0);
+                      const end = Offset.zero;
+                      const curve = Curves.easeInOut;
 
-  static void navigateToAnother(BuildContext context) {
-    Navigator.of(context, rootNavigator: true).push(
-      MaterialPageRoute(
-        builder: (context) => const AnotherScreen(),
-        // settings: const RouteSettings(name: 'another'),
+                      final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                      final offsetAnimation = animation.drive(tween);
+
+                      return SlideTransition(
+                        position: offsetAnimation,
+                        child: child,
+                      );
+                    });
+              },
+              routes: [
+                GoRoute(
+                  path: '/foo',
+                  pageBuilder: (context, state) => MaterialPage(
+                    fullscreenDialog: true,
+                    child: FooScreen(),
+                  ),
+                ),
+              ]
+          ),
+          GoRoute(
+              path: '/other',
+              pageBuilder: (context, state) {
+                return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: const OtherScreen(),
+                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                      const begin = Offset(0.0, 1.0);
+                      const end = Offset.zero;
+                      const curve = Curves.easeInOut;
+
+                      final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                      final offsetAnimation = animation.drive(tween);
+
+                      return SlideTransition(
+                        position: offsetAnimation,
+                        child: child,
+                      );
+                    });
+              },
+              routes: [
+                GoRoute(
+                  path: '/bar',
+                  pageBuilder: (context, state) => MaterialPage(
+                    fullscreenDialog: true,
+                    child: BarScreen(),
+                  ),
+                ),
+              ]
+          ),
+        ],
       ),
-    );
-  }
-
-
-
-  static void navigateToFoo(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const FooScreen(),
-        fullscreenDialog: true,
+      GoRoute(
+        path: '/my-widget',
+        builder: (context, state) => const MyScreen(),
       ),
-    );
-  }
+      // GoRoute(
+      //   path: '/another',
+      //   builder: (context, state) => const AnotherScreen(),
+      // ),
+      GoRoute(
+        path: '/web-view/:url',
+        builder: (context, state) {
+          // 경로 파라미터 'url' 값을 가져옵니다.
+          final url = state.pathParameters['url'];
 
-  static void navigateToOther(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const OtherScreen(),
-        settings: const RouteSettings(name: 'other'), 
+          final String? title = state.uri.queryParameters['title'];
+
+          // url 값이 null이 아니고 String 타입인지 확인하는 것이 좋습니다.
+          // 그리고 WebViewScreen 생성 시 const를 사용할 수 없습니다.
+          // 왜냐하면 state.pathParameters['url']은 컴파일 타임 상수가 아니기 때문입니다.
+          if (url != null) {
+            return WebViewScreen(url: url);
+          } else {
+            return const Scaffold(
+              body: Center(
+                child: Text('URL 파라미터가 없습니다.'),
+              ),
+            );
+          }
+        },
       ),
-    );
-  }
-
-  static void navigateToBar(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const BarScreen(),
-        fullscreenDialog: true,
+      GoRoute(
+        path: '/nothing',
+        builder: (context, state) => const SplashScreen(),
       ),
-    );
+    ],
+    redirect: (context, state) {
+      print('>>> redirect: ${state.matchedLocation}, isInitialized:${DeepLinkService().isInitialized}');
+
+      print('>>> ______ fullPath ${state.fullPath}');
+      print('>>> ______ uri ${state.uri.toString()}');
+      if (DeepLinkService().isInitialized && state.matchedLocation == "/") {
+
+        print('>>> ______ return null');
+        return null;
+      }
+
+    },
+    errorBuilder: (context, state) => ErrorScreen(error: state.error!),
+  );
+
+
+  static void printStack() {
+    final RouteMatchList matchList = router.routerDelegate.currentConfiguration;
+
+    for (var match in matchList.matches) {
+      print('매치된 경로: ${match.matchedLocation}');
+    };
   }
-
-  static void navigateToMy(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const MyScreen(),
-      ),
-    );
-  }
-
-  static void navigateToWebView(BuildContext context, String url, {String? title}) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => WebViewScreen(url: url),
-      ),
-    );
-  }
-
-
-  // static void navigatePush(BuildContext context, Widget widget, String name) {
-  //   Navigator.of(context).push(
-  //     MaterialPageRoute(
-  //       builder: (context) => widget.call(),
-  //       settings: RouteSettings(name: name),
-  //     ),
-  //   );
-  // }
-
-
-  // static void printStack() {
-  //   print('AppRouter: 현재는 GoRouter가 제거되어 스택 정보를 출력할 수 없습니다.');
-  // }
 }
 
 
