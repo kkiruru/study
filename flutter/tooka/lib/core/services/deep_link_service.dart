@@ -26,18 +26,18 @@ class DeepLinkService {
   /// Deep Link 초기화 및 리스너 설정
   Future<void> initialize() async {
 
-    print('DeepLink initialize() >>> ');
+    print('[DeepLink] initialize() >>> ');
 
     try {
       final initialLink = await _appLinks.getInitialAppLink();
 
       if (initialLink != null) {
         _pendingDeepLink = initialLink.toString();
-        print('DeepLink DeepLinkService initialize:: ${_pendingDeepLink}');
+        print('[DeepLink] DeepLinkService initialize:: ${_pendingDeepLink}');
       }
       _subscription = _appLinks.uriLinkStream.listen((Uri? uri) {
         if (uri != null) {
-          print('DeepLink 실행 중에 딥링크 수신 : ${uri.toString()}');
+          print('[DeepLink] 실행 중에 딥링크 수신 : ${uri.toString()}');
           _handleDeepLink(uri. toString());
         }
       }, onError: (err) {
@@ -61,7 +61,7 @@ class DeepLinkService {
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
       Future.delayed(const Duration(milliseconds: 500), () {
-        _handleDeepLink(link, isInitial: true);
+        _handleDeepLink(link, isInitialized: false);
       });
     } else {
       print('Deep Link onAppReady - pendingDeepLink가 없음');
@@ -71,14 +71,14 @@ class DeepLinkService {
   }
 
   /// Deep Link 처리 로직
-  void _handleDeepLink(String link, {bool isInitial = false}) {
+  void _handleDeepLink(String link, {bool isInitialized = true}) {
     print('Deep Link 수신: $link');
 
     try {
       final uri = Uri.parse(link);
 
       if (uri.scheme == 'tooka') {
-        _handleLaundry24Scheme(uri, isInitial);
+        _handleLaundry24Scheme(uri, isInitialized);
       }
     } catch (e) {
       print('Deep Link 파싱 에러: $e');
@@ -86,7 +86,7 @@ class DeepLinkService {
     }
   }
 
-  void _handleLaundry24Scheme(Uri uri, bool isInitial) {
+  void _handleLaundry24Scheme(Uri uri, bool isInitialized) {
     final path = uri.host;
     final queryParams = uri.queryParameters;
 
@@ -95,7 +95,7 @@ class DeepLinkService {
     switch (path) {
       case 'webview':
       case 'openweb':
-        _openWebView(queryParams, isInitial);
+        _openWebView(queryParams, isInitialized);
         break;
       case 'main':
         _navigateToMain();
@@ -115,16 +115,15 @@ class DeepLinkService {
   }
 
   /// WebView 열기
-  void _openWebView(Map<String, String> params, bool isInitial) {
+  void _openWebView(Map<String, String> params, bool isInitialized) {
     final url = params['url'];
     final title = params['title'] ?? '';
 
     if (url != null && url.isNotEmpty) {
-      if (isInitial) {
-        // GoRouter를 사용하여 네비게이션
-        _navigateToMainWithWebView(url, title);
-      } else {
+      if (isInitialized) {
         _pushWebView(url, title);
+      } else {
+        _navigateToMainWithWebView(url, title);
       }
       _isProcessingDeepLink = false;
     } else {

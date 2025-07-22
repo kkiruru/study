@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen>
     print('SplashScreen: initState() ');
 
     _animationController = AnimationController(
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 1),
       vsync: this,
     );
 
@@ -51,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen>
 
       DeepLinkService().onAppReady();
 
-      Future.delayed(const Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 1), () {
         if (mounted) {
           print('SplashScreen: >>>> context.go(main)');
           context.go('/');
