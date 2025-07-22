@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
+import 'package:google_mlkit_commons/google_mlkit_commons.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class QRScannerScreen extends StatefulWidget {
@@ -79,28 +80,16 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     );
 
     final InputImageRotation imageRotation = InputImageRotation.rotation0deg;
-
     final InputImageFormat inputImageFormat = InputImageFormat.bgra8888;
-
-    final planeData =
-        image.planes.map((Plane plane) {
-          return InputImagePlaneMetadata(
-            bytesPerRow: plane.bytesPerRow,
-            height: plane.height,
-            width: plane.width,
-          );
-        }).toList();
-
-    final inputImageData = InputImageData(
-      size: imageSize,
-      imageRotation: imageRotation,
-      inputImageFormat: inputImageFormat,
-      planeData: planeData,
-    );
 
     final inputImage = InputImage.fromBytes(
       bytes: bytes,
-      metadata: inputImageData,
+      metadata: InputImageMetadata(
+        size: imageSize,
+        rotation: imageRotation,
+        format: inputImageFormat,
+        bytesPerRow: image.planes.first.bytesPerRow,
+      ),
     );
 
     try {
