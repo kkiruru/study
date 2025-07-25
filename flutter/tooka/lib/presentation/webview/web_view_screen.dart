@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:go_router/go_router.dart';
-
 import '../widgets/common_webview_widget.dart';
 
 class WebViewScreen extends StatelessWidget {
@@ -29,7 +27,9 @@ class WebViewScreen extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(Icons.close),
             onPressed: () {
-              // context.pop();
+              if (Navigator.of(context).canPop()) {
+                Navigator.of(context).pop();
+              }
             },
           ),
           backgroundColor: backgroundColor,
