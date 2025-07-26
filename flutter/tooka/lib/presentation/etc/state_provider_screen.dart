@@ -1,46 +1,22 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DefaultLayout extends StatelessWidget{
+import 'default_layout.dart';
 
-  final String title;
-  final Widget body;
-  final List<Widget>? actions;
+final numberProvider = StateProvider<int>((ref) => 0);
 
-  const DefaultLayout({
-    super.key,
-    required this.title,
-    required this.body,
-    this.actions
-  });
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-          actions: actions,
-      ),
-      body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: body,
-      )
-    );
-  }
-}
-
-
-class StateProviderScreen extends StatelessWidget {
+class StateProviderScreen extends ConsumerWidget {
   const StateProviderScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final provider = ref.watch(numberProvider);
+
     return DefaultLayout(
-        title: "StateProviderScreen",
-        body: ListView(
-          children: const [],
-        )
+      title: "StateProviderScreen",
+      body: Column(children: [
+        Text(provider.toString()),
+      ]),
     );
   }
 }

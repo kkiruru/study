@@ -1,6 +1,7 @@
 plugins {
-    kotlin("jvm") version "1.9.23"
-    kotlin("plugin.serialization") version "1.9.23"
+    kotlin("jvm") version "2.2.0"
+    kotlin("plugin.serialization") version "2.2.0"
+    application
 }
 
 group = "org.example"
@@ -11,9 +12,9 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    implementation("com.google.code.gson:gson:2.11.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+    implementation("com.google.code.gson:gson:2.13.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
     testImplementation(kotlin("test"))
 }
 
