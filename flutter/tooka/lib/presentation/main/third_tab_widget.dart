@@ -13,11 +13,13 @@ class ThirdTabWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Third Tab')),
+      backgroundColor: Colors.orange,
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
             children: [
               ElevatedButton(
                 onPressed: () {
