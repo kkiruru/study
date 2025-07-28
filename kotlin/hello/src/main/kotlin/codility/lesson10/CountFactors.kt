@@ -3,14 +3,12 @@ import kotlinx.coroutines.runBlocking
 
 fun main(): kotlin.Unit = runBlocking<Unit> {
     val n = 36
-    println(n)
-
     val result = solution(n)
-
-    println("\n$result")
 }
 
 private fun solution(N: Int): Int {
+    println(N)
+
     if (N == 1) {
         return 1
     }
@@ -30,6 +28,7 @@ private fun solution(N: Int): Int {
         count++
     }
 
+    println("\n${count}")
 
     return count
 }
