@@ -17,6 +17,7 @@ class StateProviderScreen extends ConsumerWidget {
       title: "StateProviderScreen",
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(provider.toString()),
           ElevatedButton(
@@ -24,6 +25,13 @@ class StateProviderScreen extends ConsumerWidget {
               ref.read(numberProvider.notifier).update((state) => state + 1);
             },
             child: const Text("UP"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              ref.read(numberProvider.notifier).state =
+                  ref.read(numberProvider.notifier).state - 1;
+            },
+            child: const Text("DOWN"),
           ),
           ElevatedButton(
             onPressed: () {
