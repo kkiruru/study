@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tooka/presentation/main/sliver_app_bar_screen.dart';
 
+import '../etc/common_screen.dart';
 import '../etc/state_provider_screen.dart';
 import '../webview/web_view_screen.dart';
 
@@ -37,7 +38,7 @@ class ThirdTabWidget extends StatelessWidget {
                   style: TextStyle(fontSize: 16),
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push<bool>(
@@ -55,7 +56,7 @@ class ThirdTabWidget extends StatelessWidget {
                   style: TextStyle(fontSize: 16),
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push<bool>(
@@ -70,6 +71,24 @@ class ThirdTabWidget extends StatelessWidget {
                 ),
                 child: const Text(
                   'StateProviderScreen',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push<bool>(
+                    CupertinoPageRoute(builder: (_) => const CommonScreen()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 15,
+                  ),
+                ),
+                child: const Text(
+                  'CommonScreen',
                   style: TextStyle(fontSize: 16),
                 ),
               ),
