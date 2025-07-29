@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_start/presentation/home_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+      ProviderScope(
+        child : const MyApp()
+      )
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -31,7 +36,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
       ),
-      home: const HomePage(title: 'Flutter Demo Home Page'),
+      home: const HomePage(),
     );
   }
 }
