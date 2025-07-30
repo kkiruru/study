@@ -1,0 +1,8 @@
+build/
+ios/build/
+web/
+macos/
+
+.dart_tool/
+.cursor/
+.vscode/

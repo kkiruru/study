@@ -15,33 +15,36 @@ class StateProviderScreen extends ConsumerWidget {
 
     return DefaultLayout(
       title: "StateProviderScreen",
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(provider.toString()),
-          ElevatedButton(
-            onPressed: () {
-              ref.read(numberProvider.notifier).update((state) => state + 1);
-            },
-            child: const Text("UP"),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              ref.read(numberProvider.notifier).state =
-                  ref.read(numberProvider.notifier).state - 1;
-            },
-            child: const Text("DOWN"),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(
-                context,
-              ).push(CupertinoPageRoute(builder: (_) => _NextScreen()));
-            },
-            child: const Text("Next Screen"),
-          ),
-        ],
+      body: SizedBox(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(provider.toString()),
+            ElevatedButton(
+              onPressed: () {
+                ref.read(numberProvider.notifier).update((state) => state + 1);
+              },
+              child: const Text("UP"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                ref.read(numberProvider.notifier).state =
+                    ref.read(numberProvider.notifier).state - 1;
+              },
+              child: const Text("DOWN"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(
+                  context,
+                ).push(CupertinoPageRoute(builder: (_) => _NextScreen()));
+              },
+              child: const Text("Next Screen"),
+            ),
+          ],
+        ),
       ),
     );
   }

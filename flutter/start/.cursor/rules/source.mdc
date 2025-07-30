@@ -1,0 +1,6 @@
+---
+description: 
+globs: **
+alwaysApply: false
+---
+- 바이너리 파일이 아닌, 텍스트로 된 모든 파일을 참고해줘.
