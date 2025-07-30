@@ -1,12 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_start/presentation/state/auto_dispose_modifier_screen.dart';
-import 'package:flutter_start/presentation/state/family_modifier_screen.dart';
-import 'package:flutter_start/presentation/state/future_provider_screen.dart';
-import 'package:flutter_start/presentation/state/listen_provider_screen.dart';
-import 'package:flutter_start/presentation/state/state_notifier_provider_screen.dart';
-import 'package:flutter_start/presentation/state/state_provider_screen.dart';
-import 'package:flutter_start/presentation/state/stream_provider_screen.dart';
+import 'package:flutter_start/presentation/state/stage_screen.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -27,7 +21,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).push<bool>(
                   CupertinoPageRoute(
-                    builder: (_) => const StateProviderScreen(),
+                    builder: (_) => const StatePage(),
                   ),
                 );
               },
@@ -38,127 +32,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               child: const Text(
-                'StateProviderScreen',
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push<bool>(
-                  CupertinoPageRoute(
-                    builder: (_) => const StateNotifierProviderScreen(),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 15,
-                ),
-              ),
-              child: const Text(
-                'StateNotifierProviderScreen',
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push<bool>(
-                  CupertinoPageRoute(
-                    builder: (_) => const FutureProviderScreen(),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 15,
-                ),
-              ),
-              child: const Text(
-                'FutureProviderScreen',
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push<bool>(
-                  CupertinoPageRoute(
-                    builder: (_) => const StreamProviderScreen(),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 15,
-                ),
-              ),
-              child: const Text(
-                'StreamProviderScreen',
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push<bool>(
-                  CupertinoPageRoute(
-                    builder: (_) => const FamilyModifierScreen(),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 15,
-                ),
-              ),
-              child: const Text(
-                'FamilyModifierScreen',
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push<bool>(
-                  CupertinoPageRoute(
-                    builder: (_) => const AutoDisposeModifierScreen(),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 15,
-                ),
-              ),
-              child: const Text(
-                'AutoDisposeModifierScreen',
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push<bool>(
-                  CupertinoPageRoute(
-                    builder: (_) => const ListenProviderScreen(),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 15,
-                ),
-              ),
-              child: const Text(
-                'ListenProviderScreen',
+                'StatePage',
                 style: TextStyle(fontSize: 16),
               ),
             ),
