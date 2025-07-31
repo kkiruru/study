@@ -15,3 +15,11 @@ Future<int> gStateFuture(Ref ref) async {
   await Future.delayed(const Duration(seconds: 3));
   return 10;
 }
+
+@Riverpod(
+    keepAlive: true
+)
+Future<int> gStateFuture2(Ref ref) async {
+  await Future.delayed(const Duration(seconds: 3));
+  return 10;
+}

@@ -68,3 +68,10 @@ flutter/HelloWorld/pubspec.lock
 .flutter-plugins
 .flutter-plugins-dependencies
 /compose/.kotlin
+
+
+# Flutter Auto Generated Files
+*.g.dart
+*.mocks.dart
+*.freezed.dart
+*.lock
