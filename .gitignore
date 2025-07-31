@@ -75,3 +75,4 @@ flutter/HelloWorld/pubspec.lock
 *.mocks.dart
 *.freezed.dart
 *.lock
+**/*.g.dart
