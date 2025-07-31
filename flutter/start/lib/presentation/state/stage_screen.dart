@@ -4,6 +4,7 @@ import 'package:flutter_start/presentation/state/auto_dispose_modifier_screen.da
 import 'package:flutter_start/presentation/state/family_modifier_screen.dart';
 import 'package:flutter_start/presentation/state/future_provider_screen.dart';
 import 'package:flutter_start/presentation/state/listen_provider_screen.dart';
+import 'package:flutter_start/presentation/state/provider_screen.dart';
 import 'package:flutter_start/presentation/state/select_provider_screen.dart';
 import 'package:flutter_start/presentation/state/state_notifier_provider_screen.dart';
 import 'package:flutter_start/presentation/state/state_provider_screen.dart';
@@ -179,6 +180,26 @@ class StatePage extends StatelessWidget {
               ),
               child: const Text(
                 'SelectProviderScreen',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push<bool>(
+                  CupertinoPageRoute(
+                    builder: (_) => const ProviderScreen(),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30,
+                  vertical: 15,
+                ),
+              ),
+              child: const Text(
+                'ProviderScreen',
                 style: TextStyle(fontSize: 16),
               ),
             ),
