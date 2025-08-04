@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_start/presentation/pattern/pattern_view_model.dart';
+import 'package:flutter_start/presentation/pattern/global_counter_provider.dart';
 
 import 'base_page_widget.dart';
 import 'detail_pattern_page.dart';
@@ -12,6 +13,8 @@ class PatternPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var viewModel = ref.watch(patternViewModelProvider);
+    var globalCounter = ref.watch(globalCounterProvider);
+
     return basePage(
       Scaffold(
         appBar: AppBar(title: Text("Pattern")),
@@ -21,13 +24,18 @@ class PatternPage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'state.counter: ${viewModel.state.counter}',
+                'Local counter: ${viewModel.state.counter}',
                 style: TextStyle(fontSize: 16),
+              ),
+              Text(
+                'Global counter: $globalCounter',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Text(
                 'state.name: ${viewModel.state.name}',
                 style: TextStyle(fontSize: 16),
               ),
+              SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
                   viewModel.loadData();
@@ -40,6 +48,20 @@ class PatternPage extends ConsumerWidget {
                 ),
                 child: const Text('Load Data', style: TextStyle(fontSize: 16)),
               ),
+              SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () {
+                  viewModel.incrementGlobalCounter();
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 15,
+                  ),
+                ),
+                child: const Text('Increment Global Counter', style: TextStyle(fontSize: 16)),
+              ),
+              SizedBox(height: 8),
               ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push<bool>(

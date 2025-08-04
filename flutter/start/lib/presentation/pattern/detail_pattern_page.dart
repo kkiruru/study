@@ -1,29 +1,37 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'global_counter_provider.dart';
 
-class DetailPatternPage extends StatelessWidget {
+class DetailPatternPage extends ConsumerWidget {
   const DetailPatternPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    var globalCounter = ref.watch(globalCounterProvider);
+
     return Scaffold(
-      appBar: AppBar(title: Text("Pattern")),
+      appBar: AppBar(title: Text("Detail Pattern")),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        padding: EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Text(
+              'Global Counter from Detail Page: $globalCounter',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                ref.read(globalCounterProvider.notifier).state++;
+              },
+              child: Text('Increment Global Counter'),
+            ),
+            SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 15,
-                ),
-              ),
-              child: const Text('back', style: TextStyle(fontSize: 16)),
+              child: Text('Go Back'),
             ),
           ],
         ),
