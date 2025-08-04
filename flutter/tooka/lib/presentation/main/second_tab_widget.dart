@@ -30,7 +30,6 @@ class SecondTabWidget extends StatelessWidget {
                   // lib/presentation/main/second_tab_widget.dart
                   onPressed: () {
 
-
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(

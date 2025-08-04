@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_start/presentation/riverpod/riverpod_screen.dart';
-import 'package:flutter_start/presentation/state/stage_screen.dart';
+import 'package:flutter_start/presentation/riverpod/riverpod_page.dart';
+import 'package:flutter_start/presentation/state/stage_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
