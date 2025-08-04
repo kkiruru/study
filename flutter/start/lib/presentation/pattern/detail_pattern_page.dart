@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,9 +7,7 @@ class DetailPatternPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Pattern"),
-      ),
+      appBar: AppBar(title: Text("Pattern")),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Column(
@@ -26,10 +23,7 @@ class DetailPatternPage extends StatelessWidget {
                   vertical: 15,
                 ),
               ),
-              child: const Text(
-                'back',
-                style: TextStyle(fontSize: 16),
-              ),
+              child: const Text('back', style: TextStyle(fontSize: 16)),
             ),
           ],
         ),
