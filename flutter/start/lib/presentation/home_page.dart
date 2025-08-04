@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_start/presentation/pattern/pattern_page.dart';
 import 'package:flutter_start/presentation/riverpod/riverpod_page.dart';
 import 'package:flutter_start/presentation/state/stage_page.dart';
 
@@ -46,6 +47,21 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               child: const Text('RiverPodPage', style: TextStyle(fontSize: 16)),
+            ),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push<bool>(
+                  CupertinoPageRoute(builder: (_) => const PatternPage()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30,
+                  vertical: 15,
+                ),
+              ),
+              child: const Text('PatternPage', style: TextStyle(fontSize: 16)),
             ),
           ],
         ),
