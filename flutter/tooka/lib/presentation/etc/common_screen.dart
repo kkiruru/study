@@ -11,9 +11,6 @@ class CommonScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
 
     final loadingState = ref.watch(gLoadingStateNotifierProvider);
-
-    // final foo = ref.watch(fooProvider);
-    //
     final userState = ref.watch(userProvider);
 
     return Stack(

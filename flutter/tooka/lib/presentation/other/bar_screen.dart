@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:go_router/go_router.dart';
-
 import '../../app_route.dart';
-import '../../core/services/deep_link_service.dart';
 
 class BarScreen extends StatelessWidget {
   const BarScreen({super.key});

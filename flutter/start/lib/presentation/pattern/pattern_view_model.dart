@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_start/presentation/pattern/user_vo.dart';
 
 import 'base_view_model.dart';
 import 'global_counter_provider.dart';
@@ -11,23 +12,23 @@ final patternViewModelProvider = ChangeNotifierProvider.autoDispose(
 
 class PatternViewModel extends ChangeNotifier {
   final Ref _ref;
+  late PatternState state;
 
   PatternViewModel(this._ref) {
     // 전역 counter 값으로 초기화
-    _ref.listen(globalCounterProvider, (previous, next) {
+    _ref.listen(globalUserProvider, (previous, next) {
       // 전역 counter가 변경되면 로컬 상태도 업데이트
       if (previous != next) {
-        state = state.copyWith(counter: next);
+        state = state.copyWith(userVo: next);
         notifyListeners();
       }
     });
+    state = PatternState(
+      counter: 0,
+      isLoading: false,
+      userVo: _ref.read(globalUserProvider.notifier).state,
+    );
   }
-
-  PatternState state = PatternState(
-    counter: 0,
-    name: 'kkiruru',
-    isLoading: false,
-  );
 
   void loadData() async {
     // 로딩 시작
@@ -37,49 +38,51 @@ class PatternViewModel extends ChangeNotifier {
     // 3초 대기
     await Future.delayed(const Duration(seconds: 2));
 
-    // 전역 counter 증가
-    _ref.read(globalCounterProvider.notifier).state++;
-
-    // 로컬 상태 업데이트
     state = state.copyWith(
+      counter: state.counter + 1,
       isLoading: false,
-      name: 'kkiruru ${_ref.read(globalCounterProvider)}',
     );
     notifyListeners();
   }
 
-  // 전역 counter 증가 메서드
-  void incrementGlobalCounter() {
-    _ref.read(globalCounterProvider.notifier).state++;
+  // // 전역 counter 증가 메서드
+  void incrementCounter() {
+    state = state.copyWith(
+      counter: state.counter + 1,
+    );
+    notifyListeners();
   }
-
+  //
   // 전역 counter 감소 메서드
-  void decrementGlobalCounter() {
-    _ref.read(globalCounterProvider.notifier).state--;
+  void decrementCounter() {
+    state = state.copyWith(
+      counter: state.counter - 1,
+    );
+    notifyListeners();
   }
 }
 
 class PatternState extends BasePatternState {
   final int counter;
-  final String name;
   final String? url;
+  final UserVo? userVo;
 
   PatternState({
     required this.counter,
-    required this.name,
     this.url,
     required super.isLoading,
+    this.userVo,
   });
 
   PatternState copyWith({
-    String? name,
     int? counter,
     String? url,
     bool? isLoading,
+    UserVo? userVo,
   }) => PatternState(
-    name: name ?? this.name,
     counter: counter ?? this.counter,
     url: url ?? this.url,
     isLoading: isLoading ?? this.isLoading,
+    userVo: userVo ?? this.userVo,
   );
 }

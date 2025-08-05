@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../app_route.dart';
-import '../../core/services/deep_link_service.dart';
 import '../my/my_screen.dart';
 
 class OtherScreen extends StatelessWidget {

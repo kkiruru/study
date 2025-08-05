@@ -13,7 +13,6 @@ class PatternPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var viewModel = ref.watch(patternViewModelProvider);
-    var globalCounter = ref.watch(globalCounterProvider);
 
     return basePage(
       Scaffold(
@@ -28,11 +27,7 @@ class PatternPage extends ConsumerWidget {
                 style: TextStyle(fontSize: 16),
               ),
               Text(
-                'Global counter: $globalCounter',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                'state.name: ${viewModel.state.name}',
+                'state.name: ${viewModel.state.userVo?.name}',
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(height: 16),
@@ -51,7 +46,7 @@ class PatternPage extends ConsumerWidget {
               SizedBox(height: 8),
               ElevatedButton(
                 onPressed: () {
-                  viewModel.incrementGlobalCounter();
+                  viewModel.incrementCounter();
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(

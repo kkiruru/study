@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_start/presentation/riverpod/code_generation_provider.dart';
 import 'package:flutter_start/presentation/state/default_layout.dart';
 
+import 'another_page.dart';
+
 class CodeGenerationScreen extends ConsumerWidget {
   const CodeGenerationScreen({super.key});
 
@@ -71,6 +73,16 @@ class CodeGenerationScreen extends ConsumerWidget {
                 ref.invalidate(gStateNotifierProvider);
               },
               child: const Text('Invalidate'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push<bool>(
+                  CupertinoPageRoute(
+                    builder: (_) => const AnotherPage(),
+                  ),
+                );
+              },
+              child: const Text('AnotherPage'),
             ),
           ],
         )
