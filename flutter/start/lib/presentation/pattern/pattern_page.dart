@@ -2,10 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_start/presentation/pattern/pattern_view_model.dart';
-import 'package:flutter_start/presentation/pattern/profile_page.dart';
 
 import 'base_page_widget.dart';
-import 'detail_pattern_page.dart';
 
 class PatternPage extends ConsumerWidget {
   const PatternPage({super.key});
@@ -16,83 +14,127 @@ class PatternPage extends ConsumerWidget {
 
     return basePage(
       Scaffold(
-        appBar: AppBar(title: Text("Pattern")),
+        appBar: AppBar(title: Text("MVVM Pattern")),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                'Local counter: ${viewModel.state.counter}',
-                style: TextStyle(fontSize: 16),
-              ),
-              Text(
-                'state.name: ${viewModel.state.userVo?.name}',
-                style: TextStyle(fontSize: 16),
+              // User 정보 표시
+              Card(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'User 정보',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      if (viewModel.state.user != null) ...[
+                        Text('ID: ${viewModel.state.user!.id}'),
+                        Text('이름: ${viewModel.state.user!.name}'),
+                        Text('이메일: ${viewModel.state.user!.email}'),
+                        Text('전화번호: ${viewModel.state.user!.phone}'),
+                      ] else ...[
+                        Text(
+                          '사용자 정보가 없습니다.',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
               ),
               SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  viewModel.loadData();
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 30,
-                    vertical: 15,
+
+              // Share 정보 표시
+              Card(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Share 정보',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      if (viewModel.state.share != null) ...[
+                        Text('제목: ${viewModel.state.share!.title}'),
+                        Text('내용: ${viewModel.state.share!.content}'),
+                        Text('URL: ${viewModel.state.share!.url}'),
+                        Text(
+                          '생성일: ${viewModel.state.share!.createdAt.toString()}',
+                        ),
+                      ] else ...[
+                        Text(
+                          '공유 정보가 없습니다.',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    ],
                   ),
                 ),
-                child: const Text('Load Data', style: TextStyle(fontSize: 16)),
               ),
-              SizedBox(height: 8),
+              SizedBox(height: 16),
+
+              // 에러 메시지 표시
+              if (viewModel.state.errorMessage != null) ...[
+                Container(
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade100,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    '에러: ${viewModel.state.errorMessage}',
+                    style: TextStyle(color: Colors.red.shade800),
+                  ),
+                ),
+                SizedBox(height: 16),
+              ],
+
+              // 버튼들
               ElevatedButton(
-                onPressed: () {
-                  viewModel.incrementCounter();
-                },
+                onPressed: viewModel.state.isLoading
+                    ? null
+                    : () {
+                        viewModel.fetchUser('user123', 'password123');
+                      },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 30,
                     vertical: 15,
                   ),
                 ),
-                child: const Text('Increment Global Counter', style: TextStyle(fontSize: 16)),
-              ),
-              SizedBox(height: 8),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push<bool>(
-                    CupertinoPageRoute(
-                      builder: (_) => const DetailPatternPage(),
-                    ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 30,
-                    vertical: 15,
-                  ),
-                ),
-                child: const Text(
-                  'DetailPatternPage',
+                child: Text(
+                  viewModel.state.isLoading ? '로딩 중...' : '사용자 정보 가져오기',
                   style: TextStyle(fontSize: 16),
                 ),
               ),
               SizedBox(height: 8),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push<bool>(
-                    CupertinoPageRoute(
-                      builder: (_) => const ProfilePage(),
-                    ),
-                  );
-                },
+                onPressed: viewModel.state.isLoading
+                    ? null
+                    : () {
+                        viewModel.loadData();
+                      },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 30,
                     vertical: 15,
                   ),
                 ),
-                child: const Text(
-                  'ProfilePage',
+                child: Text(
+                  viewModel.state.isLoading ? '로딩 중...' : '세탁기 상태 가져오기',
                   style: TextStyle(fontSize: 16),
                 ),
               ),
