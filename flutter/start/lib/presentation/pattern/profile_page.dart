@@ -11,7 +11,7 @@ class ProfilePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final userViewModel = ref.watch(userViewModelProvider);
+    final userViewModel = ref.watch(patternViewModelProvider);
 
     return basePage(
       Scaffold(
@@ -22,7 +22,7 @@ class ProfilePage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                userViewModel.user?.name ?? '사용자 정보 없음',
+                userViewModel.state.user?.name ?? '사용자 정보 없음',
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
@@ -35,7 +35,7 @@ class ProfilePage extends ConsumerWidget {
                   ),
                 ),
                 child: const Text(
-                  'Load Data', 
+                  'Load Data',
                   style: TextStyle(fontSize: 16)
                 ),
               ),
