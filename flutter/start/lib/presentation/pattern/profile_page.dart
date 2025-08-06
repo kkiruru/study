@@ -10,7 +10,9 @@ class ProfilePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
     final userViewModel = ref.watch(userViewModelProvider);
+
     return basePage(
       Scaffold(
         appBar: AppBar(title: const Text("Profile")),
@@ -41,6 +43,7 @@ class ProfilePage extends ConsumerWidget {
           ),
         ),
       ),
+        viewModel: userViewModel
       // BasePatternState(isLoading: userViewModel.isLoading),
     );
   }

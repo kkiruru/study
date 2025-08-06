@@ -57,7 +57,7 @@ class PatternViewModel with ChangeNotifier {
   }
 }
 
-class PatternState extends BasePatternState {
+class PatternState extends BaseState {
   final int counter;
   final String? url;
   final UserVo? userVo;
@@ -65,7 +65,7 @@ class PatternState extends BasePatternState {
   PatternState({
     required this.counter,
     this.url,
-    required super.isLoading,
+    required isLoading,
     this.userVo,
   });
 
@@ -166,7 +166,7 @@ final userViewModelProvider = ChangeNotifierProvider.autoDispose((ref) {
 });
 
 
-class UserViewModel with ChangeNotifier {
+class UserViewModel extends BaseViewModel {
   final GetUserUseCase _getUserUseCase;
 
   UserViewModel(this._getUserUseCase);
@@ -174,18 +174,13 @@ class UserViewModel with ChangeNotifier {
   User? _user;
   User? get user => _user;
 
-  bool _isLoading = false;
-  bool get isLoading => _isLoading;
-
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
   // View로부터 사용자 정보를 가져오라는 요청을 받습니다.
   Future<void> fetchUser(String id, String password) async {
-    _isLoading = true;
     _errorMessage = null;
-    notifyListeners(); // UI에 로딩 상태 변경을 알림
-
+    startLoading();
     try {
       // ViewModel은 직접 Repository를 호출하지 않고,
       // UseCase를 통해 비즈니스 로직을 실행합니다.
@@ -193,55 +188,9 @@ class UserViewModel with ChangeNotifier {
     } catch (e) {
       _errorMessage = e.toString();
     } finally {
-      _isLoading = false;
-      notifyListeners(); // UI에 작업 완료 및 상태 변경을 알림
+      stopLoading();
     }
   }
 }
-
-
-
-class BaseViewModel with ChangeNotifier {
-  final bool isLoading;
-
-  BaseViewModel({required this.isLoading});
-
-  BaseViewModel copyWith({
-    bool? isLoading,
-  }) => BaseViewModel(
-    isLoading: isLoading ?? this.isLoading,
-  );
-
-  void startLoading() {
-    copyWith(
-      isLoading: true
-    );
-    notifyListeners();
-  }
-
-  void stopLoading() {
-    copyWith(
-        isLoading: true
-    );
-    notifyListeners();
-  }
-
-}
-
-
-class BazViewModel extends BaseViewModel {
-  BazViewModel({required super.isLoading});
-
-  void loadData() async {
-    startLoading();
-
-    await Future.delayed(const Duration(seconds: 2));
-    stopLoading();
-  }
-}
-
-
-
-
 
 

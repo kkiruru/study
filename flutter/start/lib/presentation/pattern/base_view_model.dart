@@ -1,5 +1,20 @@
-abstract class BasePatternState {
-  final bool isLoading;
+import 'package:flutter/cupertino.dart';
 
-  BasePatternState({required this.isLoading});
+abstract class BaseState {
+  bool isLoading = false;
+}
+
+
+
+class BaseViewModel extends BaseState with ChangeNotifier {
+
+  void startLoading() {
+    isLoading = true;
+    notifyListeners();
+  }
+
+  void stopLoading() {
+    isLoading = false;
+    notifyListeners();
+  }
 }
