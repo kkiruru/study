@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_start/presentation/pattern/pattern_view_model.dart';
 import 'package:flutter_start/presentation/pattern/profile_page.dart';
+import 'package:flutter_start/presentation/pattern/global_user_provider.dart';
 
 import 'base_page_widget.dart';
 
@@ -12,6 +13,7 @@ class PatternPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var viewModel = ref.watch(patternViewModelProvider);
+    var user = ref.watch(globalUserProvider); // 전역 User 상태 관찰
 
     return basePage(
       Scaffold(
@@ -21,7 +23,7 @@ class PatternPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // User 정보 표시
+              // User 정보 표시 (전역 상태)
               Card(
                 child: Padding(
                   padding: EdgeInsets.all(16),
@@ -29,18 +31,18 @@ class PatternPage extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'User 정보',
+                        'User 정보 (전역 상태)',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       SizedBox(height: 8),
-                      if (viewModel.state.user != null) ...[
-                        Text('ID: ${viewModel.state.user!.id}'),
-                        Text('이름: ${viewModel.state.user!.name}'),
-                        Text('이메일: ${viewModel.state.user!.email}'),
-                        Text('전화번호: ${viewModel.state.user!.phone}'),
+                      if (user != null) ...[
+                        Text('ID: ${user.id}'),
+                        Text('이름: ${user.name}'),
+                        Text('이메일: ${user.email}'),
+                        Text('전화번호: ${user.phone}'),
                       ] else ...[
                         Text(
                           '사용자 정보가 없습니다.',
@@ -53,7 +55,7 @@ class PatternPage extends ConsumerWidget {
               ),
               SizedBox(height: 16),
 
-              // Share 정보 표시
+              // Share 정보 표시 (로컬 상태 - 페이지 dispose 시 사라짐)
               Card(
                 child: Padding(
                   padding: EdgeInsets.all(16),
@@ -61,7 +63,7 @@ class PatternPage extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Share 정보',
+                        'Share 정보 (로컬 상태)',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -152,7 +154,10 @@ class PatternPage extends ConsumerWidget {
                     vertical: 15,
                   ),
                 ),
-                child: const Text('ProfilePage', style: TextStyle(fontSize: 16)),
+                child: const Text(
+                  'ProfilePage',
+                  style: TextStyle(fontSize: 16),
+                ),
               ),
             ],
           ),
