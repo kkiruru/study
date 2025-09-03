@@ -48,7 +48,7 @@ class PatternViewModel extends BaseViewModel {
     this._ref,
   ) {
     // 초기 상태 설정 (Share만 로컬 상태로 관리)
-    _state = PatternState(share: null, isLoading: false, errorMessage: null);
+    _state = PatternState(share: null, errorMessage: null);
   }
 
   late PatternState _state;
@@ -59,48 +59,96 @@ class PatternViewModel extends BaseViewModel {
 
   // User 상태 업데이트 (전역 상태로 관리)
   Future<void> fetchUser(String id, String password) async {
-    _state = _state.copyWith(isLoading: true, errorMessage: null);
+    _state = _state.copyWith(errorMessage: null);
     notifyListeners();
 
     try {
+      startLoading();
+      print('____ startLoading()');
       final user = await _fetchUserUseCase.call(id, password);
-      // 전역 User 상태 업데이트
       _ref.read(globalUserProvider.notifier).setUser(user);
-      _state = _state.copyWith(isLoading: false);
-      notifyListeners();
+      _ref.read(patternEventProvider.notifier).emitEvent(
+        UserFetchSuccess(user),
+      );
     } catch (e) {
-      _state = _state.copyWith(errorMessage: e.toString(), isLoading: false);
-      notifyListeners();
+      _state = _state.copyWith(errorMessage: e.toString());
+      // notifyListeners();
+    } finally {
+      stopLoading();
+      print('____ stopLoading()');
     }
   }
 
   // Share 상태 업데이트 (로컬 상태로 관리 - 페이지 dispose 시 사라짐)
   Future<void> loadData() async {
-    _state = _state.copyWith(isLoading: true, errorMessage: null);
-    notifyListeners();
-
+    _state = _state.copyWith(errorMessage: null);
+    // notifyListeners();
     try {
+      startLoading();
+      print('____ startLoading()');
       final share = await _loadLaundryStateUseCase.call();
-      _state = _state.copyWith(share: share, isLoading: false);
-      notifyListeners();
+      _state = _state.copyWith(share: share);
+      // notifyListeners();
     } catch (e) {
-      _state = _state.copyWith(errorMessage: e.toString(), isLoading: false);
-      notifyListeners();
+      _state = _state.copyWith(errorMessage: e.toString());
+      // notifyListeners();
+    } finally {
+      stopLoading();
+      print('____ stopLoading()');
     }
   }
 }
 
-class PatternState extends BaseState {
+class PatternState  {
   final Share? share;
   final String? errorMessage;
 
-  PatternState({this.share, required bool isLoading, this.errorMessage});
+  PatternState({this.share, this.errorMessage});
 
-  PatternState copyWith({Share? share, bool? isLoading, String? errorMessage}) {
+  PatternState copyWith({Share? share, String? errorMessage}) {
     return PatternState(
       share: share ?? this.share,
-      isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 }
+
+
+sealed class PatternEvent {
+  const PatternEvent();
+}
+
+class UserFetchSuccess extends PatternEvent {
+  final User user;
+  const UserFetchSuccess(this.user);
+}
+
+class UserFetchError extends PatternEvent {
+  final String error;
+  const UserFetchError(this.error);
+}
+
+class LoadDataSuccess extends PatternEvent {
+  final Share share;
+  const LoadDataSuccess(this.share);
+}
+
+class LoadDataError extends PatternEvent {
+  final String error;
+  const LoadDataError(this.error);
+}
+
+// 이벤트를 관리하는 StateNotifier
+class PatternEventNotifier extends StateNotifier<PatternEvent?> {
+  PatternEventNotifier() : super(null);
+
+  void emitEvent(PatternEvent event) {
+    state = event;
+    // 이벤트를 즉시 소비하도록 null로 리셋
+    Future.microtask(() => state = null);
+  }
+}
+
+final patternEventProvider = StateNotifierProvider<PatternEventNotifier, PatternEvent?>((ref) {
+  return PatternEventNotifier();
+});

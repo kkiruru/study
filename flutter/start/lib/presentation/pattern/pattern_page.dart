@@ -15,6 +15,42 @@ class PatternPage extends ConsumerWidget {
     var viewModel = ref.watch(patternViewModelProvider);
     var user = ref.watch(globalUserProvider); // 전역 User 상태 관찰
 
+    // 이벤트 리스닝
+    ref.listen<PatternEvent?>(patternEventProvider, (previous, next) {
+      if (next != null) {
+        switch (next) {
+          case UserFetchSuccess(user: final user):
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('사용자 정보 가져오기 성공: ${user.name}'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          case UserFetchError(error: final error):
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('사용자 정보 가져오기 실패: $error'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          case LoadDataSuccess(share: final share):
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('세탁기 상태 가져오기 성공: ${share.title}'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          case LoadDataError(error: final error):
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('세탁기 상태 가져오기 실패: $error'),
+                backgroundColor: Colors.red,
+              ),
+            );
+        }
+      }
+    });
+
     return basePage(
       Scaffold(
         appBar: AppBar(title: Text("MVVM Pattern")),
@@ -107,7 +143,7 @@ class PatternPage extends ConsumerWidget {
 
               // 버튼들
               ElevatedButton(
-                onPressed: viewModel.state.isLoading
+                onPressed: viewModel.isLoading
                     ? null
                     : () {
                         viewModel.fetchUser('user123', 'password123');
@@ -119,13 +155,13 @@ class PatternPage extends ConsumerWidget {
                   ),
                 ),
                 child: Text(
-                  viewModel.state.isLoading ? '로딩 중...' : '사용자 정보 가져오기',
+                  viewModel.isLoading ? '로딩 중...' : '사용자 정보 가져오기',
                   style: TextStyle(fontSize: 16),
                 ),
               ),
               SizedBox(height: 8),
               ElevatedButton(
-                onPressed: viewModel.state.isLoading
+                onPressed: viewModel.isLoading
                     ? null
                     : () {
                         viewModel.loadData();
@@ -137,7 +173,7 @@ class PatternPage extends ConsumerWidget {
                   ),
                 ),
                 child: Text(
-                  viewModel.state.isLoading ? '로딩 중...' : '세탁기 상태 가져오기',
+                  viewModel.isLoading ? '로딩 중...' : '세탁기 상태 가져오기',
                   style: TextStyle(fontSize: 16),
                 ),
               ),
@@ -163,7 +199,7 @@ class PatternPage extends ConsumerWidget {
           ),
         ),
       ),
-      viewModel: viewModel.state,
+      viewModel: viewModel,
     );
   }
 }

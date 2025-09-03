@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'base_state_provider.dart';
+import 'bottomsheet/BottomSheetPage.dart';
 import 'example_provider.dart';
 
 class CommonScreen extends ConsumerWidget {
@@ -33,7 +35,25 @@ class CommonScreen extends ConsumerWidget {
                     ref.read(userProvider.notifier).bar();
                   },
                   child: Text('Loading')
-              )
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push<bool>(
+                    CupertinoPageRoute(builder: (_) => const BottomSheetPage()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 15,
+                  ),
+                ),
+                child: const Text(
+                  'CommonScreen',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
             ],
           ),
         ),
