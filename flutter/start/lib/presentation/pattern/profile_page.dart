@@ -66,7 +66,7 @@ class ProfilePage extends ConsumerWidget {
           ),
         ),
       ),
-      viewModel: userViewModel.state,
+      viewModel: userViewModel,
     );
   }
 }

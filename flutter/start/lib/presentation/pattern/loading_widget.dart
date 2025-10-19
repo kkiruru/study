@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Widget loading(bool isLoading) {
+
+  print('isLoading: $isLoading');
+
   if (!isLoading) {
     return const SizedBox.shrink();
   }
