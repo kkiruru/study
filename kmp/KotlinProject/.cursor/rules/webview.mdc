@@ -1,0 +1,8 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+- 본 프로젝트는 flutter app 이지만, 주로 webview와의 연동이 많으므로, 이 부분을 상세히 알려주면서 코드를 생성해줘.
+- 나는 iOS app, Android App, flutter app를 개발한 경험이 없으므로, 코드 생성시 상세한 설명을 해줘
+
