@@ -28,7 +28,21 @@
       "Bash(./gradlew :androidApp:compileDebugKotlin --info)",
       "Bash(unzip -o androidApp/build/outputs/apk/debug/androidApp-debug.apk classes*.dex -d /tmp/apk_check2)",
       "Bash(echo \"  ^ found in $dex\")",
-      "Bash(dexdump /tmp/apk_check2/classes9.dex)"
+      "Bash(dexdump /tmp/apk_check2/classes9.dex)",
+      "Bash(./gradlew :androidApp:assembleDebug)",
+      "WebFetch(domain:johnoreilly.dev)",
+      "WebFetch(domain:medium.com)",
+      "WebFetch(domain:atomicrobot.com)",
+      "Bash(./gradlew :composeApp:dependencies --configuration commonMainImplementationDependenciesMetadata)",
+      "Bash(./gradlew :composeApp:dependencies)",
+      "Bash(find ~/.gradle/caches -path *navigation3*1.1.0* -name *.klib -o -path *navigation3*1.1.0* -name *.jar)",
+      "Bash(jar tf:*)",
+      "Bash(jar xf:*)",
+      "Bash(unzip:*)",
+      "Bash(find ~/.gradle/caches -path *navigation3-ui*1.1.0* -name *sources*)",
+      "Bash(find ~/.gradle/caches -path *navigation3-runtime*1.1.0-beta01* -name *sources*)",
+      "Bash(./gradlew :composeApp:compileCommonMainKotlinMetadata)",
+      "Skill(update-config)"
     ]
   }
 }

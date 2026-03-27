@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 android {
@@ -32,7 +33,6 @@ kotlin {
     }
 
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
@@ -76,7 +76,8 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(compose.material3)
-            implementation(libs.navigation.compose)
+            implementation(libs.navigation3.ui)
+            implementation(libs.kotlinx.serialization.core)
             implementation(libs.napier)
         }
         desktopMain.dependencies {

@@ -1,6 +1,6 @@
 package com.kkiruru.kmp.hello.main
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,22 +14,27 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun StoreScreen(
-    onNavigateToSub: () -> Unit = {},
+fun SubScreen(
+    count: Int,
+    onNavigateSub: (Int) -> Unit,
 ) {
-    Box(
+    Column(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
     ) {
+        Text(
+            text = "SubScreen"
+        )
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
         ) {
             Text(
-                text = "StoreScreen"
+                text = count.toString()
             )
             Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = {
-                onNavigateToSub()
+                onNavigateSub(count + 1)
             }) {
                 Text("Button")
             }
