@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:mvnrepository.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:central.sonatype.com)",
+      "WebFetch(domain:blog.jetbrains.com)",
+      "Bash(cp:*)",
+      "WebFetch(domain:nek12.dev)",
+      "Bash(./gradlew clean:*)",
+      "Bash(unzip -l /Users/kkiruru/project/personal/study/kmp/KotlinProject/androidApp/build/outputs/apk/debug/androidApp-debug.apk)",
+      "Bash(find /Users/kkiruru/project/personal/study/kmp/KotlinProject/composeApp/build -name *.aar)",
+      "Bash(find /Users/kkiruru/project/personal/study/kmp/KotlinProject/composeApp/build -path */assets/* -name *.xml)",
+      "Bash(./gradlew :composeApp:tasks --all)",
+      "Bash(./gradlew :composeApp:copyAndroidMainComposeResourcesToAndroidAssets)",
+      "Bash(find /Users/kkiruru/project/personal/study/kmp/KotlinProject/composeApp/build -path *AndroidAssets* -name *.xml)",
+      "Bash(./gradlew :composeApp:copyAndroidMainComposeResourcesToAndroidAssets --stacktrace)",
+      "Bash(find /Users/kkiruru/project/personal/study/kmp/KotlinProject/composeApp/build/generated/assets -name *.xml)",
+      "Bash(unzip -o androidApp/build/outputs/apk/debug/androidApp-debug.apk classes*.dex -d /tmp/apk_check)",
+      "Bash(for dex:*)",
+      "Bash(do dexdump:*)",
+      "Bash(done)",
+      "Bash(do echo:*)",
+      "Bash(dexdump $dex)",
+      "Bash(find /Users/kkiruru/project/personal/study/kmp/KotlinProject/androidApp/build -name *.class)",
+      "Bash(find /Users/kkiruru/project/personal/study/kmp/KotlinProject/androidApp/build -path */kotlin/* -name *.class -o -path *classes* -name *.class)",
+      "Bash(./gradlew :androidApp:compileDebugKotlin --info)",
+      "Bash(unzip -o androidApp/build/outputs/apk/debug/androidApp-debug.apk classes*.dex -d /tmp/apk_check2)",
+      "Bash(echo \"  ^ found in $dex\")",
+      "Bash(dexdump /tmp/apk_check2/classes9.dex)"
+    ]
+  }
+}
